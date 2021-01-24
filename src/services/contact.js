@@ -44,7 +44,38 @@ async function create(data) {
     return response;
   } catch (error) {
     console.log(error);
-    throw new ApiError(error);
+    throw new ApiError(`Error while creating contact`);
+    return;
+  }
+}
+
+async function update(data) {
+  try {
+    const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL);
+    const response = await apiClient.request({
+      method: 'PUT',
+      url: `/crm/sales/api/contacts/${data.contact_id}`,
+      headers: {
+        // TODO: use environment variable
+        Authorization: `Token token=${configs.FRESHSALES_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      data: {
+        contact: {
+          id: data.contact_id,
+          contact_status_id: 16000052147,
+          custom_field: {
+            cf_license_key: data.cf_license_key
+          },
+        }
+      }
+    });
+
+    console.log(`> contact status updated successfully`);
+    return response.data.contact;
+  } catch (error) {
+    throw new ApiError(`> Error while updating the contact: ${error}`);
+    return;
   }
 }
 
@@ -108,5 +139,6 @@ async function getAllContactsFromView(viewId) {
 
 module.exports = {
   create,
+  update,
   checkIfAlreadyPresent,
 };

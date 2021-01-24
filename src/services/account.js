@@ -31,7 +31,8 @@ async function create(data) {
         return response;
     } catch (error) {
         console.log(error);
-        throw new ApiError(error);
+        throw new ApiError(`Error while creating the account.`);
+        return;
     }
 }
 

@@ -1,0 +1,49 @@
+image: docker:19.03.13
+
+services:
+  - docker:19.03.13-dind
+
+stages:
+  - test
+  - build
+  - deploy
+
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
+
+# test:
+#   stage: test
+#   image: node
+#   script:
+#     - npm ci
+#     - npm run test
+#   only:
+#     - master
+
+build:
+  stage: build
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker build -t $CI_REGISTRY_IMAGE:latest .
+    - docker push $CI_REGISTRY_IMAGE:latest
+    - docker build -f Dockerfile-nginx -t ${CI_REGISTRY_IMAGE}:nginx .
+    - docker push ${CI_REGISTRY_IMAGE}:nginx
+  only:
+    - master
+
+deploy:
+  stage: deploy
+  image: ubuntu
+  script:
+    - "which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )"
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$PROD_SSH_PRIVATE_KEY")
+    - mkdir -p ~/.ssh
+    - chmod 700 -R ~/.ssh
+    - ssh-keyscan -H $PROD_SERVER_HOST >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    - ssh root@$PROD_SERVER_HOST "docker-compose pull railflow_rest_api_revamp railflow_rest_api_revamp_nginx;docker-compose stop railflow_rest_api_revamp railflow_rest_api_revamp_nginx;docker-compose rm -f railflow_rest_api_revamp railflow_rest_api_revamp_nginx;docker-compose up -d;docker image prune -a -f"
+  only:
+    - master

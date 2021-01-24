@@ -6,14 +6,14 @@ const configs = appConfig.getConfigs(process.env.APP_ENV);
 const ApiError = require("../errors/api");
 const mailgun = require("mailgun-js");
 
-async function sendEmail(text, extraInfo) {
-    console.log(`> sendOnboardingEmail: ${JSON.stringify(extraInfo)}`);
+async function sendEmail(to, text, extraInfo = {}) {
+    console.log(`> sendExtensionEmail: ${JSON.stringify(extraInfo)}`);
     const DOMAIN = 'mail.railflow.io';
     const mg = mailgun({ apiKey: configs.MAILGUN_KEY, domain: DOMAIN });
     const data = {
         from: 'Railflow Support <mail@railflow.io>',
         // to: content.body.contact_email,
-        to: ['hellosumedhdev@gmail.com', 'sales@railflow.myfreshworks.com', 'ali.raza@agiletestware.com'],
+        to,
         subject: 'Railflow: Your license key is here.',
         text: text,
         ...extraInfo
@@ -29,7 +29,6 @@ async function sendEmail(text, extraInfo) {
     } catch (error) {
         console.log(`> err:sendEmail: ${error}`);
         throw new ApiError(`Error while sending onboarding email.`);
-        return;
     }
 }
 

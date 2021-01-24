@@ -80,7 +80,9 @@ async function sendOnboardingEmail(body, cryptolensTokenObject) {
             "v:contactId": contactId
         };
 
-        const emailData = await emailService.sendEmail(text, extraInfo);
+        const to = body.email || "hellosumedhdev@gmail.com";
+
+        const emailData = await emailService.sendEmail(to, text, extraInfo);
         return emailData;
     } catch (error) {
         throw new ApiError(`There was some issue sending email to: ${info.body.contact_id}`);

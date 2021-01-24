@@ -18,6 +18,8 @@ const configs = {
         CRYPTOLENS_BASE_URL: "https://app.cryptolens.io",
         CRYPTOLENS_API_KEY: "WyIyNjQ5MDgiLCIzT3ZBYlNybjRjSll1T0U1OU1jTUlydE5BSW90Ti93YWpod2d3TDVRIl0=",
         MAILGUN_KEY: "key-4c45b28d4cab5d63a74df82c99aae76c",
+        HIVEAGE_BASE_URL: "https://railflow.hiveage.com/",
+        HIVEAGE_API_KEY: "WYc9h6V-bNthiAsvJN8t"
     },
     prod: {
         // set the node_env as `prod`. values

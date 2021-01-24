@@ -12,6 +12,7 @@ const UnprocessableRequestError = require("../errors/unprocessablerequest");
 
 const contactService = require('../services/contact');
 const accountService = require('../services/account');
+const slackService = require('../services/slack');
 
 async function createContact(request, res, next) {
   try {
@@ -41,12 +42,12 @@ async function createContact(request, res, next) {
       const response = await contactService.create(data);
       if (response && response.data && response.data.contact) {
         console.log(`> contactService:create`);
-        // const notificationData = {
-        //   contactId: response.data.contact.id,
-        //   company: request.body.company,
-        // };
+        const notificationData = {
+          contactId: response.data.contact.id,
+          company: request.body.company,
+        };
 
-        // await this.slackService.notifyContactCreation(notificationData);
+        await slackService.sendMessage(notificationData);
         console.log(`> sending response contact create`);
         return res.status(response.status).send({
           status: response.status,

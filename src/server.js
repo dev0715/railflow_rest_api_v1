@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 
 const contactRouter = require("./routes/contact");
 const signupRouter = require("./routes/signup");
+const licenseRouter = require("./routes/license");
 
 const appConfig = require('../configs/app');
 const config = appConfig.getConfigs(process.env.APP_ENV || "development");
@@ -32,6 +33,7 @@ class Server {
   routes() {
     this.app.use("/api/contact", contactRouter);
     this.app.use("/api/signup", signupRouter);
+    this.app.use("/api/license", licenseRouter);
 
     this.app.use((err, req, res, next) => {
       if (res.headersSent) {

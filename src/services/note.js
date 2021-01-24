@@ -29,7 +29,6 @@ async function create(targetableId, description) {
         return response.data;
     } catch (error) {
         throw new ApiError(`Error while creating node for: ${contactId}`);
-        return;
     }
 }
 

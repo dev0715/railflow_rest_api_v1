@@ -33,6 +33,7 @@ async function createLead(req, res, next) {
     const description = `Cryptolens key: ${cryptolensTokenObject.key} \n\n Email sent at: ${dayjs()} \n\n Mailgun Id: ${mailgunResponse.id} \n\n Key type: New`;
     const createNotesResponse = await noteService.create(req.body.contact_id, description);
     const createTaskResponse = await taskService.create({contact_id: req.body.contact_id});
+    req.body.cf_license_key = cryptolensTokenObject.key;
     const contact = await contactService.update(req.body);
 
     return res.status(200).send({

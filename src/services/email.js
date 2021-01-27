@@ -7,7 +7,7 @@ const ApiError = require("../errors/api");
 const mailgun = require("mailgun-js");
 
 async function sendEmail(to, text, extraInfo = {}) {
-    console.log(`> sendExtensionEmail: ${JSON.stringify(extraInfo)}`);
+    console.log(`> sendExtensionEmail: ${to} | ${JSON.stringify(extraInfo)}`);
     const DOMAIN = 'mail.railflow.io';
     const mg = mailgun({ apiKey: configs.MAILGUN_KEY, domain: DOMAIN });
     const data = {

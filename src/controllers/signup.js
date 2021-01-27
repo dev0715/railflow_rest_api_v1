@@ -28,29 +28,12 @@ async function createLead(req, res, next) {
     // 4. create two follow up tasks with reminder 5 and 10 days.
     // add a note to the contact mentionining the details of token, email etc
 
-    // console.log(`> headers: ${request.headers}`);
-
-    // return getCryptolensToken(this.httpService, request.body)
-    //     .then((cryptolensTokenObject) => sendOnboardingEmail({ text: getCryptolensTokenEmailContent(cryptolensTokenObject), cryptolensTokenObject: cryptolensTokenObject, body: request.body }))
-    //     .then((mailgunResponse) => {
-    //         request.body.cf_license_key = mailgunResponse.key;
-    //         const description = `Cryptolens key: ${mailgunResponse.key} \n\n Email sent at: ${dayjs()} \n\n Mailgun Id: ${mailgunResponse.id} \n\n Key type: New`;
-    //         return this.noteService.createNote(this.httpService, request.body.contact_id, description)
-    //     })
-    //     .then(() => createTask(this.httpService, request))
-    //     .then(() => updateContact(this.httpService, request))
-    //     .then(() => reply.status(200).send({ success: true }))
-    //     .catch((err) => {
-    //         console.log(`err: ${err}`);
-    //         return reply.status(500).send({ success: false, message: "Something went wrong on our end" })
-    //     })
-
-
     const cryptolensTokenObject = await licenseService.getCryptolensToken(req.body);
     const mailgunResponse = await sendOnboardingEmail(req.body, cryptolensTokenObject);
     const description = `Cryptolens key: ${cryptolensTokenObject.key} \n\n Email sent at: ${dayjs()} \n\n Mailgun Id: ${mailgunResponse.id} \n\n Key type: New`;
     const createNotesResponse = await noteService.create(req.body.contact_id, description);
     const createTaskResponse = await taskService.create({contact_id: req.body.contact_id});
+    req.body.cf_license_key = cryptolensTokenObject.key;
     const contact = await contactService.update(req.body);
 
     return res.status(200).send({

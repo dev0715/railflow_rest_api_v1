@@ -21,6 +21,7 @@ const configs = {
         HIVEAGE_BASE_URL: "https://railflow.hiveage.com/",
         HIVEAGE_API_KEY: "WYc9h6V-bNthiAsvJN8t",
         SLACK_API_BASE_URL: "https://hooks.slack.com/services/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",
+        CRYPTOLENS_LICENSE_EXTENSION_KEY: "WyIyODk0MTIiLCIwQUx0TG1LRWxUNXZRZXJLYWJMZzBUY3NLSGJ0akgvaCtkZEx4b3h6Il0=",
     },
     prod: {
         // set the node_env as `prod`. values

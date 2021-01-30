@@ -27,7 +27,8 @@ class Server {
     const corsOptions = {
       origin: config.ALLOWED_DOMAINS,
       credentials: true,
-      optionsSuccessStatus: 200
+      optionsSuccessStatus: 200,
+      allowedHeaders: "*",
     };
     this.app.use(cors(corsOptions));
   }

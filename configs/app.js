@@ -18,9 +18,19 @@ const configs = {
         SLACK_API_BASE_URL: "https://hooks.slack.com/services/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",
         CRYPTOLENS_LICENSE_EXTENSION_KEY: "WyIyODk0MTIiLCIwQUx0TG1LRWxUNXZRZXJLYWJMZzBUY3NLSGJ0akgvaCtkZEx4b3h6Il0=",
     },
-    prod: {
+    production: {
         // set the node_env as `prod`. values
-        FRESHSALES_KEY: process.env.FRESHSALES_KEY,
+        APP_PORT: process.env.APP_PORT,
+        FRESHSALES_API_KEY: process.env.FRESHSALES_API_KEY,
+        FRESHSALES_BASE_URL: process.env.FRESHSALES_BASE_URL,
+        ALLOWED_DOMAINS: "*",
+        CRYPTOLENS_BASE_URL: process.env.CRYPTOLENS_BASE_URL,
+        CRYPTOLENS_API_KEY: process.env.CRYPTOLENS_API_KEY,
+        MAILGUN_KEY: process.env.MAILGUN_KEY,
+        HIVEAGE_BASE_URL: process.env.HIVEAGE_BASE_URL,
+        HIVEAGE_API_KEY: process.env.HIVEAGE_API_KEY,
+        SLACK_API_BASE_URL: process.env.SLACK_API_BASE_URL,
+        CRYPTOLENS_LICENSE_EXTENSION_KEY: process.env.CRYPTOLENS_LICENSE_EXTENSION_KEY,
     },
 };
 

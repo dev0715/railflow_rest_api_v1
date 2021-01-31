@@ -1,0 +1,176 @@
+{
+	"info": {
+		"_postman_id": "525956db-f7ea-4a40-859a-cc8c930338e6",
+		"name": "railflow",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"contact_id\": 16001660399\n}\n\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:9000/api/signup",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "License extension",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"contact_email\": \"support-team@freshsales.io\",\n    \"contact_last_name\": \"freshsales\",\n    \"contact_first_name\": \"freshsales\",\n    \"contact_id\": 16001463974,\n    \"contact_cf_license_key\": \"FTBCZ-TULLQ-SHQOR-HOHJJ\",\n    \"contact_cf_extension_period\": 8\n}\n\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:9000/api/license/extend",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"license",
+						"extend"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Event webhook",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"signature\": {\n        \"timestamp\": \"1610120663\",\n        \"token\": \"852e50b93c2ec0ea98878a6795f30e7caa411e3faead7248ba\",\n        \"signature\": \"cd25e64c20f708cedec5d84179b668459d31e40c3d9577d3a1593aae1851d92d\"\n    },\n    \"event-data\": {\n        \"tags\": [],\n        \"timestamp\": 1610116930.964602,\n        \"storage\": {\n            \"url\": \"https://sw.api.mailgun.net/v3/domains/mail.railflow.io/messages/AgEFgJp6plBQ1kJyvilMpZnJD-c1sAG8ZA==\",\n            \"key\": \"AgEFgJp6plBQ1kJyvilMpZnJD-c1sAG8ZA==\"\n        },\n        \"recipient-domain\": \"agiletestware.com\",\n        \"id\": \"hLo-0GJXSmGLsSwE--3G5w\",\n        \"campaigns\": [],\n        \"user-variables\": {\n            \"contactId\": \"16002128724\"\n        },\n        \"flags\": {\n            \"is-routed\": false,\n            \"is-authenticated\": true,\n            \"is-system-test\": false,\n            \"is-test-mode\": false\n        },\n        \"log-level\": \"info\",\n        \"envelope\": {\n            \"sending-ip\": \"159.135.228.13\",\n            \"sender\": \"postmaster@mail.railflow.io\",\n            \"transport\": \"smtp\",\n            \"targets\": \"ali.raza@agiletestware.com\"\n        },\n        \"message\": {\n            \"headers\": {\n                \"to\": \"hellosumedhdev@gmail.com, sales@railflow.myfreshworks.com, ali.raza@agiletestware.com\",\n                \"message-id\": \"20210108144141.1.06C9CD9FF505E245@mail.railflow.io\",\n                \"from\": \"Railflow Support <mail@railflow.io>\",\n                \"subject\": \"Railflow: Your license key is here.\"\n            },\n            \"attachments\": [],\n            \"size\": 602\n        },\n        \"recipient\": \"ali.raza@agiletestware.com\",\n        \"event\": \"delivered\",\n        \"delivery-status\": {\n            \"tls\": true,\n            \"mx-host\": \"aspmx.l.google.com\",\n            \"attempt-no\": 1,\n            \"description\": \"\",\n            \"session-seconds\": 4.092444181442261,\n            \"utf8\": true,\n            \"code\": 250,\n            \"message\": \"OK\",\n            \"certificate-verified\": true\n        }\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:9000/api/event",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"event"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Contact create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "authority",
+						"value": "railflow.io"
+					},
+					{
+						"key": "pragma",
+						"value": "no-cache"
+					},
+					{
+						"key": "cache-control",
+						"value": "no-cache"
+					},
+					{
+						"key": "accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36"
+					},
+					{
+						"key": "content-type",
+						"value": "application/json;charset=UTF-8"
+					},
+					{
+						"key": "origin",
+						"value": "https://railflow.io"
+					},
+					{
+						"key": "sec-fetch-site",
+						"value": "same-origin"
+					},
+					{
+						"key": "sec-fetch-mode",
+						"value": "cors"
+					},
+					{
+						"key": "sec-fetch-dest",
+						"value": "empty"
+					},
+					{
+						"key": "referer",
+						"value": "https://railflow.io/auth/sign-up"
+					},
+					{
+						"key": "accept-language",
+						"value": "en-US,en;q=0.9,hi;q=0.8,mr;q=0.7"
+					},
+					{
+						"key": "allowed-party-secret",
+						"value": "shhhsecret",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"keanu\",\n    \"lastName\": \"reeves\",\n    \"email\": \"kean@railflow.io\",\n    \"phone\": \"918989881489\",\n    \"jobTitle\": \"actor\",\n    \"company\": \"revamp-revamp-revamp\"\n}"
+				},
+				"url": {
+					"raw": "https://api-revamp.railflow.io/api/contact/create",
+					"protocol": "https",
+					"host": [
+						"api-revamp",
+						"railflow",
+						"io"
+					],
+					"path": [
+						"api",
+						"contact",
+						"create"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

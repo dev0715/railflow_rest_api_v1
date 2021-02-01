@@ -41,8 +41,15 @@ async function extendLicense(req, res, next) {
 async function sendLicenseExtensionEmail(body, text) {
     try {
         // collate all the data. pass it to general email service send.
+
+        const contactId = body.contact_id;
+
+        const extraInfo = {
+            "v:contactId": contactId
+        };
+
         const to = body.contact_email ||  "hellosumedhdev@gmail.com";
-        const emailData = await emailService.sendEmail(to, text);
+        const emailData = await emailService.sendEmail(to, text, extraInfo);
         return emailData;
     } catch (error) {
         console.log(`> error: ${error}`);

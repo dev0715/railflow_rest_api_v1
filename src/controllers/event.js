@@ -21,7 +21,7 @@ async function createEvent(req, res, next) {
         const event = eventData.event;
         const contactId = eventData["user-variables"].contactId;
         const timestamp = req.body.signature.timestamp * 1000; // converting to mili seconds
-        let noteDescription = `Onboarding email was: ${event} at ${dayjs(timestamp).format('YYYY-MM-DD HH:mm:ss')}`;
+        let noteDescription = `Email was: ${event} at ${dayjs(timestamp).format('YYYY-MM-DD HH:mm:ss')}`;
         await noteService.create(contactId, noteDescription)
         return res.status(200).send({
             status: 200,

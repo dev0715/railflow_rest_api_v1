@@ -63,7 +63,7 @@ async function sendOnboardingEmail(body, cryptolensTokenObject) {
             "v:contactId": contactId
         };
 
-        const to = body.email || "hellosumedhdev@gmail.com";
+        const to = body.contact_email || "hellosumedhdev@gmail.com";
 
         const emailData = await emailService.sendEmail(to, text, extraInfo);
         return emailData;

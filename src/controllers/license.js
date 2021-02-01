@@ -41,7 +41,7 @@ async function extendLicense(req, res, next) {
 async function sendLicenseExtensionEmail(body, text) {
     try {
         // collate all the data. pass it to general email service send.
-        const to = body.email || "hellosumedhdev@gmail.com";
+        const to = body.contact_email ||  "hellosumedhdev@gmail.com";
         const emailData = await emailService.sendEmail(to, text);
         return emailData;
     } catch (error) {

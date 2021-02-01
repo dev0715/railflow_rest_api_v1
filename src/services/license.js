@@ -12,7 +12,7 @@ const qs = require('qs');
 
 async function getCryptolensToken(body) {
   try {
-    const apiClient = await getApiClient(configs.CRYPTOLENS_BASE_URLL);
+    const apiClient = await getApiClient(configs.CRYPTOLENS_BASE_URL);
     const response = await apiClient.request({
         method: 'POST',
         url: '/api/key/CreateKey',

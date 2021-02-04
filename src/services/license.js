@@ -33,8 +33,7 @@ async function getCryptolensToken(body) {
         }),
     });
 
-    console.log(`> generated the cryptolens token: ${JSON.stringify(response.data)}`);
-
+    console.log(`> generated the cryptolens token: ${JSON.stringify(response.data)} for: ${body.contact_email}`);
     return response.data;
 
     // return Promise.resolve({
@@ -68,9 +67,8 @@ async function extend(data) {
       }),
     });
 
-    console.log(`> response: ${response.data}`);
     if (response.data.result === 0) {
-      console.log(`> license extension successful: ${JSON.stringify(response.data)}`);
+      console.log(`> license extended for: ${data.contact_id}`);
       return response.data;
     }
 

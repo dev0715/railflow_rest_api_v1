@@ -28,6 +28,7 @@ async function createContact(request, res, next) {
     // check if the contact is already there.
     const alreadyPresent = await contactService.checkIfAlreadyPresent(request.body.email);
     if (alreadyPresent) {
+      console.log(`> duplicate lead: ${request.body.email}`);
       throw new UnprocessableRequestError(`Whoops. It seems that you have already evaluated Railflow. If you would like to evaluate again or would like to extend your license, please go to  and submit a ticket. Someone from our customer success team will help you right away. You can also leave a message in our chat bot and it will also notify the customer success team.`);
     }
 
@@ -41,14 +42,13 @@ async function createContact(request, res, next) {
 
       const response = await contactService.create(data);
       if (response && response.data && response.data.contact) {
-        console.log(`> contactService:create`);
+        console.log(`> contact created. sending slack notification: ${response.data.contact.id}`);
         const notificationData = {
           contactId: response.data.contact.id,
           company: request.body.company,
         };
 
         await slackService.sendMessage(notificationData);
-        console.log(`> sending response contact create`);
         return res.status(response.status).send({
           status: response.status,
           data: response.data
@@ -59,7 +59,7 @@ async function createContact(request, res, next) {
     return res.status(500).send({
       status: 500,
       data: {
-        message: 'Something went wrong.'
+        message: `Something went wrong in signup for: ${req.body.email}`,
       },
     });
   } catch (error) {

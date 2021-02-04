@@ -26,11 +26,11 @@ async function createEvent(req, res, next) {
         return res.status(200).send({
             status: 200,
             data: {
-                message: "Event created"
+                message: `Event created for contact id: ${contactId}`
             }
         });
     } catch (error) {
-        console.log(`> error: ${error}`);
+        console.log(`> error while creating event for: ${contactId}: ${error}`);
         return res.status(error.status).send(error.toJSON());
     }
 }

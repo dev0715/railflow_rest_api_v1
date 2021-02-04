@@ -41,6 +41,7 @@ async function create(data) {
       },
     });
 
+    console.log(`> contact created: ${data.email} ${response.data.contact.id}`);
     return response;
   } catch (error) {
     console.log(error);
@@ -70,7 +71,7 @@ async function update(data) {
       }
     });
 
-    console.log(`> contact status updated successfully`);
+    console.log(`> contact status updated successfully for id: ${data.contact_id}`);
     return response.data.contact;
   } catch (error) {
     throw new ApiError(`> Error while updating the contact: ${error}`);

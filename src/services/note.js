@@ -25,7 +25,7 @@ async function create(targetableId, description) {
             }
         });
 
-        console.log(`> note created successfully`);
+        console.log(`> note created successfully for contact id: ${targetableId}`);
         return response.data;
     } catch (error) {
         throw new ApiError(`Error while creating node for: ${targetableId}`);

@@ -33,7 +33,7 @@ async function extendLicense(req, res, next) {
             }
         });
     } catch (error) {
-        console.log(`> error: ${error}`);
+        console.log(`> error while extending license for: ${req.body.contact_id}: ${error}`);
         return res.status(error.status).send(error.toJSON());
     }
 }

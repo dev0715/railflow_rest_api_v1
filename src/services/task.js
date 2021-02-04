@@ -33,7 +33,7 @@ async function create(data) {
             });
         }
 
-        console.log(`> tasks created successfully`);
+        console.log(`> tasks created successfully for contact id: ${data.contact_id}`);
         return {
             success: true,
             message: `${afterDays.length} Tasks created successfully`

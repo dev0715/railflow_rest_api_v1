@@ -23,7 +23,7 @@ async function extendLicense(req, res, next) {
     try {
         const license = await licenseService.extend(req.body);
         const description = `License has been extended by ${req.body.contact_cf_extension_period} days`;
-        const createNotesResponse = await noteService.create(req.body.contact_id, description);
+        // const createNotesResponse = await noteService.create(req.body.contact_id, description);
         await sendLicenseExtensionEmail(req.body, `Your license has been extended by ${req.body.contact_cf_extension_period} days.`);
 
         return res.status(200).send({

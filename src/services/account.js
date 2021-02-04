@@ -28,6 +28,7 @@ async function create(data) {
             },
         });
 
+        console.log(`> account created with name: ${data.name}`);
         return response;
     } catch (error) {
         console.log(error);

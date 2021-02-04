@@ -24,6 +24,8 @@ async function createInvoiceClient(data) {
                     password: ''
                 }
             });
+
+            console.log(`> invoice client created for: ${data.name} | ${data.business_email}`);
             return response;
         } catch (error) {
             throw new ApiError(`Invoice client creation failed`);

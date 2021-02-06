@@ -80,7 +80,6 @@ async function update(data) {
 }
 
 async function checkIfAlreadyPresent(email) {
-  console.log(`> checkIfAlreadyPresent: ${email}`);
   const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL);
   const response = await apiClient.request({
     method: 'GET',
@@ -93,7 +92,6 @@ async function checkIfAlreadyPresent(email) {
   });
 
   if (response && response.status === 200) {
-    console.log(`> checkIfAlreadyPresent:200`);
     const filters = response.data.filters;
     let viewId;
     for (let f of filters) {
@@ -107,14 +105,12 @@ async function checkIfAlreadyPresent(email) {
     if (allContacts != null) {
       for (let c of allContacts) {
         if (c.email === email) {
-          console.log(`> checkIfAlreadyPresent:true`);
           return true
         }
       }
     }
   }
 
-  console.log(`> checkIfAlreadyPresent:false`);
   return false;
 }
 

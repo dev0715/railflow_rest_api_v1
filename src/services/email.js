@@ -15,11 +15,7 @@ async function sendEmail(to, text, extraInfo = {}) {
         // to: content.body.contact_email,
         to,
         subject: 'Railflow: Your license key is here.',
-        // text: text,
-        'h:X-Mailgun-Variables': JSON.stringify({
-            cryptolensText: text,
-        }),
-        template: '../../email-templates/billing.html', // path of the emaill template
+        html: `<p>${text}</p>`,
         ...extraInfo
     };
 

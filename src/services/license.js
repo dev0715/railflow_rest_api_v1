@@ -27,9 +27,9 @@ async function getCryptolensToken(body) {
             F1: true,
             F2: true,
             NewCustomer: true,
-            Name: body.contact_first_name,
+            Name: body.contact_first_name + body.contact_last_name,
             Email: body.contact_email,
-            CompanyName: ""
+            CompanyName: body.contact_cf_company
         }),
     });
 

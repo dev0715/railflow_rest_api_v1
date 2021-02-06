@@ -30,7 +30,7 @@ async function createEvent(req, res, next) {
             }
         });
     } catch (error) {
-        console.log(`> error while creating event for: ${contactId}: ${error}`);
+        console.log(`> error while creating event for: ${eventData["user-variables"].contactId}: ${error}`);
         return res.status(error.status).send(error.toJSON());
     }
 }

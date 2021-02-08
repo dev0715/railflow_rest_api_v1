@@ -61,6 +61,8 @@ async function sendOnboardingEmail(body, cryptolensTokenObject) {
 
         const extraInfo = {
             "v:contactId": contactId,
+            "o:tracking": 'yes',
+            "o:tracking-clicks": 'yes',
         };
 
         const to = body.contact_email || "hellosumedhdev@gmail.com";

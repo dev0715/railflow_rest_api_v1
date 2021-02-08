@@ -18,6 +18,7 @@ const emailService = require('../services/email');
 const noteService = require('../services/note');
 const taskService = require('../services/task');
 const licenseService = require('../services/license');
+const uploadService = require('../services/upload');
 
 async function createLead(req, res, next) {
   try {
@@ -45,7 +46,7 @@ async function createLead(req, res, next) {
         }
     });
   } catch (error) {
-    return res.status(error.status).send(error.toJSON());
+    return res.status(error.status).send(error);
   }
 }
 
@@ -53,11 +54,28 @@ function getCryptolensTokenEmailContent(cryptolensTokenObject) {
     return `Customer Id: ${cryptolensTokenObject.customerId} | Token: ${cryptolensTokenObject.key}`
 }
 
+async function getCryptolensFileUrl(cryptolensTokenObject) {
+    try {
+        const uploadRes = await uploadService.uploadToS3(cryptolensTokenObject);
+        let text = ` You can also check out your license here: ${uploadRes.url}`;
+        // text = uploadRes.Location;
+        return text;
+    } catch (error) {
+        console.log(`> error: ${error}`);
+        throw new ApiError(`Error while uploading the file`);
+
+    }
+}
+
 async function sendOnboardingEmail(body, cryptolensTokenObject) {
     try {
         // collate all the data. pass it to general email service send.
-        const text = getCryptolensTokenEmailContent(cryptolensTokenObject);
+        let text = getCryptolensTokenEmailContent(cryptolensTokenObject);
         const contactId = body.contact_id;
+
+        cryptolensTokenObject.customerName = `${body.contact_first_name}_${body.contact_last_name}`;
+        const cryptolensLicenseFileTextContent = await getCryptolensFileUrl(cryptolensTokenObject);
+        text += cryptolensLicenseFileTextContent;
 
         const extraInfo = {
             "v:contactId": contactId,
@@ -65,7 +83,7 @@ async function sendOnboardingEmail(body, cryptolensTokenObject) {
             "o:tracking-clicks": 'yes',
         };
 
-        const to = body.contact_email || "hellosumedhdev@gmail.com";
+        const to = body.contact_email || "ali.raza@agiletestware.com";
 
         const emailData = await emailService.sendEmail(to, text, extraInfo);
         return emailData;

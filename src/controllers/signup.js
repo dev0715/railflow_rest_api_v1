@@ -6,11 +6,14 @@
 
 "use strict";
 
-const dayjs = require('dayjs');
 
-// const ApiError = require("../errors/api");
+const fs = require('fs');
+const path = require('path');
+const dayjs = require('dayjs');
+const Handlebars = require('handlebars');
+
+const ApiError = require("../errors/api");
 const UnprocessableRequestError = require("../errors/unprocessablerequest");
-// const BadRequestError = require("../errors/badrequest");
 
 const contactService = require('../services/contact');
 const accountService = require('../services/account');
@@ -59,11 +62,12 @@ async function getCryptolensFileUrl(cryptolensTokenObject) {
         const uploadRes = await uploadService.uploadToS3(cryptolensTokenObject);
         let text = ` You can also check out your license here: ${uploadRes.url}`;
         // text = uploadRes.Location;
-        return text;
+        return {
+            url: uploadRes.url,
+            text
+        };
     } catch (error) {
-        console.log(`> error: ${error}`);
-        throw new ApiError(`Error while uploading the file`);
-
+        throw new ApiError(`Error while uploading the file; ${error}`);
     }
 }
 
@@ -74,13 +78,24 @@ async function sendOnboardingEmail(body, cryptolensTokenObject) {
         const contactId = body.contact_id;
 
         cryptolensTokenObject.customerName = `${body.contact_first_name}_${body.contact_last_name}`;
-        const cryptolensLicenseFileTextContent = await getCryptolensFileUrl(cryptolensTokenObject);
+        const { url: licenseUrl, text: cryptolensLicenseFileTextContent } = await getCryptolensFileUrl(cryptolensTokenObject);
+        cryptolensTokenObject.url = licenseUrl;
         text += cryptolensLicenseFileTextContent;
 
+        console.log(`> onboarding email text: ${text}`);
+
+        const template = fs.readFileSync(path.join(__dirname, '../../email-templates/signup.hbs'), 'utf8');
+        const compiled = Handlebars.compile(template);
+        const templateData = {
+            licenseKey: cryptolensTokenObject.key,
+            licenseUrl: cryptolensTokenObject.url,
+        };
+        const html = compiled(templateData);
         const extraInfo = {
             "v:contactId": contactId,
             "o:tracking": 'yes',
             "o:tracking-clicks": 'yes',
+            html,
         };
 
         const to = body.contact_email || "ali.raza@agiletestware.com";
@@ -88,7 +103,7 @@ async function sendOnboardingEmail(body, cryptolensTokenObject) {
         const emailData = await emailService.sendEmail(to, text, extraInfo);
         return emailData;
     } catch (error) {
-        throw new ApiError(`There was some issue sending email to: ${info.body.contact_id}`);
+        throw new ApiError(`There was some issue sending email to: ${body.contact_id} ${error}`);
         return;
     }
 }

@@ -6,11 +6,13 @@
 
 "use strict";
 
+const fs = require('fs');
+const path = require('path');
 const dayjs = require('dayjs');
+const Handlebars = require('handlebars');
 
 const ApiError = require("../errors/api");
 const UnprocessableRequestError = require("../errors/unprocessablerequest");
-// const BadRequestError = require("../errors/badrequest");
 
 const contactService = require('../services/contact');
 const accountService = require('../services/account');
@@ -43,9 +45,10 @@ async function sendLicenseExtensionEmail(body, text) {
         // collate all the data. pass it to general email service send.
 
         const contactId = body.contact_id;
-
+        const html = `<p>${text}</p>`;
         const extraInfo = {
-            "v:contactId": contactId
+            "v:contactId": contactId,
+            html
         };
 
         const to = body.contact_email ||  "hellosumedhdev@gmail.com";

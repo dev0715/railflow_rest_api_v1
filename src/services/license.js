@@ -37,7 +37,9 @@ async function getCryptolensToken(body) {
     return response.data;
 
     // return Promise.resolve({
-    //   key: 'yo this is the key'
+    //   key: 'FZRZC-BPOJF-JYZMB-JFRJR',
+    //   customerId: 435453,
+    //   customerName: "sumedh",
     // });
   } catch (error) {
     console.log(`> error generating token: ${error}`);

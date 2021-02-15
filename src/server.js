@@ -23,6 +23,7 @@ class Server {
   config() {
     this.app.use(bodyParser.urlencoded({ extended: true }));
     this.app.use(bodyParser.json());
+    // this.app.set('view engine', 'hbs');
 
     const corsOptions = {
       origin: config.ALLOWED_DOMAINS,

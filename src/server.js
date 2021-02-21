@@ -9,6 +9,7 @@ const signupRouter = require("./routes/signup");
 const licenseRouter = require("./routes/license");
 const eventRouter = require("./routes/event");
 const opportunityRouter = require("./routes/opportunity");
+const quoteRouter = require("./routes/quote");
 
 const appConfig = require('../configs/app');
 const config = appConfig.getConfigs(process.env.APP_ENV || "development");
@@ -40,6 +41,7 @@ class Server {
     this.app.use("/api/license", licenseRouter);
     this.app.use("/api/event", eventRouter);
     this.app.use("/api/opportunity", opportunityRouter);
+    this.app.use("/api/quote", quoteRouter);
 
     this.app.use((err, req, res, next) => {
       if (res.headersSent) {

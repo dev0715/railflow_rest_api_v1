@@ -6,6 +6,7 @@ Pre-requisites:
 
 1. Install node version v14.15.4
 2. Install yarn (npm i -g yarn)
+3. npm i -g nodemon
 
 ```bash
 cd <path_to_railflow_api_folder>

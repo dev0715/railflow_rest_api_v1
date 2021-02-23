@@ -41,8 +41,8 @@ async function createLead(req, res, next) {
     req.body.cf_license_key = cryptolensTokenObject.key;
     const contact = await contactService.update(req.body);
 
-    return res.status(200).send({
-        status: 200,
+    return res.status(201).send({
+        status: 201,
         data: {
             message: `> lead created successfully: ${contact.id}`,
             contact,

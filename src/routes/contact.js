@@ -14,8 +14,7 @@ router.get("/", (req, res) => {
 });
 
 
-router.post("/create", (req, res, next) => {
-  console.log('> create route');
+router.post("/", (req, res, next) => {
   return createContact(req, res, next);
 });
 

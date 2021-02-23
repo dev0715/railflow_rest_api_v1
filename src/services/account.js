@@ -31,8 +31,7 @@ async function create(data) {
         console.log(`> account created with name: ${data.name}`);
         return response;
     } catch (error) {
-        console.log(error);
-        throw new ApiError(`Error while creating the account.`);
+        throw new ApiError(`Error while creating the account: ${error.response.data.errors.message[0]}`);
     }
 }
 

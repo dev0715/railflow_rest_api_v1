@@ -14,7 +14,7 @@ router.get("/", (req, res) => {
 });
 
 
-router.post("/", (req, res, next) => {
+router.patch("/", (req, res, next) => {
   return extendLicense(req, res, next);
 });
 

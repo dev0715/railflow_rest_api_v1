@@ -26,13 +26,14 @@ async function createContact(request, res, next) {
     };
 
     // check if the contact is already there.
-    const alreadyPresent = await contactService.checkIfAlreadyPresent(request.body.email);
-    if (alreadyPresent) {
+    const alreadyPresent = await contactService.getContactIfAlreadyPresent(request.body.email);
+    if (alreadyPresent !== null) {
       console.log(`> duplicate lead: ${request.body.email}`);
       return res.status(200).send({
         status: 200,
         data: {
           message: `Whoops. It seems that you have already evaluated Railflow. If you would like to evaluate again or would like to extend your license, please go to  and submit a ticket. Someone from our customer success team will help you right away. You can also leave a message in our chat bot and it will also notify the customer success team.`,
+          contact: alreadyPresent,
         },
       });
     }

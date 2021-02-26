@@ -9,10 +9,16 @@
 			"name": "Signup",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "allowed-party-secret",
+						"value": "shhhsecret",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"contact_id\": 16001660399\n}\n\n",
+					"raw": "{\n   \"contact_id\": 16003502848,\n   \"contact_email\": \"hellosumedhdev+10@gmail.com\",\n   \"contact_first_name\": \"test\",\n   \"contact_last_name\": \"test\",\n   \"contact_cf_company\": \"test company\"\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -20,7 +26,8 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:9000/api/signup",
+					"raw": "http://localhost:9000/api/signup",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
@@ -40,7 +47,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"contact_email\": \"support-team@freshsales.io\",\n    \"contact_last_name\": \"freshsales\",\n    \"contact_first_name\": \"freshsales\",\n    \"contact_id\": 16001463974,\n    \"contact_cf_license_key\": \"FTBCZ-TULLQ-SHQOR-HOHJJ\",\n    \"contact_cf_extension_period\": 8\n}\n\n",
+					"raw": "{\n    \"contact_email\": \"hellosumedhdev@gmail.com\",\n    \"contact_last_name\": \"test email template\",\n    \"contact_first_name\": \"please work\",\n    \"contact_id\": 16003502848,\n    \"contact_cf_license_key\": \"ICWUF-JHARN-GEGRI-XDMYN\",\n    \"contact_cf_extension_period\": 8\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -48,7 +55,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:9000/api/license/extend",
+					"raw": "localhost:9000/api/license/",
 					"host": [
 						"localhost"
 					],
@@ -56,7 +63,7 @@
 					"path": [
 						"api",
 						"license",
-						"extend"
+						""
 					]
 				}
 			},
@@ -152,20 +159,47 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"firstName\": \"keanu\",\n    \"lastName\": \"reeves\",\n    \"email\": \"kean@railflow.io\",\n    \"phone\": \"918989881489\",\n    \"jobTitle\": \"actor\",\n    \"company\": \"revamp-revamp-revamp\"\n}"
+					"raw": "{\n    \"firstName\": \"test\",\n    \"lastName\": \"local\",\n    \"email\": \"ddddsid@railflow.io\",\n    \"phone\": \"913983981489\",\n    \"jobTitle\": \"actor\",\n    \"company\": \"revamp-revap\"\n}"
 				},
 				"url": {
-					"raw": "https://api-revamp.railflow.io/api/contact/create",
-					"protocol": "https",
+					"raw": "http://localhost:9000/api/contact/",
+					"protocol": "http",
 					"host": [
-						"api-revamp",
-						"railflow",
-						"io"
+						"localhost"
 					],
+					"port": "9000",
 					"path": [
 						"api",
 						"contact",
-						"create"
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Opportunity create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"deal_sales_account_name\": \"test\",\n    \"deal_cf_contact_email\": \"test@test.com\",\n    \"deal_sales_account_address\": \"test\",\n    \"deal_sales_account_city\": \"test\",\n    \"deal_sales_account_state\": \"test\",\n    \"deal_sales_account_zipcode\": \"test\",\n    \"deal_sales_account_country\": \"test\",\n    \"deal_sales_account_phone\": \"test\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:9000/api/opportunity",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"opportunity"
 					]
 				}
 			},

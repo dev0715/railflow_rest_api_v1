@@ -11,6 +11,7 @@ const configs = appConfig.getConfigs(process.env.APP_ENV);
 const { getApiClient } = require('./request');
 
 const ApiError = require("../errors/api");
+const BadRequestError = require("../errors/badrequest");
 
 async function create(data) {
     try {
@@ -31,6 +32,9 @@ async function create(data) {
         console.log(`> account created with name: ${data.name}`);
         return response;
     } catch (error) {
+        if (error.response.data.errors.code === 400) {
+            throw new BadRequestError(`Account with given company name already exists.`);
+        }
         throw new ApiError(`Error while creating the account: ${error.response.data.errors.message[0]}`);
     }
 }

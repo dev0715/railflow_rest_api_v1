@@ -45,7 +45,7 @@ async function create(data) {
     return response;
   } catch (error) {
     console.log(error);
-    throw new ApiError(`Error while creating contact`);
+    throw new ApiError(`Error while creating contact: ${error.response.data.errors.message[0]}`);
   }
 }
 

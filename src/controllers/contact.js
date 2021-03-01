@@ -40,11 +40,15 @@ async function createContact(request, res, next) {
       });
     }
 
-    const resp = await accountService.create({ name: request.body.company });
+    let account = await accountService.getAccountIfAlreadyPresent(request.body.company);
 
-    if (resp.status == 200) {
+    if (!account) {
+      account = await accountService.create({ name: request.body.company });
+    }
+
+    if (!!account) {
       data.sales_accounts = [{
-        id: resp.data.sales_account.id,
+        id: account.id,
         is_primary: true,
       }];
 

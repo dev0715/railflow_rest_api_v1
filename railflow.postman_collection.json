@@ -204,6 +204,34 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "quote api",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"test\",\n    \"lastName\": \"quote api\",\n    \"email\": \"hellosumedhdev+23@gmail.com\",\n    \"phone\": \"+919993493333\",\n    \"company\": \"twittter\",\n    \"num_of_users\": 13\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:9000/api/quote",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"quote"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"protocolProfileBehavior": {}

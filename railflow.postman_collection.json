@@ -26,7 +26,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:9000/api/signup",
+					"raw": "http://localhost:9000/api/verify",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -34,7 +34,7 @@
 					"port": "9000",
 					"path": [
 						"api",
-						"signup"
+						"verify"
 					]
 				}
 			},
@@ -159,10 +159,10 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"firstName\": \"test\",\n    \"lastName\": \"local\",\n    \"email\": \"ddddsid@railflow.io\",\n    \"phone\": \"913983981489\",\n    \"jobTitle\": \"actor\",\n    \"company\": \"revamp-revap\"\n}"
+					"raw": "{\n    \"firstName\": \"test\",\n    \"lastName\": \"local\",\n    \"email\": \"ddddsi193@railflow.io\",\n    \"phone\": \"913933981339\",\n    \"jobTitle\": \"actor\",\n    \"company\": \"revamp-revapp-sumedh\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:9000/api/contact/",
+					"raw": "http://localhost:9000/api/register/",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -170,7 +170,7 @@
 					"port": "9000",
 					"path": [
 						"api",
-						"contact",
+						"register",
 						""
 					]
 				}

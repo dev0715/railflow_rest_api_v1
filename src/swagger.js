@@ -15,7 +15,7 @@
  *     description: Quote API
  */
 
-   /**
+/**
  * @swagger
  * /api/contact:
  *   get:
@@ -50,6 +50,366 @@
  * /api/contact:
  *   post:
  *     tags: [Contact]
+ *     summary: Retrieve a list of Raiflow contacts.
+ *     description: Retrieve a list of contacts from Raiflow. Can be used to populate a list of fake contacts when prototyping or testing an API.
+ *     responses:
+ *       200:
+ *         description: A list of contacts.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         description: The user ID.
+ *                         example: 0
+ *                       name:
+ *                         type: string
+ *                         description: The user's name.
+ *                         example: Leanne Graham
+ */
+
+ /**
+ * @swagger
+ * /api/signup:
+ *   get:
+ *     tags: [User]
+ *     summary: Retrieve a list of Raiflow contacts.
+ *     description: Retrieve a list of contacts from Raiflow. Can be used to populate a list of fake contacts when prototyping or testing an API.
+ *     responses:
+ *       200:
+ *         description: A list of contacts.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         description: The user ID.
+ *                         example: 0
+ *                       name:
+ *                         type: string
+ *                         description: The user's name.
+ *                         example: Leanne Graham
+ */
+
+ /**
+ * @swagger
+ * /api/signup:
+ *   post:
+ *     tags: [User]
+ *     summary: Retrieve a list of Raiflow contacts.
+ *     description: Retrieve a list of contacts from Raiflow. Can be used to populate a list of fake contacts when prototyping or testing an API.
+ *     responses:
+ *       200:
+ *         description: A list of contacts.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         description: The user ID.
+ *                         example: 0
+ *                       name:
+ *                         type: string
+ *                         description: The user's name.
+ *                         example: Leanne Graham
+ */
+
+ /**
+ * @swagger
+ * /api/license:
+ *   get:
+ *     tags: [License]
+ *     summary: Retrieve a list of Raiflow contacts.
+ *     description: Retrieve a list of contacts from Raiflow. Can be used to populate a list of fake contacts when prototyping or testing an API.
+ *     responses:
+ *       200:
+ *         description: A list of contacts.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         description: The user ID.
+ *                         example: 0
+ *                       name:
+ *                         type: string
+ *                         description: The user's name.
+ *                         example: Leanne Graham
+ */
+
+ /**
+ * @swagger
+ * /api/license:
+ *   post:
+ *     tags: [License]
+ *     summary: Retrieve a list of Raiflow contacts.
+ *     description: Retrieve a list of contacts from Raiflow. Can be used to populate a list of fake contacts when prototyping or testing an API.
+ *     responses:
+ *       200:
+ *         description: A list of contacts.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         description: The user ID.
+ *                         example: 0
+ *                       name:
+ *                         type: string
+ *                         description: The user's name.
+ *                         example: Leanne Graham
+ */
+
+ /**
+ * @swagger
+ * /api/event:
+ *   get:
+ *     tags: [Contact]
+ *     summary: Retrieve a list of Raiflow contacts.
+ *     description: Retrieve a list of contacts from Raiflow. Can be used to populate a list of fake contacts when prototyping or testing an API.
+ *     responses:
+ *       200:
+ *         description: A list of contacts.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         description: The user ID.
+ *                         example: 0
+ *                       name:
+ *                         type: string
+ *                         description: The user's name.
+ *                         example: Leanne Graham
+ */
+
+ /**
+ * @swagger
+ * /api/event:
+ *   post:
+ *     tags: [Event]
+ *     summary: Retrieve a list of Raiflow contacts.
+ *     description: Retrieve a list of contacts from Raiflow. Can be used to populate a list of fake contacts when prototyping or testing an API.
+ *     responses:
+ *       200:
+ *         description: A list of contacts.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         description: The user ID.
+ *                         example: 0
+ *                       name:
+ *                         type: string
+ *                         description: The user's name.
+ *                         example: Leanne Graham
+ */
+
+ /**
+ * @swagger
+ * /api/contact:
+ *   get:
+ *     tags: [Event]
+ *     summary: Retrieve a list of Raiflow contacts.
+ *     description: Retrieve a list of contacts from Raiflow. Can be used to populate a list of fake contacts when prototyping or testing an API.
+ *     responses:
+ *       200:
+ *         description: A list of contacts.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         description: The user ID.
+ *                         example: 0
+ *                       name:
+ *                         type: string
+ *                         description: The user's name.
+ *                         example: Leanne Graham
+ */
+
+ /**
+ * @swagger
+ * /api/contact:
+ *   post:
+ *     tags: [Contact]
+ *     summary: Retrieve a list of Raiflow contacts.
+ *     description: Retrieve a list of contacts from Raiflow. Can be used to populate a list of fake contacts when prototyping or testing an API.
+ *     responses:
+ *       200:
+ *         description: A list of contacts.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         description: The user ID.
+ *                         example: 0
+ *                       name:
+ *                         type: string
+ *                         description: The user's name.
+ *                         example: Leanne Graham
+ */
+
+/**
+ * @swagger
+ * /api/opportunity:
+ *   get:
+ *     tags: [Opportunity]
+ *     summary: Retrieve a list of Raiflow contacts.
+ *     description: Retrieve a list of contacts from Raiflow. Can be used to populate a list of fake contacts when prototyping or testing an API.
+ *     responses:
+ *       200:
+ *         description: A list of contacts.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         description: The user ID.
+ *                         example: 0
+ *                       name:
+ *                         type: string
+ *                         description: The user's name.
+ *                         example: Leanne Graham
+ */
+
+ /**
+ * @swagger
+ * /api/opportunity:
+ *   post:
+ *     tags: [Opportunity]
+ *     summary: Retrieve a list of Raiflow contacts.
+ *     description: Retrieve a list of contacts from Raiflow. Can be used to populate a list of fake contacts when prototyping or testing an API.
+ *     responses:
+ *       200:
+ *         description: A list of contacts.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         description: The user ID.
+ *                         example: 0
+ *                       name:
+ *                         type: string
+ *                         description: The user's name.
+ *                         example: Leanne Graham
+ */
+
+/**
+ * @swagger
+ * /api/quote:
+ *   get:
+ *     tags: [Quote]
+ *     summary: Retrieve a list of Raiflow contacts.
+ *     description: Retrieve a list of contacts from Raiflow. Can be used to populate a list of fake contacts when prototyping or testing an API.
+ *     responses:
+ *       200:
+ *         description: A list of contacts.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         description: The user ID.
+ *                         example: 0
+ *                       name:
+ *                         type: string
+ *                         description: The user's name.
+ *                         example: Leanne Graham
+ */
+
+ /**
+ * @swagger
+ * /api/quote:
+ *   post:
+ *     tags: [Quote]
  *     summary: Retrieve a list of Raiflow contacts.
  *     description: Retrieve a list of contacts from Raiflow. Can be used to populate a list of fake contacts when prototyping or testing an API.
  *     responses:

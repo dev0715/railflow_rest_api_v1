@@ -29,8 +29,15 @@ async function uploadToS3(data) {
         const RSA_PUB_KEY = configs.CRYPTOLENS_RSA_PUB_KEY;
         const code = await machineId();
         const licenseKey = await key.Activate(TOKEN, RSA_PUB_KEY, PRODUCT_ID, data.key, code);
-        fs.writeFileSync(path.join(__dirname, `../../cryptolens/licenses/${data.customerName}.skm`), Helpers.SaveAsString(licenseKey), { encoding: 'utf-8' });
-        const fileContent = fs.readFileSync(path.join(__dirname, `../../cryptolens/licenses/${data.customerName}.skm`)).toString();
+
+        const dir = path.join(__dirname, '../../cryptolens');
+
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir);
+        }
+
+        fs.writeFileSync(path.join(__dirname, `../../cryptolens/${data.customerName}.skm`), Helpers.SaveAsString(licenseKey), { encoding: 'utf-8' });
+        const fileContent = fs.readFileSync(path.join(__dirname, `../../cryptolens/${data.customerName}.skm`)).toString();
         // upload to s3
 
         const params = {
@@ -43,18 +50,18 @@ async function uploadToS3(data) {
         // const uploadRes = await s3.upload(params);
         // await s3.putObject(params);
         return new Promise((resolve, reject) => {
-            s3.putObject(params, function(err,data) {
-                if(err) {
-                  console.log(err,err.stack);
-                  reject(err);
+            s3.putObject(params, function (err, data) {
+                if (err) {
+                    console.log(err, err.stack);
+                    reject(err);
                 }
                 else {
-                  console.log(data);
-                  resolve({
-                      url: `https://railflow.s3.amazonaws.com/${params.Key}`
-                  });
+                    console.log(data);
+                    resolve({
+                        url: `https://railflow.s3.amazonaws.com/${params.Key}`
+                    });
                 }
-              });
+            });
         });
     } catch (error) {
         throw new ApiError(`Error while uploading license; ${error}`);
@@ -62,7 +69,7 @@ async function uploadToS3(data) {
 }
 
 async function readFile(path) {
-    return new Promise((resolve ,reject) => {
+    return new Promise((resolve, reject) => {
         fs.readFile(path, 'utf8', (err, data) => {
             if (err) reject(err);
             resolve(data.toString());

@@ -65,7 +65,7 @@ async function createContact(request, res, next) {
           status: 201,
           data: {
             contact: {
-              id: response.data.contact.id
+              contact_id: response.data.contact.id
             },
           },
         });

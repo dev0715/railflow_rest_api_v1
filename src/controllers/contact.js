@@ -32,7 +32,7 @@ async function createContact(request, res, next) {
       return res.status(200).send({
         status: 200,
         data: {
-          message: `Whoops. It seems that you have already evaluated Railflow. If you would like to evaluate again or would like to extend your license, please go to  and submit a ticket. Someone from our customer success team will help you right away. You can also leave a message in our chat bot and it will also notify the customer success team.`,
+          message: `Duplicate Registration`,
           contact: {
             id: alreadyPresent.id,
           },
@@ -62,7 +62,7 @@ async function createContact(request, res, next) {
 
         await slackService.sendMessage(notificationData);
         return res.status(201).send({
-          status: response.status,
+          status: 201,
           data: {
             contact: {
               id: response.data.contact.id

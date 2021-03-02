@@ -79,6 +79,12 @@ async function createContact(request, res, next) {
       },
     });
   } catch (error) {
+    if (error.message = 'BAD_REQUEST_MOBILE_NUMBER_EXISTS') {
+      return res.status(200).send({
+        status: 200,
+        message: "Duplicate phone number"
+      });
+    }
     return res.status(error.status).send(error.toJSON());
   }
 }

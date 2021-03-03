@@ -43,11 +43,11 @@
 		{
 			"name": "License extension",
 			"request": {
-				"method": "POST",
+				"method": "PATCH",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"contact_email\": \"hellosumedhdev@gmail.com\",\n    \"contact_last_name\": \"test email template\",\n    \"contact_first_name\": \"please work\",\n    \"contact_id\": 16003502848,\n    \"contact_cf_license_key\": \"ICWUF-JHARN-GEGRI-XDMYN\",\n    \"contact_cf_extension_period\": 8\n}",
+					"raw": "{\n    \"contact_id\": 16004191559,\n    \"contact_cf_license_key\": \"ICWUF-JHARN-GEGRI-XDMYN\",\n    \"contact_cf_extension_period\": 8\n}",
 					"options": {
 						"raw": {
 							"language": "json"

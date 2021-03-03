@@ -50,7 +50,7 @@ class Server {
       swaggerDefinition,
       // Paths to files containing OpenAPI definitions
       // apis: ['src/routes/*.js'],
-      apis: ['src/swagger.js','src/routes/*.js']
+      apis: ['src/swagger/*.js','src/routes/*.js']
     };
 
     const swaggerSpec = swaggerJSDoc(options);

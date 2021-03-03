@@ -75,8 +75,8 @@ class Server {
   }
 
   routes() {
-    this.app.use("/api/contact", contactRouter);
-    this.app.use("/api/signup", signupRouter);
+    this.app.use("/api/register", contactRouter);
+    this.app.use("/api/verify", signupRouter);
     this.app.use("/api/license", licenseRouter);
     this.app.use("/api/event", eventRouter);
     this.app.use("/api/opportunity", opportunityRouter);

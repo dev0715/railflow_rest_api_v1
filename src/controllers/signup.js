@@ -56,7 +56,9 @@ async function createLead(req, res, next) {
         status: 201,
         data: {
             message: `> lead created successfully: ${contact.id}`,
-            contact,
+            contact_id: contact.id,
+            license_key: cryptolensTokenObject.key,
+            mailgun: `${mailgunEmailUrl}${mailgunResponse.id}/history`,
         }
     });
   } catch (error) {

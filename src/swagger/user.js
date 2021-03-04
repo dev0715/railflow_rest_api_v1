@@ -35,7 +35,7 @@
 
 /**
  * @swagger
- * /api/signup:
+ * /api/verify:
  *    post:
  *      tags:
  *        - User

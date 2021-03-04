@@ -38,31 +38,9 @@
  *           example: Railflow
 */
 
-
 /**
  * @swagger
- * /api/contact:
- *    get:
- *      tags:
- *        - Contact
- *      summary: Gets a list of contacts
- *      description: Returns a list of contacts
- *      produces:
- *          - application/json
- *      responses:
- *          200:
- *              description: An array of contacts
- *              content:
- *                application/json:
- *                  schema:
- *                    type: array
- *                    items:
- *                      $ref: '#/components/schemas/Contact'
- */
-
-/**
- * @swagger
- * /api/contact:
+ * /api/register:
  *    post:
  *      tags:
  *        - Contact

@@ -45,7 +45,10 @@ async function create(data) {
     return response;
   } catch (error) {
     console.log(error);
-    throw new ApiError(`Error while creating contact`);
+    if (error.response.data.errors.message[0] === 'The mobile number already exists.') {
+      throw new ApiError('BAD_REQUEST_MOBILE_NUMBER_EXISTS');
+    }
+    throw new ApiError(`Error while creating contact: ${error.response.data.errors.message[0]}`);
   }
 }
 

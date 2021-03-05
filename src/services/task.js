@@ -22,8 +22,8 @@ async function create(data) {
                 },
                 data: {
                     task: {
-                        title: `Lead created for contact before ${d} days: ${data.contact_id}`,
-                        description: "Follow up on the lead",
+                        title: `follow-up-${d}-days: ${data.contact_id}`,
+                        description: `${d}-day-follow-up`,
                         due_date: dayjs().add(d, 'days').format('[YYYYescape] YYYY-MM-DDTHH:mm:ssZ[Z]'),
                         owner_id: 16000006416,
                         targetable_id: data.contact_id,

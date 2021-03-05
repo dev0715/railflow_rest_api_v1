@@ -32,10 +32,21 @@ async function createLead(req, res, next) {
     // 4. create two follow up tasks with reminder 5 and 10 days.
     // add a note to the contact mentionining the details of token, email etc
 
+    const contactExists = await contactService.getContactIfAlreadyPresent(req.body.contact_email);
+
+    if (contactExists === null) {
+        return res.status(200).send({
+            status: 200,
+            data: {
+                message: `contact not found`,
+            }
+        });
+    }
+
     const cryptolensTokenObject = await licenseService.getCryptolensToken(req.body);
     const mailgunResponse = await sendOnboardingEmail(req.body, cryptolensTokenObject);
     const mailgunEmailUrl = "https://app.mailgun.com/app/sending/domains/mail.railflow.io/logs/";
-    const description = `Cryptolens key: ${cryptolensTokenObject.key} \n\n Email sent at: ${dayjs()} \n\n Mailgun Id: ${mailgunEmailUrl}${mailgunResponse.id} \n\n Key type: New`;
+    const description = `License key: ${cryptolensTokenObject.key} \n\n Email sent at: ${dayjs()} \n\n Mailgun Id: ${mailgunEmailUrl}${mailgunResponse.id}/history`;
     const createNotesResponse = await noteService.create(req.body.contact_id, description);
     const createTaskResponse = await taskService.create({contact_id: req.body.contact_id});
     req.body.cf_license_key = cryptolensTokenObject.key;
@@ -45,7 +56,9 @@ async function createLead(req, res, next) {
         status: 201,
         data: {
             message: `> lead created successfully: ${contact.id}`,
-            contact,
+            contact_id: contact.id,
+            license_key: cryptolensTokenObject.key,
+            mailgun: `${mailgunEmailUrl}${mailgunResponse.id}/history`,
         }
     });
   } catch (error) {

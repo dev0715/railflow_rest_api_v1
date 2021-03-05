@@ -44,7 +44,7 @@
  *    post:
  *      tags:
  *        - Contact
- *      summary: Create Contact
+ *      summary: Register a contact
  *      produces:
  *          - application/json
  *      parameters:

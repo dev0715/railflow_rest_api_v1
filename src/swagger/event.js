@@ -1,8 +1,8 @@
 /**
  * @swagger
  * tags:
- *   - name: User
- *     description: User API
+ *   - name: Event
+ *     description: Event API
  */
 /**
  * @swagger

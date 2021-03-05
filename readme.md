@@ -22,6 +22,67 @@ cd <path_to_railflow_api_folder>
 docker-compose up -d --build
 ```
 
+### Updating Swagger Documentation
+1. The swagger documents are stored in `/src/swagger`. 
+2. Follow below example to update the swagger document for Contact API.
+    * The contact api swagger will be `/src/swagger/contact.js`. The schema, description and parameters will be stored in this file. 
+    * Update the Contact category as following example
+    ```yaml
+    /**
+    * @swagger
+    * tags:
+    *   - name: Contact
+    *     description: Contact API
+    */
+    ```
+    * Update the schema as following example
+    ``` yaml
+    /**
+    * @swagger
+    * components:
+    *   schemas:
+    *     Contact:
+    *       type: object
+    *       properties:
+    *         firstName:
+    *           type: string
+    *           description: The contact's first name.
+    *           example: John
+    *         lastName:
+    *           type: string
+    *           description: The contact's last name.
+    *           example: Doe
+    *           .....
+    */
+    ```
+    * Update the POST function as following example
+    ```yaml
+    /**
+    * @swagger
+    * /api/register:
+    *    post:
+    *      tags:
+    *        - Contact
+    *      summary: Register a contact
+    *      produces:
+    *          - application/json
+    *      parameters:
+    *          - name: Contact
+    *            description: Contact information
+    *            in: body
+    *            required: true
+    *            schema:
+    *              $ref: '#/components/schemas/Contact'
+    *      responses:
+    *          200:
+    *              description: Returns created contract
+    *              content:
+    *                application/json:
+    *                  schema:
+    *                    $ref: '#/components/schemas/Contact'
+    */
+    ```
+
 ### Configs
 
 The app is heavily config driven, meaning there are a lot of keys for all the services/platforms that the app interacts with.

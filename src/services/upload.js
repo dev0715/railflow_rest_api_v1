@@ -32,9 +32,10 @@ async function uploadToS3(data) {
         fs.writeFileSync(path.join(__dirname, `../../cryptolens/licenses/${data.customerName}.skm`), Helpers.SaveAsString(licenseKey), { encoding: 'utf-8' });
         const fileContent = fs.readFileSync(path.join(__dirname, `../../cryptolens/licenses/${data.customerName}.skm`)).toString();
         // upload to s3
-
+        const uniqueHash = Math.random().toString(36).substr(2, 12);
         const params = {
-            Key: `${data.customerName}/${data.customerName}_railflow_license.skm`,
+            // Key: `${data.customerName}/${data.customerName}_railflow_license.skm`,
+            Key: `${uniqueHash}/railflow_license.skm`,
             Bucket: "railflow",
             Body: fileContent
         };

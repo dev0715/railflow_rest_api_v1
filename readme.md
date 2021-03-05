@@ -14,6 +14,16 @@ yarn install
 yarn dev
 ```
 
+### Local Docker
+1. Install docker on your local
+2. Build your docker image locally
+3. Docker-compose Up
+
+```bash
+cd <path_to_railflow_api_folder>
+docker-compose up -d --build
+```
+
 ### Configs
 
 The app is heavily config driven, meaning there are a lot of keys for all the services/platforms that the app interacts with.

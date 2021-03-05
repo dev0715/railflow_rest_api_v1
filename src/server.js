@@ -40,7 +40,7 @@ class Server {
           description: 'Development server',
         },
         {
-          url: 'http://api.railflow.io',
+          url: 'https://api.railflow.io',
           description: 'Production server',
         },
       ],

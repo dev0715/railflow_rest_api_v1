@@ -28,21 +28,27 @@ async function createContact(request, res, next) {
     // check if the contact is already there.
     const alreadyPresent = await contactService.getContactIfAlreadyPresent(request.body.email);
     if (alreadyPresent !== null) {
-      console.log(`> duplicate lead: ${request.body.email}`);
+      console.log(`> contact with provided email already present: ${request.body.email}`);
       return res.status(200).send({
         status: 200,
         data: {
-          message: `Whoops. It seems that you have already evaluated Railflow. If you would like to evaluate again or would like to extend your license, please go to  and submit a ticket. Someone from our customer success team will help you right away. You can also leave a message in our chat bot and it will also notify the customer success team.`,
-          contact: alreadyPresent,
+          message: `Duplicate Registration`,
+          contact: {
+            id: alreadyPresent.id,
+          },
         },
       });
     }
 
-    const resp = await accountService.create({ name: request.body.company });
+    let account = await accountService.getAccountIfAlreadyPresent(request.body.company);
 
-    if (resp.status == 200) {
+    if (!account) {
+      account = await accountService.create({ name: request.body.company });
+    }
+
+    if (!!account) {
       data.sales_accounts = [{
-        id: resp.data.sales_account.id,
+        id: account.id,
         is_primary: true,
       }];
 
@@ -55,9 +61,13 @@ async function createContact(request, res, next) {
         };
 
         await slackService.sendMessage(notificationData);
-        return res.status(response.status).send({
-          status: response.status,
-          data: response.data
+        return res.status(201).send({
+          status: 201,
+          data: {
+            contact: {
+              contact_id: response.data.contact.id
+            },
+          },
         });
       }
     }
@@ -65,10 +75,16 @@ async function createContact(request, res, next) {
     return res.status(500).send({
       status: 500,
       data: {
-        message: `Something went wrong in signup for: ${req.body.email}`,
+        message: `Account creation failed with status code: ${resp.status} for: ${req.body.email}`,
       },
     });
   } catch (error) {
+    if (error.message = 'BAD_REQUEST_MOBILE_NUMBER_EXISTS') {
+      return res.status(200).send({
+        status: 200,
+        message: "Duplicate Phone Number"
+      });
+    }
     return res.status(error.status).send(error.toJSON());
   }
 }

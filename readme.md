@@ -15,10 +15,8 @@ yarn dev
 ```
 
 ### Local Docker
-1. Install docker on your local
-2. Build your docker image locally
-3. Docker-compose Up
-
+1. Install docker on your local `https://docs.docker.com/get-docker/`
+2. Build your docker image locally and run docker-compose Up by running below command
 ```bash
 cd <path_to_railflow_api_folder>
 docker-compose up -d --build

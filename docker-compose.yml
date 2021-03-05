@@ -1,0 +1,26 @@
+version: "3.3"
+
+services:
+  railflow_rest_api_v2:
+    build: .
+    image: railflow-api
+    container_name: railflow-api
+    restart: always
+    environment:
+      - CRYPTOLENS_API_KEY=123
+      - FRESHBOOKS_API_KEY=123
+      - FRESHSALES_API_KEY=123
+    volumes:
+      - .:/app
+  railflow_rest_api_v2_nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile-nginx
+    image: railflow-api:nginx
+    container_name: "railflow-api-nginx"
+    restart: always
+    volumes:
+      - ./nginx/nginx-local.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "80:80"
+

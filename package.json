@@ -22,6 +22,8 @@
     "mailgun-js": "^0.22.0",
     "mocha": "^8.2.1",
     "node-machine-id": "^1.1.12",
+    "swagger-jsdoc": "5.0.1",
+    "swagger-ui-express": "^4.1.6",
     "uuid": "^8.3.2"
   }
 }

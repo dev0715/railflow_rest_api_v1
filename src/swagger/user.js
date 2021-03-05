@@ -1,11 +1,5 @@
 /**
  * @swagger
- * tags:
- *   - name: User
- *     description: User API
- */
-/**
- * @swagger
  * components:
  *   schemas:
  *     User:
@@ -38,8 +32,8 @@
  * /api/verify:
  *    post:
  *      tags:
- *        - User
- *      summary: Signup
+ *        - Contact
+ *      summary: Verify a contact
  *      produces:
  *          - application/json
  *      parameters:

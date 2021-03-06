@@ -83,7 +83,8 @@ async function createContact(request, res, next) {
     if (error.message = 'BAD_REQUEST_MOBILE_NUMBER_EXISTS') {
       return res.status(200).send({
         status: 200,
-        message: "Duplicate Phone Number"
+        message: "Duplicate Phone Number",
+        phone: request.body.phone
       });
     }
     return res.status(error.status).send(error.toJSON());

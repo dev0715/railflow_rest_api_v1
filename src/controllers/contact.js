@@ -33,9 +33,10 @@ async function createContact(request, res, next) {
         status: 200,
         data: {
           message: `Duplicate Registration`,
-          contact: {
-            id: alreadyPresent.id,
-          },
+          contact_id: alreadyPresent.id
+          // contact: {
+          //   id: alreadyPresent.id,
+          // },
         },
       });
     }

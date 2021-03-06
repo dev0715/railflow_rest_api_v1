@@ -55,7 +55,8 @@ async function createLead(req, res, next) {
     return res.status(201).send({
         status: 201,
         data: {
-            message: `> lead created successfully: ${contact.id}`,
+            // message: `> lead created successfully: ${contact.id}`,
+            message: `contact verified`,
             contact_id: contact.id,
             license_key: cryptolensTokenObject.key,
             mailgun: `${mailgunEmailUrl}${mailgunResponse.id}/history`,

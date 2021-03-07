@@ -65,9 +65,10 @@ async function createContact(request, res, next) {
         return res.status(201).send({
           status: 201,
           data: {
-            contact: {
-              contact_id: response.data.contact.id
-            },
+            contact_id: response.data.contact.id
+            // contact: {
+            //   contact_id: response.data.contact.id
+            // },
           },
         });
       }

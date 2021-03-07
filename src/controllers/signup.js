@@ -31,7 +31,7 @@ async function createLead(req, res, next) {
     // 3. update contact status
     // 4. create two follow up tasks with reminder 5 and 10 days.
     // add a note to the contact mentionining the details of token, email etc
-
+    
     const contactExists = await contactService.getContactIfAlreadyPresent(req.body.contact_email);
 
     if (contactExists === null) {
@@ -46,7 +46,7 @@ async function createLead(req, res, next) {
     const cryptolensTokenObject = await licenseService.getCryptolensToken(req.body);
     const mailgunResponse = await sendOnboardingEmail(req.body, cryptolensTokenObject);
     const mailgunEmailUrl = "https://app.mailgun.com/app/sending/domains/mail.railflow.io/logs/";
-    const description = `License key: ${cryptolensTokenObject.key} \n\n Email sent at: ${dayjs()} \n\n Mailgun Id: ${mailgunEmailUrl}${mailgunResponse.id}/history`;
+    const description = `License key: ${cryptolensTokenObject.key} \n\n Email sent at: ${dayjs()} \n\n Mailgun Id: ${mailgunEmailUrl}${mailgunResponse.emailData.id}/history`;
     const createNotesResponse = await noteService.create(req.body.contact_id, description);
     const createTaskResponse = await taskService.create({contact_id: req.body.contact_id});
     req.body.cf_license_key = cryptolensTokenObject.key;
@@ -59,7 +59,8 @@ async function createLead(req, res, next) {
             message: `contact verified`,
             contact_id: contact.id,
             license_key: cryptolensTokenObject.key,
-            mailgun: `${mailgunEmailUrl}${mailgunResponse.id}/history`,
+            license_url: mailgunResponse.licenseUrl,
+            mailgun: `${mailgunEmailUrl}${mailgunResponse.emailData.id}/history`,
         }
     });
   } catch (error) {
@@ -115,7 +116,10 @@ async function sendOnboardingEmail(body, cryptolensTokenObject) {
         const to = body.contact_email || "ali.raza@agiletestware.com";
 
         const emailData = await emailService.sendEmail(to, text, extraInfo);
-        return emailData;
+        return {
+            emailData: emailData,
+            licenseUrl: licenseUrl
+        };
     } catch (error) {
         throw new ApiError(`There was some issue sending email to: ${body.contact_id} ${error}`);
         return;

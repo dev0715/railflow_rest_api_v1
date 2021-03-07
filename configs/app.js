@@ -9,7 +9,7 @@ const configs = {
         APP_PORT: 9000,
         FRESHSALES_API_KEY: "fPjGQStTY1ffGqtyAj9RVw",
         FRESHSALES_BASE_URL: "https://railflow.myfreshworks.com",
-        ALLOWED_DOMAINS: ["http://localhost:8000", "https://railflow.io"],
+        ALLOWED_DOMAINS: ["http://localhost:8000", "http://localhost:9000", "https://railflow.io"],
         CRYPTOLENS_BASE_URL: "https://app.cryptolens.io",
         CRYPTOLENS_API_KEY: "WyI0NDk1MzMiLCJqdjFYRGJYc0RuVmFHU0NmdFlnUWptMklTcXdVai9lNVRnRklkL3Y3Il0=",
         MAILGUN_KEY: "key-4c45b28d4cab5d63a74df82c99aae76c",

@@ -118,7 +118,30 @@ async function checkIfAlreadyPresent(email) {
   return false;
 }
 
-
+async function getContactById(contact_id) {
+  const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL);
+  try {
+    const response = await apiClient.request({
+      method: 'GET',
+      url: `/crm/sales/api/contacts/${contact_id}`,
+      headers: {
+        // TODO: use environment variable
+        // Authorization: `Token token=${process.env.FRESHSALES_API_KEY}`,
+        Authorization: `Token token=${configs.FRESHSALES_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    if (response && response.status === 200) {
+      return response.data.contact;
+    }
+  } catch (error) {
+    if (error.response.status == 404) {
+      return false;
+    }
+    console.log('error when query contact info from freshworks.com');
+    return false;
+  }
+}
 async function getContactIfAlreadyPresent(email) {
   const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL);
   const response = await apiClient.request({
@@ -178,4 +201,5 @@ module.exports = {
   update,
   checkIfAlreadyPresent,
   getContactIfAlreadyPresent,
+  getContactById
 };

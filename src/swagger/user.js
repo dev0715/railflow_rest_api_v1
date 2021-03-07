@@ -28,7 +28,7 @@
 */
 
 /**
- * @swagger
+ * 
  * /api/verify:
  *    post:
  *      tags:

@@ -39,7 +39,7 @@
 */
 
 /**
- * @swagger
+ * 
  * /api/register:
  *    post:
  *      tags:

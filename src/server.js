@@ -40,6 +40,10 @@ class Server {
           description: 'Development server',
         },
         {
+          url: 'http://localhost',
+          description: 'Local Docker',
+        },
+        {
           url: 'https://api.railflow.io',
           description: 'Production server',
         },

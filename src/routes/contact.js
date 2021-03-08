@@ -36,6 +36,10 @@ router.get("/", (req, res) => {
  *                  schema:
  *                    type: object
  *                    properties:
+ *                      message:
+ *                        type: string
+ *                        description: Response message.
+ *                        example: "Account created"
  *                      contact_id:
  *                        type: integer
  *                        description: The contact's id.
@@ -78,6 +82,10 @@ router.post("/", (req, res, next) => {
  *                        type: integer
  *                        description: The contact's id.
  *                        example: 16004426279
+ *                      account_id:
+ *                        type: integer
+ *                        description: The contact's id.
+ *                        example: 16004429999
  *                      first_name:
  *                        type: string
  *                        description: The contact's first name.

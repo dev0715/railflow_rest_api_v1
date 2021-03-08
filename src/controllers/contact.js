@@ -74,6 +74,7 @@ async function createContact(request, res, next) {
         return res.status(201).send({
           status: 201,
           data: {
+            message: "contact created",
             contact_id: response.data.contact.id
             // contact: {
             //   contact_id: response.data.contact.id
@@ -121,20 +122,25 @@ async function updateContact(request, res, next) {
       contact_last_name: contact.last_name,
       contact_cf_company: contact.custom_field.cf_company
     };
-    const cryptolensTokenObject = await licenseService.getCryptolensToken(reqData,false);
-    const mailgunResponse = await sendOnboardingEmail(reqData, cryptolensTokenObject);
-    const mailgunEmailUrl = "https://app.mailgun.com/app/sending/domains/mail.railflow.io/logs/";
-    const description = `License key: ${cryptolensTokenObject.key} \n\n Email sent at: ${dayjs()} \n\n Mailgun Id: ${mailgunEmailUrl}${mailgunResponse.emailData.id}/history`;
-    const createNotesResponse = await noteService.create(reqData.contact_id, description);
-    const createTaskResponse = await taskService.create({contact_id: reqData.contact_id});
-    reqData.cf_license_key = cryptolensTokenObject.key;
-    const patchedContact = await contactService.update(reqData);
-
-    return res.status(200).send({
-      status: 200,
-      data: {
-          message: `contact updated`,
-          contact: {
+    // get or create sales account
+    let account = await accountService.getAccountIfAlreadyPresent(reqData.contact_cf_company);
+    if (!account) {
+      account = await accountService.create({ name: reqData.contact_cf_company });
+    }
+    if (!!account) {
+      const cryptolensTokenObject = await licenseService.getCryptolensToken(reqData,false);
+      const mailgunResponse = await sendOnboardingEmail(reqData, cryptolensTokenObject);
+      const mailgunEmailUrl = "https://app.mailgun.com/app/sending/domains/mail.railflow.io/logs/";
+      const description = `License key: ${cryptolensTokenObject.key} \n\n Email sent at: ${dayjs()} \n\n Mailgun Id: ${mailgunEmailUrl}${mailgunResponse.emailData.id}/history`;
+      const createNotesResponse = await noteService.create(reqData.contact_id, description);
+      const createTaskResponse = await taskService.create({contact_id: reqData.contact_id});
+      reqData.cf_license_key = cryptolensTokenObject.key;
+      const patchedContact = await contactService.update(reqData);
+  
+      return res.status(200).send({
+        status: 200,
+        data: {
+            message: `contact verified`,
             contact_id: patchedContact.id,
             first_name: patchedContact.first_name,
             last_name: patchedContact.last_name,
@@ -142,10 +148,17 @@ async function updateContact(request, res, next) {
             city: patchedContact.city,
             state: patchedContact.state,
             zipcode: patchedContact.zipcode,
-            country: patchedContact.country
-          }
-      }
-    });
+            country: patchedContact.country,
+            license_key: patchedContact.custom_field.cf_license_key,
+            license_link: mailgunResponse.licenseUrl,
+            account_id: account.id,
+            mailgun: {
+              url: mailgunEmailUrl,
+              id: mailgunResponse.emailData.id
+            },
+        }
+      });
+    }
   } catch (error) {
     return res.status(500).send({
       status: 500,

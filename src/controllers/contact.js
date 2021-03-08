@@ -121,7 +121,8 @@ async function updateContact(request, res, next) {
       contact_id: contact.id,
       contact_first_name: contact.first_name,
       contact_last_name: contact.last_name,
-      contact_cf_company: contact.custom_field.cf_company
+      contact_cf_company: contact.custom_field.cf_company,
+      contact_email: contact.email,
     };
     // get or create sales account
     let account = await accountService.getAccountIfAlreadyPresent(reqData.contact_cf_company);

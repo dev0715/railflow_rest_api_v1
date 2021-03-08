@@ -12,6 +12,7 @@ const licenseRouter = require("./routes/license");
 const eventRouter = require("./routes/event");
 const opportunityRouter = require("./routes/opportunity");
 const quoteRouter = require("./routes/quote");
+const accountRouter = require("./routes/account");
 
 const appConfig = require('../configs/app');
 const config = appConfig.getConfigs(process.env.APP_ENV || "development");
@@ -79,6 +80,7 @@ class Server {
   }
 
   routes() {
+    this.app.use("/api/account", accountRouter);
     this.app.use("/api/contact", contactRouter);
     this.app.use("/api/register", contactRouter);
     this.app.use("/api/verify", signupRouter);

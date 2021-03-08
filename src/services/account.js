@@ -38,7 +38,29 @@ async function create(data) {
         throw new ApiError(`Error while creating the account: ${error.response.data.errors.message[0]}`);
     }
 }
-
+async function getAccountById(account_id) {
+    const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL);
+    try {
+        const response = await apiClient.request({
+            method: 'GET',
+            url: `/crm/sales/api/sales_accounts/${account_id}`,
+            headers: {
+                // TODO: use environment variable
+                // Authorization: `Token token=${process.env.FRESHSALES_API_KEY}`,
+                Authorization: `Token token=${configs.FRESHSALES_API_KEY}`,
+            },
+        });
+        if (response && response.status === 200) {
+            return response.data.sales_account;
+        }
+    } catch (error) {
+        if (error.response.status == 404) {
+          return false;
+        }
+        console.log('error when query contact info from freshworks.com');
+        return false;
+    }
+}
 async function getAccountIfAlreadyPresent(name) {
     const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL);
     const response = await apiClient.request({
@@ -97,4 +119,5 @@ async function getAllAccountsFromView(viewId) {
 module.exports = {
     create,
     getAccountIfAlreadyPresent,
+    getAccountById
 };

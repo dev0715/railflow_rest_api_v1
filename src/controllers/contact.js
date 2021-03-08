@@ -75,7 +75,8 @@ async function createContact(request, res, next) {
           status: 201,
           data: {
             message: "contact created",
-            contact_id: response.data.contact.id
+            contact_id: response.data.contact.id,
+            account_id: account.id
             // contact: {
             //   contact_id: response.data.contact.id
             // },
@@ -152,10 +153,7 @@ async function updateContact(request, res, next) {
             license_key: patchedContact.custom_field.cf_license_key,
             license_link: mailgunResponse.licenseUrl,
             account_id: account.id,
-            mailgun: {
-              url: mailgunEmailUrl,
-              id: mailgunResponse.emailData.id
-            },
+            mailgun_url: `${mailgunEmailUrl}${mailgunResponse.emailData.id}/history`
         }
       });
     }

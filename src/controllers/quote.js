@@ -53,10 +53,10 @@ async function createQuote(req, res, next) {
             }
         });
 
-        throw new ApiError(`Something went wrong while creating quote.`);
     } catch (error) {
         console.log(`> error:controllers:quote: ${error}`);
         return res.status(error.status).send(error.toJSON());
+        // throw new ApiError(`Something went wrong while creating quote.`);
     }
 }
 

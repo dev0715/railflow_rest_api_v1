@@ -21,6 +21,73 @@ async function updateAccount(req, res, next) {
             }
         });
     }
+    let oldNetwork, newNetwork = null;
+    const networkData = {
+        "name": account.name,
+        "first_name": req.body.hiveage_fname,
+        "last_name": req.body.hivage_lname,
+        "address": req.body.address,
+        "city": req.body.city,
+        "state_name": req.body.state,
+        "zip_code": req.body.zipcode,
+        "country": req.body.country,
+        "business_email": req.body.hiveage_contact_email,
+        "primary_contact_first_name": req.body.hiveage_fname,
+        "primary_contact_last_name": req.body.hivage_lname,
+        "category":"organization",
+        "currency": "USD",
+        "language": "en-us",
+    };
+    // check and create new network
+    if (account.custom_field.cf_hiveage_hash != null) {
+        oldNetwork = await accountService.getHiveageNetwork(account.custom_field.cf_hiveage_hash);
+    }
+    if (account.custom_field.cf_hiveage_hash == null || !oldNetwork) {
+        try {
+            newNetwork = await accountService.createHiveageNetwork (networkData);
+        } catch (error) {
+            console.log('error when create hiveage network');
+            return res.status(500).send({
+                status: 500,
+                data: {
+                    message: `error when create hiveage network`,
+                    account_id: req.body.account_id
+                }
+            });
+        }
+    } 
+    if (oldNetwork) {
+        try {
+            const updatedNetwork = await accountService.updateHiveageNetwork (oldNetwork.hash_key,networkData);
+            return res.status(200).send({
+                status: 200,
+                data: {
+                    message: 'updated account',
+                    account_id: req.body.account_id,
+                    connection_id: oldNetwork.id
+                }
+            });
+        } catch (error) {
+            console.log('error when update hiveage network');
+            return res.status(500).send({
+                status: 500,
+                data: {
+                    message: `error when update hiveage network`,
+                    account_id: req.body.account_id
+                }
+            });
+        }
+    } else {
+        const updatedAccount = await accountService.updateHiveageHash(account.id, newNetwork.hash_key);
+        return res.status(200).send({
+            status: 200,
+            data: {
+                message: 'updated account',
+                account_id: req.body.account_id,
+                connection_id: newNetwork.id
+            }
+        });
+    }
     return res.status(200).send({
         status: 200,
         data: {

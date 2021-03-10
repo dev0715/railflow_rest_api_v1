@@ -12,37 +12,32 @@ const RAILFLOW_SILVER_LICENSE = "Railflow - Silver License";
 
 async function create(data) {
     try {
-        const item = await getRequiredItem(data.num_of_users);
-        if (!item) {
-            throw new ApiError(`No item configured in hiveage for given number of users`);
+        const price_option = data.number_of_users % 20;
+        let price = 0;
+        switch (data.license_type) {
+            case "standard":
+                price = 1500 + (300 * price_option);
+                break;
+            // default to enterprise
+            default:
+                price = 1800 + (400 * price_option);
+                break;
         }
-
-        const clientData = {
-            name: `${data.user.first_name}${data.user.last_name}`,
-            business_email: data.user.email,
-            category: 'organization',
-            currency: 'USD',
-        };
-
-        const resp = await invoiceService.createInvoiceClient(clientData);
-
         const estimateData = {
             estimate: {
-                connection_id: resp.data.network.id,
+                connection_id: data.network.id,
                 expire_date: "2022 -10-01",
                 date: new Date(),
-                summary: `Quote - ${item.name}`,
-                note: "custom item Note",
+                summary: `Railflow ${20*price_option}-${20*(price_option+1)}, ${data.license_years} Year License Quote`,
+                note: `Custom item note`,
                 statement_no: uuid(),
                 send_reminders: false,
 
                 items_attributes: [{
                     date: new Date(),
-                    description: item.name,
-                    price: item.price,
-                    quantity: 1,
-                    // unit: "hourly",
-                    // sort_order: 1
+                    description: `Railflow ${data.license_type} License \n 1/2/3/5 Year License \n ${data.number_of_users} TestRail Users`,
+                    price: price,
+                    quantity: 1
                 }]
             }
         };

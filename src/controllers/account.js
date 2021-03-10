@@ -39,10 +39,10 @@ async function updateAccount(req, res, next) {
         "language": "en-us",
     };
     // check and create new network
-    if (account.custom_field.cf_hiveage_hash != null) {
-        oldNetwork = await accountService.getHiveageNetwork(account.custom_field.cf_hiveage_hash);
+    if (account.custom_field.hiveage_connection_id != null) {
+        oldNetwork = await accountService.getHiveageNetwork(account.custom_field.hiveage_connection_id);
     }
-    if (account.custom_field.cf_hiveage_hash == null || !oldNetwork) {
+    if (account.custom_field.hiveage_connection_id == null || !oldNetwork) {
         try {
             newNetwork = await accountService.createHiveageNetwork (networkData);
         } catch (error) {
@@ -65,7 +65,7 @@ async function updateAccount(req, res, next) {
                     message: 'updated account',
                     account_id: req.body.account_id,
                     connection_id: oldNetwork.id,
-                    connection_hash: oldNetwork.hash_key
+                    hiveage_connection_id: oldNetwork.hash_key
                 }
             });
         } catch (error) {
@@ -75,18 +75,19 @@ async function updateAccount(req, res, next) {
                 data: {
                     message: `error when update hiveage network`,
                     account_id: req.body.account_id,
-                    connection_hash: oldNetwork.hash_key
+                    hiveage_connection_id: oldNetwork.hash_key
                 }
             });
         }
     } else {
         const updatedAccount = await accountService.updateHiveageHash(account.id, newNetwork.hash_key);
-        return res.status(200).send({
-            status: 200,
+        return res.status(201).send({
+            status: 201,
             data: {
                 message: 'updated account',
                 account_id: req.body.account_id,
-                connection_id: newNetwork.id
+                connection_id: newNetwork.id,
+                hiveage_connection_id: newNetwork.hash_key
             }
         });
     }

@@ -44,6 +44,10 @@ router.get("/", (req, res) => {
  *                        type: integer
  *                        description: The contact's id.
  *                        example: 16004426279
+ *                      company_name:
+ *                        type: string
+ *                        description: The contact's company.
+ *                        example: Railflow
  */
 router.post("/", (req, res, next) => {
   return createContact(req, res, next);
@@ -86,6 +90,10 @@ router.post("/", (req, res, next) => {
  *                        type: integer
  *                        description: The contact's id.
  *                        example: 16004429999
+ *                      company_name:
+ *                        type: string
+ *                        description: The contact's company.
+ *                        example: Railflow
  *                      first_name:
  *                        type: string
  *                        description: The contact's first name.

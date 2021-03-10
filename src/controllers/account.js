@@ -23,7 +23,7 @@ async function updateAccount(req, res, next) {
     }
     let oldNetwork, newNetwork = null;
     const networkData = {
-        "name": account.name,
+        "name": req.body.company_name,
         "first_name": req.body.hiveage_fname,
         "last_name": req.body.hivage_lname,
         "address": req.body.address,
@@ -64,7 +64,8 @@ async function updateAccount(req, res, next) {
                 data: {
                     message: 'updated account',
                     account_id: req.body.account_id,
-                    connection_id: oldNetwork.id
+                    connection_id: oldNetwork.id,
+                    connection_hash: oldNetwork.hash_key
                 }
             });
         } catch (error) {
@@ -73,7 +74,8 @@ async function updateAccount(req, res, next) {
                 status: 500,
                 data: {
                     message: `error when update hiveage network`,
-                    account_id: req.body.account_id
+                    account_id: req.body.account_id,
+                    connection_hash: oldNetwork.hash_key
                 }
             });
         }

@@ -11,30 +11,26 @@
  *     Quote:
  *       type: object
  *       properties:
- *         firstName:
- *           type: string
- *           description: First name.
- *           example: John
- *         lastName:
- *           type: string
- *           description: Lirst name.
- *           example: Doe
- *         email:
- *           type: string
- *           description: Email.
- *           example: hellosumedhdev@gmail.com
- *         phone:
- *           type: string
- *           description: Phone number
- *           example: 0987654321
- *         company:
- *           type: string
- *           description: Company name
- *           example: Railflow
+ *         account_id:
+ *           type: integer
+ *           description: Account ID.
+ *           example: 16001181618
+ *         contact_id:
+ *           type: integer
+ *           description: Contact ID.
+ *           example: 16004439128
  *         num_of_users:
  *           type: integer
  *           description: Number of users
- *           example: 10
+ *           example: 21
+ *         license_type:
+ *           type: string
+ *           description: Contact ID.
+ *           example: standard
+ *         license_years:
+ *           type: integer
+ *           description: Number of users
+ *           example: 3
 */
 
 
@@ -68,13 +64,13 @@
  *      summary: Create Quote
  *      produces:
  *          - application/json
- *      parameters:
- *          - name: Quote
- *            description: Quote information
- *            in: body
- *            required: true
- *            schema:
- *              $ref: '#/components/schemas/Quote'
+ *      consumes:
+ *          - application/json
+ *      requestBody:
+ *         content:
+ *            application/json:
+ *               schema:
+ *                  $ref: '#/components/schemas/Quote'
  *      responses:
  *          200:
  *              description: Returns created contract

@@ -97,14 +97,17 @@
  *                        type: integer
  *                        description: The account's id.
  *                        example: 16001181618
- *                      connection_id:
- *                        type: integer
- *                        description: The connection's id.
- *                        example: 16004429999
- *                      hiveage_connection_id:
- *                        type: integer
- *                        description: The connection's hash.
- *                        example: xxxxxxxx
+ *                      hiveage:
+ *                        type: object
+ *                        properties:
+ *                          id:
+ *                            type: integer
+ *                            description: The connection's id.
+ *                            example: 16004429999
+ *                          hash_key:
+ *                            type: integer
+ *                            description: The connection's hash.
+ *                            example: xxxxxxxx
  */
  router.put("/", (req, res, next) => {
    return updateAccount(req, res, next);

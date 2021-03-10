@@ -48,7 +48,7 @@ async function updateHiveageHash(account_id,hash) {
                 Authorization: `Token token=${configs.FRESHSALES_API_KEY}`,
             },
             data: {
-                sales_account: { custom_field: {hiveage_connection_id:hash} }
+                sales_account: { custom_field: {cf_hiveage_hash:hash} }
             },
         });
 

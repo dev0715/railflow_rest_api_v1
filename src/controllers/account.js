@@ -39,10 +39,10 @@ async function updateAccount(req, res, next) {
         "language": "en-us",
     };
     // check and create new network
-    if (account.custom_field.hiveage_connection_id != null) {
-        oldNetwork = await accountService.getHiveageNetwork(account.custom_field.hiveage_connection_id);
+    if (account.custom_field.cf_hiveage_hash != null) {
+        oldNetwork = await accountService.getHiveageNetwork(account.custom_field.cf_hiveage_hash);
     }
-    if (account.custom_field.hiveage_connection_id == null || !oldNetwork) {
+    if (account.custom_field.cf_hiveage_hash == null || !oldNetwork) {
         try {
             newNetwork = await accountService.createHiveageNetwork (networkData);
         } catch (error) {
@@ -64,8 +64,10 @@ async function updateAccount(req, res, next) {
                 data: {
                     message: 'updated account',
                     account_id: req.body.account_id,
-                    connection_id: oldNetwork.id,
-                    hiveage_connection_id: oldNetwork.hash_key
+                    hiveage: {
+                        id: oldNetwork.id,
+                        hash_key: oldNetwork.hash_key
+                    }
                 }
             });
         } catch (error) {
@@ -75,7 +77,10 @@ async function updateAccount(req, res, next) {
                 data: {
                     message: `error when update hiveage network`,
                     account_id: req.body.account_id,
-                    hiveage_connection_id: oldNetwork.hash_key
+                    hiveage: {
+                        id: oldNetwork.id,
+                        hash_key: oldNetwork.hash_key
+                    }
                 }
             });
         }
@@ -86,8 +91,10 @@ async function updateAccount(req, res, next) {
             data: {
                 message: 'updated account',
                 account_id: req.body.account_id,
-                connection_id: newNetwork.id,
-                hiveage_connection_id: newNetwork.hash_key
+                hiveage: {
+                    id: newNetwork.id,
+                    hash_key: newNetwork.hash_key
+                }
             }
         });
     }

@@ -18,7 +18,7 @@ async function create(data) {
     try {
         let price_option = 0
         if (data.num_users != null) {
-            price_option = data.num_users % 20;
+            price_option = data.num_users / 20 >> 0;
         } 
         let price = 0;
         switch (data.license_type) {
@@ -31,7 +31,7 @@ async function create(data) {
             default:
                 return {
                     error: {
-                        message: "Error in create Quote. License type is incorrect"
+                        message: "Incorrect value for license_type"
                     }
                 };
         }
@@ -40,16 +40,16 @@ async function create(data) {
                 connection_id: data.network.id,
                 expire_date: "2022 -10-01",
                 date: new Date(),
-                summary: `Railflow ${20*(price_option+1)}-${20*(price_option+2)}, ${data.license_years} Year License Quote`,
+                summary: `Railflow ${20*price_option}-${20*(price_option+1)}, ${data.license_years} Year License Quote`,
                 note: `Custom item note`,
                 // statement_no: uuid(),
                 send_reminders: false,
 
                 items_attributes: [{
                     date: new Date(),
-                    description: `Railflow ${capitalize(data.license_type)} License \n ${20*(price_option+1)}-${20*(price_option+2)} TestRail Users \n License Term: ${data.license_years} Year`,
+                    description: `Railflow ${capitalize(data.license_type)} License \n ${20*price_option}-${20*(price_option+1)} TestRail Users \n License Term: ${data.license_years} Year`,
                     price: price,
-                    quantity: 1
+                    quantity: data.license_years
                 }]
             }
         };

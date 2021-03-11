@@ -63,6 +63,15 @@ async function createQuote(req, res, next) {
             });
         }
 
+        if (data.license_years < 1 || data.license_years > 3) {
+            return res.status(400).send({
+                status: 400,
+                data: {
+                    message: 'Invalid License_years: valid values are 1-3'
+                }
+            });
+        }
+
         // check if the contact is already there.
         let contact = await contactService.getContactById(data.contact_id);
         if (!contact) {
@@ -124,8 +133,8 @@ async function createQuote(req, res, next) {
         data.network = network;
         const quote = await quoteService.create(data);
         if (quote.error != null) {
-            return res.status(500).send({
-                status: 500,
+            return res.status(400).send({
+                status: 400,
                 data: {
                     message: quote.error.message,
                     account_id: req.body.account_id,
@@ -133,7 +142,8 @@ async function createQuote(req, res, next) {
                 }
             });
         }
-        await noteService.create(contact.id, `Quote link: https://railflow.hiveage.com/estm/${quote.estimate.hash_key}\n`);
+        await noteService.create(contact.id, `Quote: https://railflow.hiveage.com/estm/${quote.estimate.hash_key}`);
+        await noteService.accountNote(account.id, `Quote: https://railflow.hiveage.com/estm/${quote.estimate.hash_key}`);
         
         await slackService.sendSlackMessage(`New Quote: <https://railflow.myfreshworks.com/crm/sales/accounts/${account.id}|${account.name}> <https://railflow.hiveage.com/estm/${quote.estimate.hash_key}|Quote> :slightly_smiling_face:`);
         

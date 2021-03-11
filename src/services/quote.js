@@ -10,9 +10,16 @@ const { v4: uuid } = require("uuid");
 const RAILFLOW_GOLD_LICENSE = "Railflow - Gold License";
 const RAILFLOW_SILVER_LICENSE = "Railflow - Silver License";
 
+function capitalize(s)
+{
+    return s && s[0].toUpperCase() + s.slice(1);
+}
 async function create(data) {
     try {
-        const price_option = data.num_of_users % 20;
+        let price_option = 0
+        if (data.num_of_users != null) {
+            price_option = data.num_of_users % 20;
+        } 
         let price = 0;
         switch (data.license_type) {
             case "standard":
@@ -33,14 +40,14 @@ async function create(data) {
                 connection_id: data.network.id,
                 expire_date: "2022 -10-01",
                 date: new Date(),
-                summary: `Railflow ${20*price_option}-${20*(price_option+1)}, ${data.license_years} Year License Quote`,
+                summary: `Railflow ${20*(price_option+1)}-${20*(price_option+2)}, ${data.license_years} Year License Quote`,
                 note: `Custom item note`,
-                statement_no: uuid(),
+                // statement_no: uuid(),
                 send_reminders: false,
 
                 items_attributes: [{
                     date: new Date(),
-                    description: `Railflow ${data.license_type} License \n ${data.license_years} Year License \n ${data.num_of_users} TestRail Users`,
+                    description: `Railflow ${capitalize(data.license_type)} License \n ${20*(price_option+1)}-${20*(price_option+2)} TestRail Users \n License Term: ${data.license_years} Year`,
                     price: price,
                     quantity: 1
                 }]

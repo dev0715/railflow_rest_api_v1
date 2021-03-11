@@ -124,8 +124,9 @@ async function createQuote(req, res, next) {
                 }
             });
         }
-        await noteService.create(contact.id, `Quote created for contact: ${contact.id}, account: ${account.id}`);
-        await slackService.sendSlackMessage(`New Quote created for contact id: ${contact.id}, account: ${account.id}\nQuote link: https://railflow.hiveage.com/estm/${quote.estimate.hash_key}`);
+        await noteService.create(contact.id, `Quote link: https://railflow.hiveage.com/estm/${quote.estimate.hash_key}\n`);
+        
+        await slackService.sendSlackMessage(`New Quote: <https://railflow.myfreshworks.com/crm/sales/accounts/${account.id}|${account.name}> <https://railflow.hiveage.com/estm/${quote.estimate.hash_key}|Quote> :slightly_smiling_face:`);
         
         return res.status(201).send({
             status: 201,

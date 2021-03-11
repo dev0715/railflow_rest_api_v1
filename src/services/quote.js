@@ -18,10 +18,15 @@ async function create(data) {
             case "standard":
                 price = 1500 + (300 * price_option);
                 break;
-            // default to enterprise
-            default:
+            case "enterprise":
                 price = 1800 + (400 * price_option);
                 break;
+            default:
+                return {
+                    error: {
+                        message: "Error in create Quote. License type is incorrect"
+                    }
+                };
         }
         const estimateData = {
             estimate: {

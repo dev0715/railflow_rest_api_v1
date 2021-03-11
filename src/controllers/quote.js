@@ -22,10 +22,37 @@ async function createQuote(req, res, next) {
             contact_id: req.body.contact_id,
             hiveage_id: req.body.hiveage_id,
             hiveage_hash: req.body.hiveage_id,
-            number_of_users: req.body.number_of_users,
+            num_of_users: req.body.num_of_users,
             license_type: req.body.license_type,
             license_years: req.body.license_years,
         };
+
+        if (data.contact_id == null) {
+            return res.status(500).send({
+                status: 500,
+                data: {
+                    message: 'Please input contact_id in the payload'
+                }
+            });
+        }
+
+        if (data.account_id == null) {
+            return res.status(500).send({
+                status: 500,
+                data: {
+                    message: 'Please input account_id in the payload'
+                }
+            });
+        }
+
+        if (data.num_of_users == null) {
+            return res.status(500).send({
+                status: 500,
+                data: {
+                    message: 'Please input num_of_users in the payload'
+                }
+            });
+        }
 
         // check if the contact is already there.
         let contact = await contactService.getContactById(data.contact_id);
@@ -87,7 +114,16 @@ async function createQuote(req, res, next) {
         } 
         data.network = network;
         const quote = await quoteService.create(data);
-
+        if (quote.error != null) {
+            return res.status(500).send({
+                status: 500,
+                data: {
+                    message: quote.error.message,
+                    account_id: req.body.account_id,
+                    contact_id: req.body.contact_id
+                }
+            });
+        }
         await noteService.create(contact.id, `Quote created for contact: ${contact.id}, account: ${account.id}`);
         await slackService.sendSlackMessage(`New Quote created for contact id: ${contact.id}, account: ${account.id}\nQuote link: https://railflow.hiveage.com/estm/${quote.estimate.hash_key}`);
         

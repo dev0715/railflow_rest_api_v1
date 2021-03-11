@@ -88,14 +88,15 @@ async function createQuote(req, res, next) {
         data.network = network;
         const quote = await quoteService.create(data);
 
-        await noteService.create(contact.id, `Quote created for contact: ${contact.id}`);
-        await slackService.sendSlackMessage(`New Quote created for contact; ${contact.email}`);
+        await noteService.create(contact.id, `Quote created for contact: ${contact.id}, account: ${account.id}`);
+        await slackService.sendSlackMessage(`New Quote created for contact: ${contact.email}`);
         
         return res.status(200).send({
             status: 200,
             data: {
                 message: "Quote created",
-                quote: quote.estimate
+                quote,
+                ...{ quoteLink: `https://railflow.hiveage.com/estm/${quote.estimate.hash_key}`}
             }
         });
 

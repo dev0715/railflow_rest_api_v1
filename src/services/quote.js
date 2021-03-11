@@ -17,8 +17,8 @@ function capitalize(s)
 async function create(data) {
     try {
         let price_option = 0
-        if (data.num_of_users != null) {
-            price_option = data.num_of_users % 20;
+        if (data.num_users != null) {
+            price_option = data.num_users % 20;
         } 
         let price = 0;
         switch (data.license_type) {
@@ -77,14 +77,14 @@ async function create(data) {
     }
 }
 
-async function getRequiredItem(num_of_users) {
+async function getRequiredItem(num_users) {
     // get all items
     let selectedPlan = "";
 
-    if (num_of_users <= 15 && num_of_users > 0) {
+    if (num_users <= 15 && num_users > 0) {
         // silver. define in configs
         selectedPlan = RAILFLOW_SILVER_LICENSE;
-    } else if (num_of_users > 15 && num_of_users < 25) {
+    } else if (num_users > 15 && num_users < 25) {
         // gold. define in configs
         selectedPlan = RAILFLOW_GOLD_LICENSE;
     }

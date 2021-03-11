@@ -22,34 +22,43 @@ async function createQuote(req, res, next) {
             contact_id: req.body.contact_id,
             hiveage_id: req.body.hiveage_id,
             hiveage_hash: req.body.hiveage_id,
-            num_of_users: req.body.num_of_users,
+            num_users: req.body.num_users,
             license_type: req.body.license_type,
             license_years: req.body.license_years,
         };
 
         if (data.contact_id == null) {
-            return res.status(500).send({
-                status: 500,
+            return res.status(400).send({
+                status: 400,
                 data: {
-                    message: 'Please input contact_id in the payload'
+                    message: 'Missing required parameter: contact_id'
                 }
             });
         }
 
         if (data.account_id == null) {
-            return res.status(500).send({
-                status: 500,
+            return res.status(400).send({
+                status: 400,
                 data: {
-                    message: 'Please input account_id in the payload'
+                    message: 'Missing required parameter: account_id'
                 }
             });
         }
 
-        if (data.num_of_users == null) {
-            return res.status(500).send({
-                status: 500,
+        if (data.num_users == null) {
+            return res.status(400).send({
+                status: 400,
                 data: {
-                    message: 'Please input num_of_users in the payload'
+                    message: 'Missing required parameter: num_users'
+                }
+            });
+        }
+
+        if (data.num_users < 0 || data.num_users > 49) {
+            return res.status(400).send({
+                status: 400,
+                data: {
+                    message: 'Invalid num_users: valid value is: 0-49'
                 }
             });
         }

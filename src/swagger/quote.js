@@ -19,7 +19,7 @@
  *           type: integer
  *           description: Contact ID.
  *           example: 16004439128
- *         num_of_users:
+ *         num_users:
  *           type: integer
  *           description: Number of users
  *           example: 21

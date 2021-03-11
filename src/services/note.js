@@ -28,10 +28,37 @@ async function create(targetableId, description) {
         console.log(`> note created successfully for contact id: ${targetableId}`);
         return response.data;
     } catch (error) {
-        throw new ApiError(`Error while creating node for: ${targetableId}`);
+        throw new ApiError(`Error while creating node for contact id: ${targetableId}`);
+    }
+}
+async function accountNote(targetableId, description) {
+    try {
+        const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL); // put railflow host
+        const response = await apiClient.request({
+            method: 'POST',
+            url: '/crm/sales/api/notes',
+            headers: {
+                // TODO: use environment variable
+                Authorization: `Token token=${configs.FRESHSALES_API_KEY}`, // fPjGQStTY1ffGqtyAj9RVw
+                'Content-Type': 'application/json',
+            },
+            data: {
+                note: {
+                    description,
+                    targetable_type: "SalesAccount",
+                    targetable_id: targetableId,
+                }
+            }
+        });
+
+        console.log(`> note created successfully for account id: ${targetableId}`);
+        return response.data;
+    } catch (error) {
+        throw new ApiError(`Error while creating node for account id: ${targetableId}`);
     }
 }
 
 module.exports = {
-    create
+    create,
+    accountNote
 };

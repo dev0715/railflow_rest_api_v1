@@ -42,10 +42,8 @@ async function createContact(request, res, next) {
         status: 200,
         data: {
           message: `Duplicate Registration`,
-          contact_id: alreadyPresent.id
-          // contact: {
-          //   id: alreadyPresent.id,
-          // },
+          contact_id: alreadyPresent.id,
+          account_id: alreadyPresent.custom_field.cf_account_id
         },
       });
     }
@@ -61,7 +59,7 @@ async function createContact(request, res, next) {
         id: account.id,
         is_primary: true,
       }];
-
+      data.account_id = account.id;
       const response = await contactService.create(data);
       if (response && response.data && response.data.contact) {
         console.log(`> contact created. sending slack notification: ${response.data.contact.id}`);

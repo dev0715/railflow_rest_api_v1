@@ -35,6 +35,7 @@ async function create(data) {
         job_title: data.jobTitle,
         custom_field: {
           cf_company: data.company,
+          cf_account_id: data.account_id,
           cf_extension_period: 14, // setting this 14 as default. sales agent can change this number before firing license extension webhook.
         },
         sales_accounts: data.sales_accounts

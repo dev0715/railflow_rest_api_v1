@@ -12,7 +12,7 @@ const RAILFLOW_SILVER_LICENSE = "Railflow - Silver License";
 
 async function create(data) {
     try {
-        const price_option = data.number_of_users % 20;
+        const price_option = data.num_of_users % 20;
         let price = 0;
         switch (data.license_type) {
             case "standard":
@@ -35,7 +35,7 @@ async function create(data) {
 
                 items_attributes: [{
                     date: new Date(),
-                    description: `Railflow ${data.license_type} License \n 1/2/3/5 Year License \n ${data.number_of_users} TestRail Users`,
+                    description: `Railflow ${data.license_type} License \n ${data.license_years} Year License \n ${data.num_of_users} TestRail Users`,
                     price: price,
                     quantity: 1
                 }]

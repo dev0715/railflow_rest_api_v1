@@ -89,7 +89,7 @@ async function createQuote(req, res, next) {
         const quote = await quoteService.create(data);
 
         await noteService.create(contact.id, `Quote created for contact: ${contact.id}, account: ${account.id}`);
-        await slackService.sendSlackMessage(`New Quote created for contact: ${contact.email}`);
+        await slackService.sendSlackMessage(`New Quote created for contact id: ${contact.id}, account: ${account.id}`);
         
         return res.status(200).send({
             status: 200,

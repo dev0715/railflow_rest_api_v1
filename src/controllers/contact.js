@@ -140,6 +140,7 @@ async function updateContact(request, res, next) {
         data: {
             message: `contact verified`,
             contact_id: patchedContact.id,
+            account_id: patchedContact.custom_field.cf_account_id,
             first_name: patchedContact.first_name,
             last_name: patchedContact.last_name,
             address: patchedContact.address,

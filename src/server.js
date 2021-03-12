@@ -11,6 +11,7 @@ const signupRouter = require("./routes/signup");
 const licenseRouter = require("./routes/license");
 const eventRouter = require("./routes/event");
 const opportunityRouter = require("./routes/opportunity");
+const invoiceRouter = require("./routes/invoice");
 const quoteRouter = require("./routes/quote");
 const accountRouter = require("./routes/account");
 
@@ -87,6 +88,7 @@ class Server {
     this.app.use("/api/license", licenseRouter);
     this.app.use("/api/event", eventRouter);
     this.app.use("/api/opportunity", opportunityRouter);
+    this.app.use("/api/invoice", invoiceRouter);
     this.app.use("/api/quote", quoteRouter);
 
     this.app.use((err, req, res, next) => {

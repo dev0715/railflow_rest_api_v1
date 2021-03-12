@@ -132,7 +132,7 @@ async function createHiveageNetwork(network) {
                 password: ''
             }
         });
-        console.log(`> estimate created successfully`);
+        console.log(`> hiveage network created successfully`);
         return response.data.network;
     } catch (error) {
         console.log('error when create hiveage network');
@@ -154,7 +154,7 @@ async function createHiveageNetwork(network) {
                 password: ''
             }
         });
-        console.log(`> estimate updated successfully`);
+        console.log(`> hiveage network updated successfully`);
         return response.data.network;
     } catch (error) {
         console.log('error when update hiveage network');
@@ -176,11 +176,10 @@ async function getHiveageNetwork(hash) {
                 password: ''
             }
         });
-        // const response = await HiveageAPI.retriveConnection(hash)
-        console.log(`> estimate retrieved successfully`);
+        console.log(`> hiveage connection retrieved successfully`);
         return response.data.network;
     } catch (error) {
-        console.log('error when retrive estimate');
+        console.log('error when retrive hiveage network');
         return false;
     }
 }

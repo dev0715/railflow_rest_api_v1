@@ -72,6 +72,39 @@ async function create(data) {
         });
 
         console.log(`> estimate created successfully`);
+
+        const deliver_response = await apiClient.request({
+            method: 'POST',
+            url: `/api/estm/${response.data.estimate.hash_key}/deliver`,
+            headers: {
+                // TODO: use environment variable
+                'Content-Type': 'application/json',
+            },
+            data: {
+                delivery : {
+                    recipients: [
+                        {
+                            name: data.user.first_name,
+                            email: data.user.email
+                        }
+                    ],
+                    subject: `Estimate ${response.data.estimate.statement_no} from Railflow`,
+                    message: `Hi ${data.user.first_name},
+                    \n\nA new estimate has been generated for you by Railflow. Here's a quick summary:
+                    \n\nEstimate details: ${response.data.estimate.statement_no} - ${response.data.estimate.summary}
+                    \n\nEstimate total: USD ${response.data.estimate.billed_total.toLocaleString('en-US', {maximumFractionDigits:2})}
+                    \n\nYou can view the estimate or download a PDF copy of it from the following link:
+                    \n\nhttp://billing.railflow.io/estm/${response.data.estimate.hash_key}
+                    \n\nBest regards,
+                    \nRailflow`,
+                    attachment: true
+                }
+            },
+            auth: {
+                username: configs.HIVEAGE_API_KEY,
+                password: ''
+            }
+        });
         return response.data;
     } catch (error) {
         console.log(`> error:quote:service: ${error}`);

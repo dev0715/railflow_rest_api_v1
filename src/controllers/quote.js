@@ -149,11 +149,8 @@ async function createQuote(req, res, next) {
         
         return res.status(201).send({
             status: 201,
-            data: {
-                message: "Quote created",
-                quote,
-                ...{ quoteLink: `https://railflow.hiveage.com/estm/${quote.estimate.hash_key}`}
-            }
+            message: "Quote created",
+            quoteLink: `https://railflow.hiveage.com/estm/${quote.estimate.hash_key}`
         });
 
     } catch (error) {

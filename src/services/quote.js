@@ -80,24 +80,22 @@ async function create(data) {
                 // TODO: use environment variable
                 'Content-Type': 'application/json',
             },
+            auth: {
+                username: configs.HIVEAGE_API_KEY,
+                password: ''
+            }
+        });
+        console.log('> estimate sent');
+        const sent_response = await apiClient.request({
+            method: 'PUT',
+            url: `/api/estm/${response.data.estimate.hash_key}`,
+            headers: {
+                // TODO: use environment variable
+                'Content-Type': 'application/json',
+            },
             data: {
-                delivery : {
-                    recipients: [
-                        {
-                            name: data.user.first_name,
-                            email: data.user.email
-                        }
-                    ],
-                    subject: `Estimate ${response.data.estimate.statement_no} from Railflow`,
-                    message: `Hi ${data.user.first_name},
-                    \n\nA new estimate has been generated for you by Railflow. Here's a quick summary:
-                    \n\nEstimate details: ${response.data.estimate.statement_no} - ${response.data.estimate.summary}
-                    \n\nEstimate total: USD ${response.data.estimate.billed_total.toLocaleString('en-US', {maximumFractionDigits:2})}
-                    \n\nYou can view the estimate or download a PDF copy of it from the following link:
-                    \n\nhttp://billing.railflow.io/estm/${response.data.estimate.hash_key}
-                    \n\nBest regards,
-                    \nRailflow`,
-                    attachment: true
+                estimate: {
+                    state: 'sent'
                 }
             },
             auth: {
@@ -105,6 +103,7 @@ async function create(data) {
                 password: ''
             }
         });
+        console.log('> estimate status updated to sent');
         return response.data;
     } catch (error) {
         console.log(`> error:quote:service: ${error}`);

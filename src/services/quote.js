@@ -21,7 +21,7 @@ async function create(data) {
             price_option = data.num_users / 20 >> 0;
         } 
         let price = 0;
-        switch (data.license_type) {
+        switch (data.license_type.toLowerCase()) {
             case "standard":
                 price = 1500 + (300 * price_option);
                 break;
@@ -40,7 +40,8 @@ async function create(data) {
                 connection_id: data.network.id,
                 expire_date: "2022 -10-01",
                 date: new Date(),
-                summary: `Railflow ${20*price_option}-${20*(price_option+1)}, ${data.license_years} Year License Quote`,
+                // summary: `Railflow ${20*price_option}-${20*(price_option+1)}, ${data.license_years} Year License Quote`,
+                summary: `Railflow ${data.license_type} Quote: ${data.license_years} Year License: ${20*price_option}-${20*(price_option+1)} Users`,
                 note: `Custom item note`,
                 // statement_no: uuid(),
                 send_reminders: false,
@@ -49,7 +50,8 @@ async function create(data) {
                     date: new Date(),
                     description: `Railflow ${capitalize(data.license_type)} License \n ${20*price_option}-${20*(price_option+1)} TestRail Users \n License Term: ${data.license_years} Year`,
                     price: price,
-                    quantity: data.license_years
+                    quantity: data.license_years,
+                    unit: "Year"
                 }]
             }
         };

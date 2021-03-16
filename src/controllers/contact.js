@@ -37,6 +37,18 @@ async function createContact(request, res, next) {
     // check if the contact is already there.
     const alreadyPresent = await contactService.getContactIfAlreadyPresent(request.body.email);
     if (alreadyPresent !== null) {
+      if (alreadyPresent.custom_field.cf_license_status == 'not_sent') {
+        console.log('> contact with provided email already present but status is not_sent');
+        return res.status(201).send({
+          status: 201,
+          data: {
+            message: "contact created",
+            contact_id: alreadyPresent.id,
+            account_id: alreadyPresent.custom_field.cf_account_id,
+            company_name: alreadyPresent.custom_field.cf_company
+          },
+        });
+      }
       console.log(`> contact with provided email already present: ${request.body.email}`);
       return res.status(200).send({
         status: 200,

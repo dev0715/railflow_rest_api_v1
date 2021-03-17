@@ -18,7 +18,7 @@ async function create(data) {
     try {
         let price_option = 0
         if (data.num_users != null) {
-            price_option = data.num_users / 20 >> 0;
+            price_option = data.num_users >> 0;
         } 
         let price = 0;
         switch (data.license_type.toLowerCase()) {

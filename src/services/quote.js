@@ -50,7 +50,7 @@ async function create(data) {
         if (discount_percentage > 0) {
             items_attributes.push({
                 date: new Date(),
-                description: `Multi-Year Discount\n${data.license_years} Years = ${discount_percentage * 100}% Discount\n${discount_percentage * 100}% of $${price} = $${price * discount_percentage}`,
+                description: `Multi-Year Discount\n${data.license_years} Years = ${discount_percentage * 100}% Discount\n${discount_percentage * 100}% of $${price * data.license_years} = $${price * data.license_years * discount_percentage}`,
                 price: -(price * discount_percentage),
                 quantity: 1
             });

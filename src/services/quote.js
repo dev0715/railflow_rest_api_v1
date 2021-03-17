@@ -35,6 +35,33 @@ async function create(data) {
                     }
                 };
         }
+        let discount_percentage = 0;
+        switch (data.license_years) {
+            case 3:
+                discount_percentage = 0.15;
+                break;
+            case 2:
+                discount_percentage = 0.1;
+                break;
+            default:
+                break;
+        }
+        let items_attributes = [];
+        if (discount_percentage > 0) {
+            items_attributes.push({
+                date: new Date(),
+                description: `Multi-Year Discount\n${data.license_years} Years = ${discount_percentage * 100}% Discount\n15% of $${price} = $${price * discount_percentage}`,
+                price: -(price * discount_percentage),
+                quantity: 1
+            });
+        }
+        items_attributes.push({
+            date: new Date(),
+            description: `Railflow ${capitalize(data.license_type)} License \n ${20*price_option}-${20*(price_option+1)} TestRail Users \n License Term: ${data.license_years} Year`,
+            price: price,
+            quantity: data.license_years,
+            unit: "Year"
+        });
         const estimateData = {
             estimate: {
                 connection_id: data.network.id,
@@ -46,13 +73,7 @@ async function create(data) {
                 // statement_no: uuid(),
                 send_reminders: false,
 
-                items_attributes: [{
-                    date: new Date(),
-                    description: `Railflow ${capitalize(data.license_type)} License \n ${20*price_option}-${20*(price_option+1)} TestRail Users \n License Term: ${data.license_years} Year`,
-                    price: price,
-                    quantity: data.license_years,
-                    unit: "Year"
-                }]
+                items_attributes: items_attributes,
             }
         };
 

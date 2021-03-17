@@ -12,7 +12,7 @@ const RAILFLOW_SILVER_LICENSE = "Railflow - Silver License";
 
 function capitalize(s)
 {
-    return s && s[0].toUpperCase() + s.slice(1);
+    return s && s[0].toUpperCase() + s.slice(1).toLowerCase();
 }
 async function create(data) {
     try {
@@ -68,7 +68,7 @@ async function create(data) {
                 expire_date: "2022 -10-01",
                 date: new Date(),
                 // summary: `Railflow ${20*price_option}-${20*(price_option+1)}, ${data.license_years} Year License Quote`,
-                summary: `Railflow ${data.license_type} Quote: ${data.license_years} Year License: ${20*price_option}-${20*(price_option+1)} Users`,
+                summary: `Railflow ${capitalize(data.license_type)} Quote: ${data.license_years} Year License: ${20*price_option}-${20*(price_option+1)} Users`,
                 note: `Custom item note`,
                 // statement_no: uuid(),
                 send_reminders: false,

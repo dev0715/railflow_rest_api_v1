@@ -7,7 +7,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { createOpportunity } = require('../controllers/opportunity');
+const { createInvoice } = require('../controllers/invoice');
 
 router.get("/", (req, res) => {
   res.status(200).send("Invoice Resource");
@@ -15,8 +15,7 @@ router.get("/", (req, res) => {
 
 
 router.post("/", (req, res, next) => {
-  res.status(200).send("Invoice POST");
-  // return createOpportunity(req, res, next);
+  return createInvoice(req, res, next);
 });
 
 module.exports = router;

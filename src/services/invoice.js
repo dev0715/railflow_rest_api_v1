@@ -7,6 +7,13 @@ const ApiError = require("../errors/api");
 const mailgun = require("mailgun-js");
 const { getApiClient } = require('../services/request');
 
+function capitalize(s)
+{
+    return s && s[0].toUpperCase() + s.slice(1).toLowerCase();
+}
+function addDays(theDate, days) {
+    return new Date(theDate.getTime() + days*24*60*60*1000);
+}
 async function createInvoiceClient(data) {
     console.log(`> creating invoice for: ${JSON.stringify(data)}`);
         try {
@@ -32,6 +39,105 @@ async function createInvoiceClient(data) {
         }
 }
 
+async function createInvoice(data) {
+    try {
+        let price_option = 0
+        if (data.num_users != null) {
+            price_option = data.num_users >> 0;
+        } 
+        let price = 0;
+        switch (data.license_type.toLowerCase()) {
+            case "standard":
+                price = 1500 + (300 * price_option);
+                break;
+            case "enterprise":
+                price = 1800 + (400 * price_option);
+                break;
+            default:
+                return {
+                    error: {
+                        message: "Incorrect value for license_type"
+                    }
+                };
+        }
+        let discount_percentage = 0;
+        switch (parseInt(data.license_years)) {
+            case 3:
+                discount_percentage = 0.15;
+                break;
+            case 2:
+                discount_percentage = 0.1;
+                break;
+            default:
+                break;
+        }
+        let items_attributes = [];
+        if (discount_percentage > 0) {
+            items_attributes.push({
+                date: new Date(),
+                description: `Multi-Year Discount\n${data.license_years} Years = ${discount_percentage * 100}% Discount\n${discount_percentage * 100}% of $${price * data.license_years} = $${price * data.license_years * discount_percentage}`,
+                price: -(price * data.license_years * discount_percentage),
+                quantity: 1
+            });
+        }
+        items_attributes.push({
+            date: new Date(),
+            description: `Railflow ${capitalize(data.license_type)} License \n ${20*price_option}-${20*(price_option+1)} TestRail Users \n License Term: ${data.license_years} Year`,
+            price: price,
+            quantity: data.license_years,
+            unit: "Year"
+        });
+        const invoiceData = {
+            invoice: {
+                connection_id: data.network.id,
+                due_date: addDays(new Date(), 30),
+                date: new Date(),
+                // summary: `Railflow ${20*price_option}-${20*(price_option+1)}, ${data.license_years} Year License Invoice`,
+                summary: `Railflow ${capitalize(data.license_type)} Invoice: ${data.license_years} Year License: ${20*price_option}-${20*(price_option+1)} Users`,
+                note: `Custom item note`,
+                send_reminders: false,
+
+                items_attributes: items_attributes,
+            }
+        };
+
+        const apiClient = await getApiClient(configs.HIVEAGE_BASE_URL);
+        const response = await apiClient.request({
+            method: 'POST',
+            url: '/api/invs',
+            headers: {
+                // TODO: use environment variable
+                'Content-Type': 'application/json',
+            },
+            data: invoiceData,
+            auth: {
+                username: configs.HIVEAGE_API_KEY,
+                password: ''
+            }
+        });
+
+        console.log(`> invoice created successfully`);
+
+        const deliver_response = await apiClient.request({
+            method: 'POST',
+            url: `/api/invs/${response.data.invoice.hash_key}/deliver`,
+            headers: {
+                // TODO: use environment variable
+                'Content-Type': 'application/json',
+            },
+            auth: {
+                username: configs.HIVEAGE_API_KEY,
+                password: ''
+            }
+        });
+        console.log('> invoice sent');
+        return response.data;
+    } catch (error) {
+        console.log(`> error:invoice:service: ${error}`);
+        throw new ApiError(`Error while creating invoice`);
+    }
+}
 module.exports = {
+    createInvoice,
     createInvoiceClient
 };

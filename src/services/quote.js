@@ -36,7 +36,7 @@ async function create(data) {
                 };
         }
         let discount_percentage = 0;
-        switch (data.license_years) {
+        switch (parseInt(data.license_years)) {
             case 3:
                 discount_percentage = 0.15;
                 break;
@@ -51,7 +51,7 @@ async function create(data) {
             items_attributes.push({
                 date: new Date(),
                 description: `Multi-Year Discount\n${data.license_years} Years = ${discount_percentage * 100}% Discount\n${discount_percentage * 100}% of $${price * data.license_years} = $${price * data.license_years * discount_percentage}`,
-                price: -(price * discount_percentage),
+                price: -(price * data.license_years * discount_percentage),
                 quantity: 1
             });
         }

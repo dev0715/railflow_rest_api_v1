@@ -44,6 +44,7 @@ async function getFsOpportunity(id) {
         console.log(`> Opportunity retrived`);
         return response.data.deal;
     } catch (error) {
+        return false;
         throw new ApiError(`Error while retriveing the opportunity: ${error.response.data.errors.message[0]}`);
     }
 }

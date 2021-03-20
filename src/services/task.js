@@ -44,7 +44,41 @@ async function create(data) {
         return;
     }
 }
+async function createTask(data) {
+    try {
+        const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL); // put railflow host
+        const response = await apiClient.request({
+            method: 'POST',
+            url: '/crm/sales/api/tasks',
+            headers: {
+                // TODO: use environment variable
+                Authorization: `Token token=${configs.FRESHSALES_API_KEY}`,
+                'Content-Type': 'application/json',
+            },
+            data: {
+                task: {
+                    title: data.title,
+                    description: data.description,
+                    due_date: dayjs().add(data.due_date, 'days').format('[YYYYescape] YYYY-MM-DDTHH:mm:ssZ[Z]'),
+                    owner_id: data.owner_id,
+                    targetable_id: data.targetable_id,
+                    targetable_type: data.targetable_type,
+                }
+            }
+        });
+
+        console.log(`> tasks created successfully for ${data.targetable_type} id: ${data.targetable_id}`);
+        return {
+            success: true,
+            message: `Task: ${data.title} created successfully`
+        };
+    } catch (error) {
+        throw new ApiError(`Error while creating tasks for ${data.targetable_type} id: ${data.targetable_id}`);
+        return;
+    }
+}
 
 module.exports = {
-    create
+    create,
+    createTask
 };

@@ -24,7 +24,7 @@ async function createQuote(req, res, next) {
             license_type: req.body.license_type,
             license_years: req.body.license_years,
         };
-
+        
         if (typeof data.contact_id == "undefined" || data.contact_id == null || data.contact_id == '') {
             return res.status(400).send({
                 status: 400,
@@ -157,7 +157,8 @@ async function createQuote(req, res, next) {
         return res.status(201).send({
             status: 201,
             message: "Quote created",
-            quoteLink: `https://railflow.hiveage.com/estm/${quote.estimate.hash_key}`
+            quoteLink: `https://railflow.hiveage.com/estm/${quote.estimate.hash_key}`,
+            opportunityLink: `https://railflow.myfreshworks.com/crm/sales/deals/${quote.fsOpportunity.id}`
         });
 
     } catch (error) {

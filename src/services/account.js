@@ -11,6 +11,29 @@ const { getApiClient } = require('./request');
 
 const ApiError = require("../errors/api");
 const BadRequestError = require("../errors/badrequest");
+async function update(account_id, data) {
+    try {
+        const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL);
+        const response = await apiClient.request({
+            method: 'PUT',
+            url: `/crm/sales/api/sales_accounts/${account_id}`,
+            headers: {
+                // TODO: use environment variable
+                // Authorization: `Token token=${process.env.FRESHSALES_API_KEY}`,
+                Authorization: `Token token=${configs.FRESHSALES_API_KEY}`,
+            },
+            data: data
+        });
+
+        console.log(`> account updated with name: ${response.data.sales_account.name}`);
+        return response.data.sales_account;
+    } catch (error) {
+        if (error.response.data.errors.code === 400) {
+            throw new BadRequestError(`Account with given company name already exists.`);
+        }
+        throw new ApiError(`Error while creating the account: ${error.response.data.errors.message[0]}`);
+    }
+}
 async function create(data) {
     try {
         const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL);
@@ -205,6 +228,7 @@ async function getAllAccountsFromView(viewId) {
 
 module.exports = {
     create,
+    update,
     getAccountIfAlreadyPresent,
     getAccountById,
     createHiveageNetwork,

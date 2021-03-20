@@ -20,14 +20,12 @@ async function createQuote(req, res, next) {
         const data = {
             account_id: req.body.account_id,
             contact_id: req.body.contact_id,
-            hiveage_id: req.body.hiveage_id,
-            hiveage_hash: req.body.hiveage_id,
             num_users: req.body.num_users,
             license_type: req.body.license_type,
             license_years: req.body.license_years,
         };
 
-        if (data.contact_id == null || data.contact_id == '') {
+        if (typeof data.contact_id == "undefined" || data.contact_id == null || data.contact_id == '') {
             return res.status(400).send({
                 status: 400,
                 data: {
@@ -36,7 +34,7 @@ async function createQuote(req, res, next) {
             });
         }
 
-        if (data.account_id == null || data.account_id == '') {
+        if (typeof data.account_id == "undefined" || data.account_id == null || data.account_id == '') {
             return res.status(400).send({
                 status: 400,
                 data: {
@@ -45,7 +43,7 @@ async function createQuote(req, res, next) {
             });
         }
 
-        if (data.num_users == null) {
+        if (typeof data.num_users == "undefined") {
             return res.status(400).send({
                 status: 400,
                 data: {
@@ -54,7 +52,7 @@ async function createQuote(req, res, next) {
             });
         }
 
-        if (data.num_users < 0 || data.num_users > 49) {
+        if (isNaN(data.num_users) || data.num_users < 0 || data.num_users > 49) {
             return res.status(400).send({
                 status: 400,
                 data: {
@@ -63,7 +61,16 @@ async function createQuote(req, res, next) {
             });
         }
 
-        if (data.license_years == null || data.license_years == '' || data.license_years < 1 || data.license_years > 3) {
+        if (typeof data.license_years == "undefined") {
+            return res.status(400).send({
+                status: 400,
+                data: {
+                    message: 'Missing required parameter: license_years'
+                }
+            });
+        }
+
+        if (isNaN(data.license_years) || data.license_years < 1 || data.license_years > 3) {
             return res.status(400).send({
                 status: 400,
                 data: {

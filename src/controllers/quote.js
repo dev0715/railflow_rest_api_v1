@@ -14,6 +14,7 @@ const quoteService = require('../services/quote');
 const contactService = require('../services/contact');
 const accountService = require('../services/account');
 const slackService = require('../services/slack');
+const taskService = require('../services/task');
 
 async function createQuote(req, res, next) {
     try {
@@ -24,7 +25,7 @@ async function createQuote(req, res, next) {
             license_type: req.body.license_type,
             license_years: req.body.license_years,
         };
-        
+
         if (typeof data.contact_id == "undefined" || data.contact_id == null || data.contact_id == '') {
             return res.status(400).send({
                 status: 400,
@@ -153,7 +154,24 @@ async function createQuote(req, res, next) {
         await noteService.accountNote(account.id, `Quote: https://railflow.hiveage.com/estm/${quote.estimate.hash_key}`);
         
         await slackService.sendSlackMessage(`New Quote: <https://railflow.myfreshworks.com/crm/sales/accounts/${account.id}|${account.name}> <https://railflow.hiveage.com/estm/${quote.estimate.hash_key}|Quote> :slightly_smiling_face:`);
-        
+        const taskData1 = {
+            owner_id: 16000006416,
+            title: "Update opportunity contacts",
+            description: `Update opportunity account id: ${data.account.id}`,
+            due_date: 24,
+            targetable_id: data.account.id,
+            targetable_type: "SalesAccount",
+        };
+        const taskData2 = {
+            owner_id: 16000006416,
+            title: "Quote follow up",
+            description: `Quote follow up account id: ${data.account.id}`,
+            due_date: 7,
+            targetable_id: data.account.id,
+            targetable_type: "SalesAccount",
+        };
+        const task1 = await taskService.createTask(taskData1);
+        const task2 = await taskService.createTask(taskData2);
         return res.status(201).send({
             status: 201,
             message: "Quote created",

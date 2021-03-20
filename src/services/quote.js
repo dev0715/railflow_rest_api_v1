@@ -146,7 +146,7 @@ async function create(data) {
         let fsOpportunity = null;
         if (data.account.custom_field.cf_opportunity_id != null) {
             fsOpportunity = await opportunityService.getFsOpportunity(data.account.custom_field.cf_opportunity_id);
-            if (fsOpportunity.amount != fsOpportunityData.deal.amount) {
+            if (!fsOpportunity || fsOpportunity.amount != fsOpportunityData.deal.amount) {
                 fsOpportunity = await opportunityService.createFsOpportunity(fsOpportunityData);
                 console.log(`> opportunity created under account: ${data.account.id}`);
                 const updatedAccount = await accountService.update(data.account.id,{

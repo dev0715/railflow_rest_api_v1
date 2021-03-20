@@ -27,7 +27,7 @@ async function createQuote(req, res, next) {
             license_years: req.body.license_years,
         };
 
-        if (data.contact_id == null) {
+        if (data.contact_id == null || data.contact_id == '') {
             return res.status(400).send({
                 status: 400,
                 data: {
@@ -36,7 +36,7 @@ async function createQuote(req, res, next) {
             });
         }
 
-        if (data.account_id == null) {
+        if (data.account_id == null || data.account_id == '') {
             return res.status(400).send({
                 status: 400,
                 data: {
@@ -63,7 +63,7 @@ async function createQuote(req, res, next) {
             });
         }
 
-        if (data.license_years < 1 || data.license_years > 3) {
+        if (data.license_years == null || data.license_years == '' || data.license_years < 1 || data.license_years > 3) {
             return res.status(400).send({
                 status: 400,
                 data: {

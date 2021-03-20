@@ -5,6 +5,8 @@ const configs = appConfig.getConfigs(process.env.APP_ENV);
 const { getApiClient } = require('../services/request');
 const ApiError = require("../errors/api");
 const invoiceService = require("./invoice");
+const accountService = require("./account");
+const opportunityService = require('./opportunity');
 const { v4: uuid } = require("uuid");
 
 const RAILFLOW_GOLD_LICENSE = "Railflow - Gold License";
@@ -13,6 +15,9 @@ const RAILFLOW_SILVER_LICENSE = "Railflow - Silver License";
 function capitalize(s)
 {
     return s && s[0].toUpperCase() + s.slice(1).toLowerCase();
+}
+function addDays(theDate, days) {
+    return new Date(theDate.getTime() + days*24*60*60*1000);
 }
 async function create(data) {
     try {
@@ -125,6 +130,45 @@ async function create(data) {
             }
         });
         console.log('> estimate status updated to sent');
+
+        const fsOpportunityData = {
+            deal : {
+                name: estimateData.estimate.summary,
+                amount: response.data.estimate.billed_total, // created quote amount
+                sales_account_id: data.account.id,
+                expected_close: addDays(new Date(),30),
+                custom_field: {
+                    cf_contact_email: data.user.email,
+                    cf_number_of_agents: `${20*price_option}-${20*(price_option+1)}`
+                }
+            }
+        };
+        let fsOpportunity = null;
+        if (data.account.custom_field.cf_opportunity_id != null) {
+            fsOpportunity = await opportunityService.getFsOpportunity(data.account.custom_field.cf_opportunity_id);
+            if (fsOpportunity.amount != fsOpportunityData.deal.amount) {
+                fsOpportunity = await opportunityService.createFsOpportunity(fsOpportunityData);
+                console.log(`> opportunity created under account: ${data.account.id}`);
+                const updatedAccount = await accountService.update(data.account.id,{
+                    sales_account: {
+                        custom_field: {
+                            cf_opportunity_id: `${fsOpportunity.id}`
+                        }
+                    }
+                });
+            }
+        } else {
+            fsOpportunity = await opportunityService.createFsOpportunity(fsOpportunityData);
+            console.log(`> opportunity created under account: ${data.account.id}`);
+            const updatedAccount = await accountService.update(data.account.id,{
+                sales_account: {
+                    custom_field: {
+                        cf_opportunity_id: `${fsOpportunity.id}`
+                    }
+                }
+            });
+        }
+        response.data.fsOpportunity = fsOpportunity;
         return response.data;
     } catch (error) {
         console.log(`> error:quote:service: ${error}`);

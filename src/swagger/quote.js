@@ -37,27 +37,6 @@
 /**
  * @swagger
  * /api/quote:
- *    get:
- *      tags:
- *        - Quote
- *      summary: Gets a list of Quotes
- *      description: Returns a list of Quotes
- *      produces:
- *          - application/json
- *      responses:
- *          200:
- *              description: An array of Quotes
- *              content:
- *                application/json:
- *                  schema:
- *                    type: array
- *                    items:
- *                      $ref: '#/components/schemas/Quote'
- */
-
-/**
- * @swagger
- * /api/quote:
  *    post:
  *      tags:
  *        - Quote

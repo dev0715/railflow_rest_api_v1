@@ -165,7 +165,8 @@
          return res.status(201).send({
              status: 201,
              message: "Invoice created",
-             invoiceLink: `https://railflow.hiveage.com/invs/${invoice.invoice.hash_key}`
+             invoiceLink: `https://railflow.hiveage.com/invs/${invoice.invoice.hash_key}`,
+             opportunityLink: `https://railflow.myfreshworks.com/crm/sales/deals/${invoice.fsOpportunity.id}`
          });
  
      } catch (error) {

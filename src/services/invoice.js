@@ -6,6 +6,8 @@ const configs = appConfig.getConfigs(process.env.APP_ENV);
 const ApiError = require("../errors/api");
 const mailgun = require("mailgun-js");
 const { getApiClient } = require('../services/request');
+const accountService = require("./account");
+const opportunityService = require('./opportunity');
 
 function capitalize(s)
 {
@@ -131,6 +133,46 @@ async function createInvoice(data) {
             }
         });
         console.log('> invoice sent');
+
+        const fsOpportunityData = {
+            deal : {
+                name: invoiceData.invoice.summary,
+                amount: response.data.invoice.billed_total, // created quote amount
+                sales_account_id: data.account.id,
+                expected_close: addDays(new Date(),30),
+                custom_field: {
+                    cf_contact_email: data.user.email,
+                    cf_number_of_agents: `${20*price_option}-${20*(price_option+1)}`
+                }
+            }
+        };
+        
+        let fsOpportunity = null;
+        if (data.account.custom_field.cf_opportunity_id != null) {
+            fsOpportunity = await opportunityService.getFsOpportunity(data.account.custom_field.cf_opportunity_id);
+            if (!fsOpportunity || fsOpportunity.amount != fsOpportunityData.deal.amount) {
+                fsOpportunity = await opportunityService.createFsOpportunity(fsOpportunityData);
+                console.log(`> opportunity created under account: ${data.account.id}`);
+                const updatedAccount = await accountService.update(data.account.id,{
+                    sales_account: {
+                        custom_field: {
+                            cf_opportunity_id: `${fsOpportunity.id}`
+                        }
+                    }
+                });
+            }
+        } else {
+            fsOpportunity = await opportunityService.createFsOpportunity(fsOpportunityData);
+            console.log(`> opportunity created under account: ${data.account.id}`);
+            const updatedAccount = await accountService.update(data.account.id,{
+                sales_account: {
+                    custom_field: {
+                        cf_opportunity_id: `${fsOpportunity.id}`
+                    }
+                }
+            });
+        }
+        response.data.fsOpportunity = fsOpportunity;
         return response.data;
     } catch (error) {
         console.log(`> error:invoice:service: ${error}`);

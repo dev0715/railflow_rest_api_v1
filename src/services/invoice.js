@@ -140,6 +140,7 @@ async function createInvoice(data) {
                 amount: response.data.invoice.billed_total, // created quote amount
                 sales_account_id: data.account.id,
                 expected_close: addDays(new Date(),30),
+                deal_stage_id: 16000263411,
                 custom_field: {
                     cf_contact_email: data.user.email,
                     cf_number_of_agents: `${20*price_option}-${20*(price_option+1)}`

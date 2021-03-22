@@ -167,8 +167,8 @@ async function createQuote(req, res, next) {
             title: "Quote follow up",
             description: `Quote follow up account id: ${data.account.id}\nOpportunity Link: https://railflow.myfreshworks.com/crm/sales/deals/${quote.fsOpportunity.id}`,
             due_date: 7,
-            targetable_id: data.account.id,
-            targetable_type: "SalesAccount",
+            targetable_id: quote.fsOpportunity.id,
+            targetable_type: "Deal",
         };
         const task1 = await taskService.createTask(taskData1);
         const task2 = await taskService.createTask(taskData2);

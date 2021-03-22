@@ -162,6 +162,12 @@ async function createInvoice(data) {
                     }
                 });
             }
+            if (!fsOpportunity || fsOpportunity.amount == fsOpportunityData.deal.amount) {
+                fsOpportunity = await opportunityService.updateFsOpportunity(fsOpportunity.id, {deal:{
+                    deal_stage_id: 16000263411
+                }});
+                console.log(`> opportunity is moved to Invoice column`);
+            }
         } else {
             fsOpportunity = await opportunityService.createFsOpportunity(fsOpportunityData);
             console.log(`> opportunity created under account: ${data.account.id}`);

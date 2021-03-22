@@ -164,7 +164,7 @@ async function createQuote(req, res, next) {
         };
         const taskData2 = {
             owner_id: 16000006416,
-            title: "Quote follow up",
+            title: `${data.account.name}: Quote follow up`,
             description: `Quote follow up account id: ${data.account.id}\nOpportunity Link: https://railflow.myfreshworks.com/crm/sales/deals/${quote.fsOpportunity.id}`,
             due_date: 7,
             targetable_id: quote.fsOpportunity.id,

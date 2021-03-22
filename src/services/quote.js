@@ -133,7 +133,7 @@ async function create(data) {
 
         const fsOpportunityData = {
             deal : {
-                name: estimateData.estimate.summary,
+                name: `${data.account.name}: ${capitalize(data.license_type)}: ${data.license_years} Year License: ${20*price_option}-${20*(price_option+1)} Users`,
                 amount: response.data.estimate.billed_total, // created quote amount
                 sales_account_id: data.account.id,
                 expected_close: addDays(new Date(),30),

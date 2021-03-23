@@ -10,7 +10,6 @@ const contactRouter = require("./routes/contact");
 const signupRouter = require("./routes/signup");
 const licenseRouter = require("./routes/license");
 const eventRouter = require("./routes/event");
-const opportunityRouter = require("./routes/opportunity");
 const invoiceRouter = require("./routes/invoice");
 const quoteRouter = require("./routes/quote");
 const accountRouter = require("./routes/account");
@@ -54,8 +53,6 @@ class Server {
 
     const options = {
       swaggerDefinition,
-      // Paths to files containing OpenAPI definitions
-      // apis: ['src/routes/*.js'],
       apis: ['src/swagger/*.js','src/routes/*.js']
     };
 
@@ -69,7 +66,6 @@ class Server {
   config() {
     this.app.use(bodyParser.urlencoded({ extended: true }));
     this.app.use(bodyParser.json());
-    // this.app.set('view engine', 'hbs');
 
     const corsOptions = {
       origin: config.ALLOWED_DOMAINS,
@@ -83,11 +79,9 @@ class Server {
   routes() {
     this.app.use("/api/account", accountRouter);
     this.app.use("/api/contact", contactRouter);
-    this.app.use("/api/register", contactRouter);
     this.app.use("/api/verify", signupRouter);
     this.app.use("/api/license", licenseRouter);
     this.app.use("/api/event", eventRouter);
-    this.app.use("/api/opportunity", opportunityRouter);
     this.app.use("/api/invoice", invoiceRouter);
     this.app.use("/api/quote", quoteRouter);
 
@@ -95,11 +89,6 @@ class Server {
       if (res.headersSent) {
         return next();
       }
-
-      // if (err) {
-      //   const response = err.toJSON();
-      //   return res.status(err.status).send(response);
-      // }
     });
   }
 

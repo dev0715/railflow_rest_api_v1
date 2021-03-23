@@ -4,18 +4,35 @@ const appConfig = require('../../configs/app');
 const configs = appConfig.getConfigs(process.env.APP_ENV);
 
 const ApiError = require("../errors/api");
-const mailgun = require("mailgun-js");
 const { getApiClient } = require('../services/request');
 const accountService = require("./account");
 const opportunityService = require('./opportunity');
 
+/**
+ * String format capitalize
+ * @param {String} s Input string
+ * @returns Capitalized string
+ */
 function capitalize(s)
 {
     return s && s[0].toUpperCase() + s.slice(1).toLowerCase();
 }
+
+/**
+ * Add day to input date
+ * @param {*} theDate Input date
+ * @param {*} days Number of days to be added
+ * @returns New added days
+ */
 function addDays(theDate, days) {
     return new Date(theDate.getTime() + days*24*60*60*1000);
 }
+
+/**
+ * Service: Create new Invoice Client
+ * @param {*} data Input data
+ * @returns Promise
+ */
 async function createInvoiceClient(data) {
     console.log(`> creating invoice for: ${JSON.stringify(data)}`);
         try {
@@ -41,6 +58,11 @@ async function createInvoiceClient(data) {
         }
 }
 
+/**
+ * Service: create new invoice based on the input data 
+ * @param {*} data Input data
+ * @returns Promise
+ */
 async function createInvoice(data) {
     try {
         let price_option = 0

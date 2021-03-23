@@ -5,6 +5,12 @@ const configs = appConfig.getConfigs(process.env.APP_ENV);
 const { getApiClient } = require('../services/request');
 const ApiError = require("../errors/api");
 
+/**
+ * Service: Update an opportunity follow the request id
+ * @param {*} id Opportunity ID to be updated
+ * @param {*} data Opportunity Data
+ * @returns Promise
+ */
 async function updateFsOpportunity(id, data) {
     try {
         const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL);
@@ -26,6 +32,11 @@ async function updateFsOpportunity(id, data) {
     }
 }
 
+/**
+ * Service: Create a new Opportunity and assign to correct column
+ * @param {*} data Opportunity Data
+ * @returns Promise
+ */
 async function createFsOpportunity(data) {
     try {
         const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL);
@@ -49,6 +60,12 @@ async function createFsOpportunity(data) {
         throw new ApiError(`Error while creating the opportunity: ${error.response.data.errors.message[0]}`);
     }
 }
+
+/**
+ * Service: Get an opportunity by input ID
+ * @param {*} id Opportunity ID
+ * @returns Promise
+ */
 async function getFsOpportunity(id) {
     try {
         const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL);

@@ -10,6 +10,11 @@ const BadRequestError = require("../errors/badrequest");
 
 const qs = require('qs');
 
+/**
+ * Service: Get new license
+ * @param {*} body Input data
+ * @returns Promise
+ */
 async function getCryptolensToken(body) {
   try {
     const apiClient = await getApiClient(configs.CRYPTOLENS_BASE_URL);
@@ -35,19 +40,17 @@ async function getCryptolensToken(body) {
 
     console.log(`> generated the cryptolens token: ${JSON.stringify(response.data)} for: ${body.contact_email}`);
     return response.data;
-
-    // return Promise.resolve({
-    //   key: 'FZRZC-BPOJF-JYZMB-JFRJR',
-    //   customerId: 435453,
-    //   customerName: "sumedh",
-    // });
   } catch (error) {
     console.log(`> error generating token: ${error}`);
     throw new ApiError(`Error while getting cryptolens token`);
-    return
   }
 }
 
+/**
+ * Service: Extend a license
+ * @param {*} data Input data including key and extension period
+ * @returns Promise
+ */
 async function extend(data) {
   try {
     if (data.contact_cf_license_key == null || data.contact_cf_extension_period == null) {
@@ -73,10 +76,6 @@ async function extend(data) {
       console.log(`> license extended for: ${data.contact_id}`);
       return response.data;
     }
-
-    // return Promise.resolve(); // only for testing purposes.
-
-    // throw new ApiError(`> !200 from cryyptolens`);
   } catch (error) {
     throw new ApiError(`There was some error in extending the license`);
   }

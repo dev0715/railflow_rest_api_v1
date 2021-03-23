@@ -11,6 +11,13 @@ const { getApiClient } = require('./request');
 
 const ApiError = require("../errors/api");
 const BadRequestError = require("../errors/badrequest");
+
+/**
+ * Service: Update an account
+ * @param {*} account_id The account ID
+ * @param {*} data The data
+ * @returns Promise
+ */
 async function update(account_id, data) {
     try {
         const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL);
@@ -34,6 +41,12 @@ async function update(account_id, data) {
         throw new ApiError(`Error while creating the account: ${error.response.data.errors.message[0]}`);
     }
 }
+
+/**
+ * Service: Create an account
+ * @param {*} data The data
+ * @returns {Promise} Created account
+ */
 async function create(data) {
     try {
         const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL);
@@ -59,6 +72,13 @@ async function create(data) {
         throw new ApiError(`Error while creating the account: ${error.response.data.errors.message[0]}`);
     }
 }
+
+/**
+ * Service: update hiveage hash custom field
+ * @param {*} account_id The account ID
+ * @param {*} hash Hiveage hash
+ * @returns Promise
+ */
 async function updateHiveageHash(account_id,hash) {
     try {
         const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL);
@@ -81,6 +101,12 @@ async function updateHiveageHash(account_id,hash) {
         throw new ApiError(`Error while updating hiveage hash: ${error.response.data.errors.message[0]}`);
     }
 }
+
+/**
+ * Service: Get account detail by ID
+ * @param {*} account_id Account ID
+ * @returns Promise
+ */
 async function getAccountById(account_id) {
     const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL);
     try {
@@ -104,6 +130,12 @@ async function getAccountById(account_id) {
         return false;
     }
 }
+
+/**
+ * Service: Get an account by company name
+ * @param {*} name The name
+ * @returns Promise
+ */
 async function getAccountIfAlreadyPresent(name) {
     const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL);
     const response = await apiClient.request({
@@ -139,6 +171,11 @@ async function getAccountIfAlreadyPresent(name) {
     return null;
 }
 
+/**
+ * Service: Create new Hiveage network
+ * @param {*} network The network data
+ * @returns Promise
+ */
 async function createHiveageNetwork(network) {
     try {
         const apiClient = await getApiClient(configs.HIVEAGE_BASE_URL);
@@ -161,7 +198,15 @@ async function createHiveageNetwork(network) {
         console.log('error when create hiveage network');
         return false;
     }
-}async function updateHiveageNetwork(hash_key,network) {
+}
+
+/**
+ * Service: Update new Hiveage network
+ * @param {*} network The network data
+ * @param {*} hash_key The hash key to be updated
+ * @returns Promise
+ */
+async function updateHiveageNetwork(hash_key,network) {
     try {
         const apiClient = await getApiClient(configs.HIVEAGE_BASE_URL);
         const response = await apiClient.request({
@@ -184,6 +229,12 @@ async function createHiveageNetwork(network) {
         return false;
     }
 }
+
+/**
+ * Service: Get Hiveage network from a hash
+ * @param {*} hash Network hash
+ * @returns Promise
+ */
 async function getHiveageNetwork(hash) {
     const apiClient = await getApiClient(configs.HIVEAGE_BASE_URL);
     try {
@@ -207,6 +258,11 @@ async function getHiveageNetwork(hash) {
     }
 }
 
+/**
+ * Service: Get all account from view - use in filter
+ * @param {*} viewId filter view id
+ * @returns Promise
+ */
 async function getAllAccountsFromView(viewId) {
     const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL);
     const response = await apiClient.request({

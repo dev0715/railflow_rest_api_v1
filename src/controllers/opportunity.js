@@ -6,12 +6,15 @@
 
 "use strict";
 
-const dayjs = require('dayjs');
-
-const BadRequestError = require("../errors/badrequest");
-const noteService = require('../services/note');
 const invoiceService = require('../services/invoice');
 
+/**
+ * Function: Create new Opportunity
+ * @param {*} req Request
+ * @param {*} res Response
+ * @param {*} next Next
+ * @returns Promise
+ */
 async function createOpportunity(req, res, next) {
     try {
         const data = {

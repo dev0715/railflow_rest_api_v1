@@ -65,6 +65,9 @@
  
  const { updateAccount } = require('../controllers/account');
  
+ /**
+  * Account GET
+  */
  router.get("/", (req, res) => {
    res.status(200).send("Account Resource");
  });

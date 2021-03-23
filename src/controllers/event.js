@@ -11,6 +11,13 @@ const dayjs = require('dayjs');
 const BadRequestError = require("../errors/badrequest");
 const noteService = require('../services/note');
 
+/**
+ * Function: Create new Event
+ * @param {*} req Request
+ * @param {*} res Response
+ * @param {*} next Next
+ * @returns Promise
+ */
 async function createEvent(req, res, next) {
     try {
         if (!(req.body["event-data"]["user-variables"] && req.body["event-data"]["user-variables"].contactId)) {

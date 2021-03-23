@@ -6,21 +6,19 @@
 
 "use strict";
 
-const fs = require('fs');
-const path = require('path');
-const dayjs = require('dayjs');
-const Handlebars = require('handlebars');
-
 const ApiError = require("../errors/api");
-const UnprocessableRequestError = require("../errors/unprocessablerequest");
 
-const contactService = require('../services/contact');
-const accountService = require('../services/account');
 const emailService = require('../services/email');
 const noteService = require('../services/note');
-const taskService = require('../services/task');
 const licenseService = require('../services/license');
 
+/**
+ * Function: Extend License base on contact_cf_extension_period in the body
+ * @param {*} req Request
+ * @param {*} res Response
+ * @param {*} next Next
+ * @returns Promise
+ */
 async function extendLicense(req, res, next) {
     try {
         const license = await licenseService.extend(req.body);
@@ -40,6 +38,12 @@ async function extendLicense(req, res, next) {
     }
 }
 
+/**
+ * Protected Function: Send the license email after extended
+ * @param {*} body Body
+ * @param {*} text Text
+ * @returns Promise
+ */
 async function sendLicenseExtensionEmail(body, text) {
     try {
         // collate all the data. pass it to general email service send.

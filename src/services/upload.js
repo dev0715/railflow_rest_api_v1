@@ -22,6 +22,11 @@ const s3 = new AWS.S3({
     secretAccessKey: SECRET
 });
 
+/**
+ * Service: use S3 to upload images
+ * @param {*} data 
+ * @returns 
+ */
 async function uploadToS3(data) {
     try {
         const PRODUCT_ID = 8245;
@@ -41,15 +46,12 @@ async function uploadToS3(data) {
         // upload to s3
         const uniqueHash = Math.random().toString(36).substr(2, 12);
         const params = {
-            // Key: `${data.customerName}/${data.customerName}_railflow_license.skm`,
             Key: `${uniqueHash}/railflow_license.skm`,
             Bucket: "railflow",
             Body: fileContent
         };
 
         // Uploading files to the bucket
-        // const uploadRes = await s3.upload(params);
-        // await s3.putObject(params);
         return new Promise((resolve, reject) => {
             s3.putObject(params, function (err, data) {
                 if (err) {
@@ -67,16 +69,6 @@ async function uploadToS3(data) {
     } catch (error) {
         throw new ApiError(`Error while uploading license; ${error}`);
     }
-}
-
-async function readFile(path) {
-    return new Promise((resolve, reject) => {
-        fs.readFile(path, 'utf8', (err, data) => {
-            if (err) reject(err);
-            resolve(data.toString());
-        })
-    });
-
 }
 
 module.exports = {

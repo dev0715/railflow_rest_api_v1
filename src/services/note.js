@@ -5,6 +5,12 @@ const configs = appConfig.getConfigs(process.env.APP_ENV);
 const { getApiClient } = require('../services/request');
 const ApiError = require("../errors/api");
 
+/**
+ * Service: Add a note into tagetable ID
+ * @param {*} targetableId Tagetable ID, should be a contact ID
+ * @param {*} description Note content
+ * @returns Promise
+ */
 async function create(targetableId, description) {
     try {
         const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL); // put railflow host
@@ -31,6 +37,13 @@ async function create(targetableId, description) {
         throw new ApiError(`Error while creating node for contact id: ${targetableId}`);
     }
 }
+
+/**
+ * Service: Crate new note for account
+ * @param {*} targetableId Targetable ID should be account_id
+ * @param {*} description Note content
+ * @returns Promise
+ */
 async function accountNote(targetableId, description) {
     try {
         const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL); // put railflow host

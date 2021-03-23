@@ -7,6 +7,11 @@ const ApiError = require("../errors/api");
 
 const dayjs = require('dayjs');
 
+/**
+ * Service: Create new Task
+ * @param {*} data Task data
+ * @returns Promise
+ */
 async function create(data) {
     try {
         const afterDays = [5, 10];
@@ -44,6 +49,12 @@ async function create(data) {
         return;
     }
 }
+
+/**
+ * Service: Create new Task new
+ * @param {*} data Task data
+ * @returns Promise
+ */
 async function createTask(data) {
     try {
         const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL); // put railflow host

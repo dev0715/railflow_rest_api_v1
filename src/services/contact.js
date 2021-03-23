@@ -13,9 +13,12 @@ const appConfigs = require('../../configs/app');
 const configs = appConfigs.getConfigs(process.env.APP_ENV || "development");
 
 const ApiError = require("../errors/api");
-// const UnprocessableRequestError = require("../errors/unprocessablerequest");
-// const BadRequestError = require("../errors/badrequest");
 
+/**
+ * Service: create new contact
+ * @param {*} data Contact data
+ * @returns Promise
+ */
 async function create(data) {
   try {
     const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL);
@@ -54,6 +57,11 @@ async function create(data) {
   }
 }
 
+/**
+ * Service: Update a contact by contact_id in the body
+ * @param {*} data Contact data
+ * @returns Promise
+ */
 async function update(data) {
   try {
     const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL);
@@ -85,42 +93,11 @@ async function update(data) {
   }
 }
 
-// todo; deprecate
-async function checkIfAlreadyPresent(email) {
-  const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL);
-  const response = await apiClient.request({
-    method: 'GET',
-    url: '/crm/sales/api/contacts/filters',
-    headers: {
-      // TODO: use environment variable
-      // Authorization: `Token token=${process.env.FRESHSALES_API_KEY}`,
-      Authorization: `Token token=${configs.FRESHSALES_API_KEY}`,
-    },
-  });
-
-  if (response && response.status === 200) {
-    const filters = response.data.filters;
-    let viewId;
-    for (let f of filters) {
-      if (f.name === "All Contacts") {
-        viewId = f.id;
-      }
-    }
-
-    const allContacts = await getAllContactsFromView(viewId);
-
-    if (allContacts != null) {
-      for (let c of allContacts) {
-        if (c.email === email) {
-          return true
-        }
-      }
-    }
-  }
-
-  return false;
-}
-
+/**
+ * Service: Get contact by ID
+ * @param {*} contact_id The contact ID
+ * @returns Promise
+ */
 async function getContactById(contact_id) {
   const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL);
   try {
@@ -145,6 +122,12 @@ async function getContactById(contact_id) {
     return false;
   }
 }
+
+/**
+ * Service: Get contact by email
+ * @param {*} email Contact email
+ * @returns Promise
+ */
 async function getContactIfAlreadyPresent(email) {
   const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL);
   const response = await apiClient.request({
@@ -180,6 +163,11 @@ async function getContactIfAlreadyPresent(email) {
   return null;
 }
 
+/**
+ * Service: Get all contact by view (use in filter)
+ * @param {*} viewId Filter view id
+ * @returns Promise
+ */
 async function getAllContactsFromView(viewId) {
   const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL);
   const response = await apiClient.request({
@@ -202,7 +190,6 @@ async function getAllContactsFromView(viewId) {
 module.exports = {
   create,
   update,
-  checkIfAlreadyPresent,
   getContactIfAlreadyPresent,
   getContactById
 };

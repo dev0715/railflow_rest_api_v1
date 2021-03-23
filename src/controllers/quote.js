@@ -6,9 +6,6 @@
 
 "use strict";
 
-const dayjs = require('dayjs');
-
-const ApiError = require("../errors/badrequest");
 const noteService = require('../services/note');
 const quoteService = require('../services/quote');
 const contactService = require('../services/contact');
@@ -16,6 +13,13 @@ const accountService = require('../services/account');
 const slackService = require('../services/slack');
 const taskService = require('../services/task');
 
+/**
+ * Function: Create a new Quote
+ * @param {*} req Request body
+ * @param {*} res Response
+ * @param {*} next Next
+ * @returns Promise
+ */
 async function createQuote(req, res, next) {
     try {
         const data = {

@@ -8,7 +8,6 @@
 
 const ApiError = require("../errors/api");
 const UnprocessableRequestError = require("../errors/unprocessablerequest");
-// const BadRequestError = require("../errors/badrequest");
 
 const fs = require('fs');
 const Handlebars = require('handlebars');
@@ -23,6 +22,13 @@ const uploadService = require('../services/upload');
 const noteService = require('../services/note');
 const taskService = require('../services/task');
 
+/**
+ * Function: Create new Contact
+ * @param {*} request Request body
+ * @param {*} res Response
+ * @param {*} next Next
+ * @returns Promise
+ */
 async function createContact(request, res, next) {
   try {
     const data = {
@@ -59,7 +65,7 @@ async function createContact(request, res, next) {
         },
       });
     }
-
+    // Retrieve account/company
     let account = await accountService.getAccountIfAlreadyPresent(request.body.company);
 
     if (!account) {
@@ -113,6 +119,13 @@ async function createContact(request, res, next) {
   }
 }
 
+/**
+ * Function: update a Contact
+ * @param {*} request Request
+ * @param {*} res Response
+ * @param {*} next Next
+ * @returns Promise
+ */
 async function updateContact(request, res, next) {
   try {
     const contact_id = request.body.contact_id;
@@ -186,7 +199,6 @@ async function getCryptolensFileUrl(cryptolensTokenObject) {
   try {
       const uploadRes = await uploadService.uploadToS3(cryptolensTokenObject);
       let text = ` You can also check out your license here: ${uploadRes.url}`;
-      // text = uploadRes.Location;
       return {
           url: uploadRes.url,
           text

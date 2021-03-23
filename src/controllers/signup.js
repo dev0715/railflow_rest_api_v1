@@ -13,7 +13,6 @@ const dayjs = require('dayjs');
 const Handlebars = require('handlebars');
 
 const ApiError = require("../errors/api");
-const UnprocessableRequestError = require("../errors/unprocessablerequest");
 
 const contactService = require('../services/contact');
 const accountService = require('../services/account');

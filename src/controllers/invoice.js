@@ -5,8 +5,6 @@
  */
 
  "use strict";
-
- const dayjs = require('dayjs');
  
  const ApiError = require("../errors/badrequest");
  const noteService = require('../services/note');
@@ -15,6 +13,13 @@
  const accountService = require('../services/account');
  const slackService = require('../services/slack');
  
+ /**
+  * Function: Create new Invoice
+  * @param {*} req Request
+  * @param {*} res Response
+  * @param {*} next Next
+  * @returns Promise
+  */
  async function createInvoice(req, res, next) {
      try {
          const data = {
@@ -172,7 +177,6 @@
      } catch (error) {
          console.log(`> error:controllers:invoice: ${error}`);
          return res.status(error.status).send(error.toJSON());
-         // throw new ApiError(`Something went wrong while creating quote.`);
      }
  }
  

@@ -12,15 +12,6 @@ variables:
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: ""
 
-# test:
-#   stage: test
-#   image: node
-#   script:
-#     - npm ci
-#     - npm run test
-#   only:
-#     - master
-
 build:
   stage: build
   before_script:

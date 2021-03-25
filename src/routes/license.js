@@ -65,6 +65,13 @@
  *      description: Returns a list of licenses
  *      produces:
  *          - application/json
+ *      parameters:
+ *          - name: token
+ *            in: header
+ *            description: API Security Token
+ *            required: true
+ *            type: string
+ *            example: ABCD123456
  *      responses:
  *          200:
  *              description: An array of licenses
@@ -99,6 +106,12 @@ router.get("/", (req, res) => {
  *      produces:
  *          - application/json
  *      parameters:
+ *          - name: token
+ *            in: header
+ *            description: API Security Token
+ *            required: true
+ *            type: string
+ *            example: ABCD123456
  *          - name: License
  *            description: License information
  *            in: body

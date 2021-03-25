@@ -81,6 +81,13 @@
  *      summary: Update a account
  *      produces:
  *          - application/json
+ *      parameters:
+ *        - name: token
+ *          in: header
+ *          description: API Security Token
+ *          required: true
+ *          type: string
+ *          example: ABCD123456
  *      consumes:
  *          - application/json
  *      requestBody:

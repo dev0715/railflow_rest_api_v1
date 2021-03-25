@@ -61,6 +61,13 @@ router.get("/", (req, res) => {
  *      summary: Create a contact
  *      produces:
  *          - application/json
+ *      parameters:
+ *        - name: token
+ *          in: header
+ *          description: API Security Token
+ *          required: true
+ *          type: string
+ *          example: ABCD123456
  *      requestBody:
  *         content:
  *            application/json:
@@ -103,6 +110,13 @@ router.post("/", (req, res, next) => {
  *          - application/json
  *      consumes:
  *          - application/json
+ *      parameters:
+ *          - name: token
+ *            in: header
+ *            description: API Security Token
+ *            required: true
+ *            type: string
+ *            example: ABCD123456
  *      requestBody:
  *         content:
  *            application/json:

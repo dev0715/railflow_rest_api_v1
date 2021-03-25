@@ -21,8 +21,18 @@ const noteService = require('../services/note');
 const taskService = require('../services/task');
 const licenseService = require('../services/license');
 const uploadService = require('../services/upload');
+const { checkToken } = require('../services/token');
 
 async function createLead(req, res, next) {
+    // Middleware: Check token beforehand
+    const isAuthenticated = await checkToken(req.headers.token);
+    if (!isAuthenticated) {
+      return res.status(400).send({
+        status: 400,
+        message: 'token invalid or missing'
+      });
+    }
+  
   try {
 
     // 1. get token

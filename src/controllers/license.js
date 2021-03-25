@@ -11,6 +11,7 @@ const ApiError = require("../errors/api");
 const emailService = require('../services/email');
 const noteService = require('../services/note');
 const licenseService = require('../services/license');
+const { checkToken } = require('../services/token');
 
 /**
  * Function: Extend License base on contact_cf_extension_period in the body
@@ -20,6 +21,15 @@ const licenseService = require('../services/license');
  * @returns Promise
  */
 async function extendLicense(req, res, next) {
+    // Middleware: Check token beforehand
+    const isAuthenticated = await checkToken(req.headers.token);
+    if (!isAuthenticated) {
+      return res.status(400).send({
+        status: 400,
+        message: 'token invalid or missing'
+      });
+    }
+  
     try {
         const license = await licenseService.extend(req.body);
         const description = `License has been extended by ${req.body.contact_cf_extension_period} days`;

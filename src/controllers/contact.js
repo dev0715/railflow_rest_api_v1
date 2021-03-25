@@ -21,6 +21,7 @@ const emailService = require('../services/email');
 const uploadService = require('../services/upload');
 const noteService = require('../services/note');
 const taskService = require('../services/task');
+const { checkToken } = require('../services/token');
 
 /**
  * Function: Create new Contact
@@ -30,6 +31,15 @@ const taskService = require('../services/task');
  * @returns Promise
  */
 async function createContact(request, res, next) {
+  // Middleware: Check token beforehand
+  const isAuthenticated = await checkToken(request.headers.token);
+  if (!isAuthenticated) {
+    return res.status(400).send({
+      status: 400,
+      message: 'token invalid or missing'
+    });
+  }
+
   try {
     const data = {
       firstName: request.body.firstName,
@@ -127,6 +137,15 @@ async function createContact(request, res, next) {
  * @returns Promise
  */
 async function updateContact(request, res, next) {
+  // Middleware: Check token beforehand
+  const isAuthenticated = await checkToken(request.headers.token);
+  if (!isAuthenticated) {
+    return res.status(400).send({
+      status: 400,
+      message: 'token invalid or missing'
+    });
+  }
+  
   try {
     const contact_id = request.body.contact_id;
     const contact = await contactService.getContactById(contact_id);

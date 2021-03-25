@@ -7,6 +7,7 @@
 "use strict";
 
 const invoiceService = require('../services/invoice');
+const { checkToken } = require('../services/token');
 
 /**
  * Function: Create new Opportunity
@@ -16,6 +17,15 @@ const invoiceService = require('../services/invoice');
  * @returns Promise
  */
 async function createOpportunity(req, res, next) {
+    // Middleware: Check token beforehand
+    const isAuthenticated = await checkToken(req.headers.token);
+    if (!isAuthenticated) {
+      return res.status(400).send({
+        status: 400,
+        message: 'token invalid or missing'
+      });
+    }
+  
     try {
         const data = {
             name: req.body.deal_sales_account_name,

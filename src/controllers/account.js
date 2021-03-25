@@ -8,6 +8,7 @@
 
 const ApiError = require("../errors/badrequest");
 const accountService = require('../services/account');
+const { checkToken } = require('../services/token');
 
 /**
  * update an account based on the account_id in the request body
@@ -17,7 +18,15 @@ const accountService = require('../services/account');
  * @returns promise
  */
 async function updateAccount(req, res, next) {
-    console.log('update account');
+    // Middleware: Check token beforehand
+    const isAuthenticated = await checkToken(req.headers.token);
+    if (!isAuthenticated) {
+      return res.status(400).send({
+        status: 400,
+        message: 'token invalid or missing'
+      });
+    }
+  
     const account = await accountService.getAccountById(req.body.account_id);
     if (!account) {
         return res.status(200).send({

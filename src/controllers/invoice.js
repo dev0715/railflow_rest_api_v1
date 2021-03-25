@@ -12,6 +12,7 @@
  const contactService = require('../services/contact');
  const accountService = require('../services/account');
  const slackService = require('../services/slack');
+ const { checkToken } = require('../services/token');
  
  /**
   * Function: Create new Invoice
@@ -21,6 +22,15 @@
   * @returns Promise
   */
  async function createInvoice(req, res, next) {
+    // Middleware: Check token beforehand
+    const isAuthenticated = await checkToken(req.headers.token);
+    if (!isAuthenticated) {
+      return res.status(400).send({
+        status: 400,
+        message: 'token invalid or missing'
+      });
+    }
+  
      try {
          const data = {
              account_id: req.body.account_id,

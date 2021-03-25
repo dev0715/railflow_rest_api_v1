@@ -12,6 +12,7 @@ const contactService = require('../services/contact');
 const accountService = require('../services/account');
 const slackService = require('../services/slack');
 const taskService = require('../services/task');
+const { checkToken } = require('../services/token');
 
 /**
  * Function: Create a new Quote
@@ -21,6 +22,15 @@ const taskService = require('../services/task');
  * @returns Promise
  */
 async function createQuote(req, res, next) {
+    // Middleware: Check token beforehand
+    const isAuthenticated = await checkToken(req.headers.token);
+    if (!isAuthenticated) {
+      return res.status(400).send({
+        status: 400,
+        message: 'token invalid or missing'
+      });
+    }
+  
     try {
         const data = {
             account_id: req.body.account_id,

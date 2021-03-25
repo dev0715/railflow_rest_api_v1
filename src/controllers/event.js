@@ -10,6 +10,7 @@ const dayjs = require('dayjs');
 
 const BadRequestError = require("../errors/badrequest");
 const noteService = require('../services/note');
+const { checkToken } = require('../services/token');
 
 /**
  * Function: Create new Event
@@ -19,6 +20,15 @@ const noteService = require('../services/note');
  * @returns Promise
  */
 async function createEvent(req, res, next) {
+    // Middleware: Check token beforehand
+    const isAuthenticated = await checkToken(req.headers.token);
+    if (!isAuthenticated) {
+      return res.status(400).send({
+        status: 400,
+        message: 'token invalid or missing'
+      });
+    }
+  
     try {
         if (!(req.body["event-data"]["user-variables"] && req.body["event-data"]["user-variables"].contactId)) {
             throw new BadRequestError(`Contact id is required to register event`);

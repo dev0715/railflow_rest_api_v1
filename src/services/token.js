@@ -13,6 +13,9 @@
  * @returns true: matched | false: unmatched
  */
  async function checkToken(token) {
+     if (configs.ALLOWED_PARTY_SECRET == 'ALL') {
+         return true;
+     }
      if (typeof token == 'undefined') {
          return false;
      }

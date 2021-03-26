@@ -93,6 +93,12 @@ To change the port on which app is running:
 
 > Change the `APP_PORT` variable in `configs/app.js`.
 
+> Change the `ALLOWED_PARTY_SECRET` variable in `configs/app.js`. This is allow you to secure the api endpoints by enabling the token middleware.
+>> You can temporary disable the middleware by set `ALLOWED_PARTY_SECRET = ALL`
+
+> Add token to your request header `token: your_token_here`.
+> If the token is missing or missmatch, system will return the 400 error `token invalid or missing`
+
 ### Deploying to production.
 
 We have set up the gitlab ci/cd which will get triggered when something is pushed to master or if any branch is merged to master.

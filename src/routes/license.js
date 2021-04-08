@@ -71,7 +71,7 @@
  *            description: API Security Token
  *            required: true
  *            type: string
- *            example: ABCD123456
+ *            example: HAhFXukfwrN3SrDMhhYetfAE
  *      responses:
  *          200:
  *              description: An array of licenses
@@ -103,6 +103,12 @@ router.get("/", (req, res) => {
  *      tags:
  *        - License
  *      summary: Extend License
+ *      description: |
+ *          PATCH method to extend license
+ *          <br>1. Get contact info, if does not exist -> response with 404 not found message. 
+ *          <br>3. Try to extend license.
+ *          <br>3. Add note in contact.
+ *          <br>4. Response with code 200, license extended.
  *      produces:
  *          - application/json
  *      parameters:
@@ -111,7 +117,7 @@ router.get("/", (req, res) => {
  *            description: API Security Token
  *            required: true
  *            type: string
- *            example: ABCD123456
+ *            example: HAhFXukfwrN3SrDMhhYetfAE
  *          - name: License
  *            description: License information
  *            in: body

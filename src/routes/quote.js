@@ -55,6 +55,13 @@ router.get("/", (req, res) => {
  *      tags:
  *        - Quote
  *      summary: Create Quote
+ *      description: |
+ *          POST method to create a quote
+ *          <br>1. Validate the payload
+ *          <br>2. Get contact info, if does not exist -> response with 404 not found message. 
+ *          <br>3. Create quote.
+ *          <br>4. Create note in contact and send slack message.
+ *          <br>5. Response with code 201, quote created.
  *      produces:
  *          - application/json
  *      consumes:
@@ -65,7 +72,7 @@ router.get("/", (req, res) => {
  *          description: API Security Token
  *          required: true
  *          type: string
- *          example: ABCD123456
+ *          example: HAhFXukfwrN3SrDMhhYetfAE
  *      requestBody:
  *         content:
  *            application/json:

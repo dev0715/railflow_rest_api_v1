@@ -79,6 +79,12 @@
  *      tags:
  *        - Account
  *      summary: Update a account
+ *      description: |
+ *          PUT method to update a account
+ *          <br>1. Get account by ID
+ *          <br>2. Get Hiveage network, if does not exist then create new network
+ *          <br>3. Update account accordingly then response with the status 200
+ *          <br>4. If account does not exist, response with the status 200 with the message "account not found".
  *      produces:
  *          - application/json
  *      parameters:
@@ -87,7 +93,7 @@
  *          description: API Security Token
  *          required: true
  *          type: string
- *          example: ABCD123456
+ *          example: HAhFXukfwrN3SrDMhhYetfAE
  *      consumes:
  *          - application/json
  *      requestBody:

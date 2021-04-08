@@ -214,6 +214,12 @@ router.get("/", (req, res) => {
  *      tags:
  *        - Event
  *      summary: Event webhook
+ *      description: |
+ *          POST method to create an event
+ *          <br>1. Validate the payload
+ *          <br>2. Update the event. 
+ *          <br>3. Add note.
+ *          <br>4. Response with code 200, account created.
  *      produces:
  *          - application/json
  *      parameters:
@@ -222,7 +228,7 @@ router.get("/", (req, res) => {
  *            description: API Security Token
  *            required: true
  *            type: string
- *            example: ABCD123456
+ *            example: HAhFXukfwrN3SrDMhhYetfAE
  *          - name: Event
  *            description: Event Payload
  *            in: body

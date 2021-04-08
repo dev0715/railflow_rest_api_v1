@@ -49,6 +49,14 @@ router.get("/", (req, res) => {
  *      tags:
  *        - Contact
  *      summary: Verify a contact
+ *      description: |
+ *          POST method to create a quote
+ *          <br>1. Validate the payload
+ *          <br>2. Get cryptolen token
+ *          <br>3. Send onboarding email
+ *          <br>4. Create note and task
+ *          <br>5. Update contact.
+ *          <br>6. Response with 201 code, message "contact verified"
  *      produces:
  *          - application/json
  *      consumes:
@@ -59,7 +67,7 @@ router.get("/", (req, res) => {
  *          description: API Security Token
  *          required: true
  *          type: string
- *          example: ABCD123456
+ *          example: HAhFXukfwrN3SrDMhhYetfAE
  *      requestBody:
  *         content:
  *            application/json:

@@ -59,6 +59,13 @@ router.get("/", (req, res) => {
  *      tags:
  *        - Contact
  *      summary: Create a contact
+ *      description: |
+ *          POST method to create a contact
+ *          <br>1. Get First name, Last name, Email, Phone, Job Title from payload
+ *          <br>2. Check if the email is already existed then then check "cf_license_status". 
+ *          <br>--> If status is sent, response with the code 200 withe "Duplicate Registration" error message
+ *          <br>--> If status is noy sent, response with the code 201 created with the new contact info
+ *          <br>3. Crate contact then response with the code 201 and created contact.
  *      produces:
  *          - application/json
  *      parameters:
@@ -67,7 +74,7 @@ router.get("/", (req, res) => {
  *          description: API Security Token
  *          required: true
  *          type: string
- *          example: ABCD123456
+ *          example: HAhFXukfwrN3SrDMhhYetfAE
  *      requestBody:
  *         content:
  *            application/json:
@@ -106,6 +113,16 @@ router.post("/", (req, res, next) => {
  *      tags:
  *        - Contact
  *      summary: Update a contact
+ *      description: |
+ *          PATCH method to update a contact
+ *          <br>1. Check if contact existed
+ *          <br>--> YES, then update the contact
+ *          <br>--> NO, response with the status code 200, error message "contact not found"
+ *          <br>2. Get account by contact_cf_company. 
+ *          <br>--> YES, get account info
+ *          <br>--> NO, crate new account 
+ *          <br>3. Create Notes and Task.
+ *          <br>4. Update contact accordingly and response with the code 200 "contact verified".
  *      produces:
  *          - application/json
  *      consumes:
@@ -116,7 +133,7 @@ router.post("/", (req, res, next) => {
  *            description: API Security Token
  *            required: true
  *            type: string
- *            example: ABCD123456
+ *            example: HAhFXukfwrN3SrDMhhYetfAE
  *      requestBody:
  *         content:
  *            application/json:

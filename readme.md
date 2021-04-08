@@ -96,7 +96,7 @@ To change the port on which app is running:
 > Change the `ALLOWED_PARTY_SECRET` variable in `configs/app.js`. This is allow you to secure the api endpoints by enabling the token middleware.
 >> You can temporary disable the middleware by set `ALLOWED_PARTY_SECRET = ALL`
 
-> Add token to your request header `token: your_token_here`.
+> Add token to your request header `token: your_token_here`. The default token in localhost is `HAhFXukfwrN3SrDMhhYetfAE`
 > If the token is missing or missmatch, system will return the 400 error `token invalid or missing`
 
 ### Deploying to production.

@@ -2,17 +2,17 @@ version: "3.3"
 
 services:
   railflow_rest_api_v2:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile-local
     image: railflow-api
     container_name: railflow-api
     restart: always
-    environment:
-      - CRYPTOLENS_API_KEY=123
-      - FRESHBOOKS_API_KEY=123
-      - FRESHSALES_API_KEY=123
-      - ALLOWED_PARTY_SECRET=ALL
+    # Variables in the docker-compose will overide the .env (Dockerfile)
+    # environment: 
+      # - ALLOWED_PARTY_SECRET=ALL
     volumes:
-      - .:/app
+      # - .:/app
       - ./node_modules:/app/node_modules
     command: bash -c 'yarn && yarn start'
   railflow_rest_api_v2_nginx:

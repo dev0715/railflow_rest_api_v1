@@ -93,7 +93,7 @@
  *          description: API Security Token
  *          required: true
  *          type: string
- *          example: HAhFXukfwrN3SrDMhhYetfAE
+ *          example: YOUR_TOKEN_HERE
  *      consumes:
  *          - application/json
  *      requestBody:

@@ -71,7 +71,7 @@
  *            description: API Security Token
  *            required: true
  *            type: string
- *            example: HAhFXukfwrN3SrDMhhYetfAE
+ *            example: YOUR_TOKEN_HERE
  *      responses:
  *          200:
  *              description: An array of licenses
@@ -117,7 +117,7 @@ router.get("/", (req, res) => {
  *            description: API Security Token
  *            required: true
  *            type: string
- *            example: HAhFXukfwrN3SrDMhhYetfAE
+ *            example: YOUR_TOKEN_HERE
  *          - name: License
  *            description: License information
  *            in: body

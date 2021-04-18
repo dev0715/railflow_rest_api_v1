@@ -72,7 +72,7 @@ router.get("/", (req, res) => {
  *          description: API Security Token
  *          required: true
  *          type: string
- *          example: HAhFXukfwrN3SrDMhhYetfAE
+ *          example: YOUR_TOKEN_HERE
  *      requestBody:
  *         content:
  *            application/json:

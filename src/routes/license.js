@@ -88,7 +88,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { extendLicense } = require('../controllers/license');
+const { extendLicense, extendLicenseSlack } = require('../controllers/license');
 
 router.get("/", (req, res) => {
   res.status(200).send("License Resource");
@@ -134,6 +134,11 @@ router.get("/", (req, res) => {
  */
 router.patch("/", (req, res, next) => {
   return extendLicense(req, res, next);
+});
+
+
+router.post("/slack", (req, res, next) => {
+  return extendLicenseSlack(req, res, next);
 });
 
 module.exports = router;

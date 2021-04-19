@@ -21,7 +21,19 @@
      }
      return (token === configs.ALLOWED_PARTY_SECRET);
  }
+ /**
+ * Service: Check token for Slack Slash Command
+ * @param {String} token Input token
+ * @returns true: matched | false: unmatched
+ */
+  async function checkTokenSlash(token) {
+    if (typeof token == 'undefined') {
+        return false;
+    }
+    return (token === configs.SLACK_SLASH_COMMAND_TOKEN);
+}
 
  module.exports = {
-     checkToken
+     checkToken,
+     checkTokenSlash
  };

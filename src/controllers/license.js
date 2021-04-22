@@ -78,8 +78,8 @@ async function extendLicenseSlack(req, res, next) {
       "text": "License Key is invalid, please follow this example (periods 0-36 months, Zero is default to 14 days): `periods:8 license_key:ICWUF-JHARN-GEGRI-XDMYN`"
     });
   }
-  if (parseInt(req.body.extension_period)) {
-    req.body.contact_cf_extension_period = parseInt(req.body.extension_period);
+  if (parseInt(req.body.periods)) {
+    req.body.contact_cf_extension_period = parseInt(req.body.periods);
   }
   else {
     return res.json({

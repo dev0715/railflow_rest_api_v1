@@ -82,13 +82,13 @@ async function extendLicense(req, res, next) {
     if (typeof req.body.license_key !== 'undefined') {
       req.body.contact_cf_license_key=req.body.license_key;
     } else {
-      res.json({"text":"License Key is invalid, please follow this example (⎵ is whitespace): `contact_id:16004191559⎵extension_period:8⎵license_key:ICWUF-JHARN-GEGRI-XDMYN`"});
+      res.json({"text":"License Key is invalid, please follow this example: `contact_id:16004191559 extension_period:8 license_key:ICWUF-JHARN-GEGRI-XDMYN`"});
     }
     if (parseInt(req.body.extension_period)) {
       req.body.contact_cf_extension_period = parseInt(req.body.extension_period);
     }
     else {
-      res.json({"text":"Period is invalid, please follow this example (⎵ is whitespace): `contact_id:16004191559⎵extension_period:8⎵license_key:ICWUF-JHARN-GEGRI-XDMYN`"});
+      res.json({"text":"Period is invalid, please follow this example: `contact_id:16004191559 extension_period:8 license_key:ICWUF-JHARN-GEGRI-XDMYN`"});
     }
     console.log(req.body);
     const apiClient = await getApiClient(req.body.response_url);

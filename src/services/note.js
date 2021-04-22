@@ -20,7 +20,7 @@ async function create(targetableId, description) {
             headers: {
                 // TODO: use environment variable
                 Authorization: `Token token=${configs.FRESHSALES_API_KEY}`, // fPjGQStTY1ffGqtyAj9RVw
-                'Content-Type': 'application/json',
+                // 'Content-Type': 'application/json',
             },
             data: {
                 note: {

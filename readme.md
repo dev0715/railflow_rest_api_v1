@@ -111,4 +111,10 @@ For production:
 
 If no variable called APP_ENV is found, we take the default as `development` and hence the development environment variables from the `configs/app.js` will be picked up.
 
+## Using Slack Slash Command
+We have set up a slack slash command `/license` plase walkthrough the usage below:
+
+Follow the example `/license ali raza/acme corp/12/myemail@gmail.com`, parameters separated by `/` follow the formula: `/license customer name/company/periods/email`
+
+Slack command will return the successful message and the license information after executing the payload.
 

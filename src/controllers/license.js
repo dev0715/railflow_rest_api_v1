@@ -65,51 +65,64 @@ async function extendLicenseSlack(req, res, next) {
       message: 'token invalid or missing'
     });
   }
-  const vars = req.body.text.split(" ");
-  vars.forEach(item => {
-    const itemsplited = item.split(":");
-    req.body[itemsplited[0]] = itemsplited[1];
-  });
-  if (typeof req.body.license_key !== 'undefined') {
-    req.body.contact_cf_license_key = req.body.license_key;
+  const payloadParams = req.body.text.split("/");
+
+  if (typeof payloadParams[3] === 'undefined' || payloadParams[3] === '') {
+    return res.json({
+      "response_type": "in_channel", // public to the channel
+      "text": "Email is invalid, please follow this example (periods 0-36 months, Zero is default to 14 days):\n`/license Customer Name/Company/Periods/Email`"
+    });
   } else {
-    return res.json({
-      "response_type": "in_channel", // public to the channel
-      "text": "License Key is invalid, please follow this example (periods 0-36 months, Zero is default to 14 days): `periods:8 license_key:ICWUF-JHARN-GEGRI-XDMYN`"
-    });
-  }
-  if (parseInt(req.body.periods)) {
-    req.body.contact_cf_extension_period = parseInt(req.body.periods);
-  }
-  else {
-    return res.json({
-      "response_type": "in_channel", // public to the channel
-      "text": "Period is invalid, please follow this example (periods 0-36 months, Zero is default to 14 days): `periods:8 license_key:ICWUF-JHARN-GEGRI-XDMYN`"
-    });
-  }
-  const apiClient = await getApiClient(req.body.response_url);
-  try {
-    // Return HTTP 200 to Slack
-    res.json({
-      "response_type": "in_channel", // public to the channel
-      "text": "Extending the license..."
-    });
-    const license = await licenseService.extend(req.body);
+    const apiClient = await getApiClient(req.body.response_url);
+    req.body.contact_email = payloadParams[3];
+    req.body.contact_cf_extension_period = parseInt(payloadParams[2]);
     let licensePeriods = 14;
     if (req.body.contact_cf_extension_period > 0) {
-      licensePeriods = 30 * req.body.contact_cf_extension_period;
+      var today = new Date();
+      var newDate = new Date();
+      newDate.setMonth(today.getMonth() + req.body.contact_cf_extension_period);
+      licensePeriods = (newDate - today)/ (1000 * 60 * 60 * 24);
     }
-    console.log(licensePeriods);
-    await apiClient.request({
-      method: 'POST',
-      data: {
-        "response_type": "in_channel", // public to the channel
-        text: `Extended the license for ${licensePeriods} days`
-      }
+    res.json({
+      "response_type": "in_channel", // public to the channel
+      "text": `Extending license for ${payloadParams[3]} duration: ${licensePeriods} days`
     });
-  } catch (error) {
-    console.log(`> error while extending license for: ${req.body.contact_id}: ${error}`);
-    return res.status(error.status).send(error.toJSON());
+    const contact = await contactService.getContactIfAlreadyPresent(req.body.contact_email);
+    if (contact != null) {
+      req.body.contact_cf_license_key = contact.custom_field.cf_license_key;
+      req.body.contact_cf_extension_period = licensePeriods;
+      req.body.contact_id = contact.id;
+      req.body.contact_email = contact.email;
+      const extendedLicense = await licenseService.extend(req.body);
+      if (extendedLicense.result == 0) {
+        const description = `License has been extended by ${req.body.contact_cf_extension_period} days`;
+        const createNotesResponse = await noteService.create(req.body.contact_id, description);
+        // await sendLicenseExtensionEmail(req.body, `Your license has been extended by ${req.body.contact_cf_extension_period} days.`);
+        return await apiClient.request({
+          method: 'POST',
+          data: {
+            "response_type": "in_channel", // public to the channel
+            text: `License extended.\nLicense Key: ${contact.custom_field.cf_license_key}`
+          }
+        });
+      } else {
+        return await apiClient.request({
+          method: 'POST',
+          data: {
+            "response_type": "in_channel", // public to the channel
+            text: `Error while extending the license.`
+          }
+        });
+      }
+    } else {
+      return await apiClient.request({
+        method: 'POST',
+        data: {
+          "response_type": "in_channel", // public to the channel
+          text: `Error: Cannot find customer related to email ${req.body.contact_email}.`
+        }
+      });
+    }
   }
 }
 /**

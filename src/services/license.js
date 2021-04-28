@@ -15,7 +15,7 @@ const qs = require('qs');
  * @param {*} body Input data
  * @returns Promise
  */
-async function getCryptolensToken(body) {
+async function getCryptolensToken(body,periods = 14) {
   try {
     const apiClient = await getApiClient(configs.CRYPTOLENS_BASE_URL);
     const response = await apiClient.request({
@@ -28,7 +28,7 @@ async function getCryptolensToken(body) {
         data: qs.stringify({
             token: configs.CRYPTOLENS_API_KEY,
             ProductId: 8245,
-            Period: 14,
+            Period: periods,
             F1: true,
             F2: true,
             NewCustomer: true,
@@ -38,7 +38,7 @@ async function getCryptolensToken(body) {
         }),
     });
 
-    console.log(`> generated the cryptolens token: ${JSON.stringify(response.data)} for: ${body.contact_email}`);
+    console.log(`> generated the cryptolens token: ${JSON.stringify(response.data)} for: ${body.contact_email} duration: ${periods} days`);
     return response.data;
   } catch (error) {
     console.log(`> error generating token: ${error}`);

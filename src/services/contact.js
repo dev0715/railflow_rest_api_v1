@@ -79,6 +79,7 @@ async function update(data) {
           contact_status_id: 16000052147,
           custom_field: {
             cf_license_key: data.cf_license_key,
+            cf_license_key_url: data.cf_license_key_url,
             cf_license_status: 'sent'
           },
         }

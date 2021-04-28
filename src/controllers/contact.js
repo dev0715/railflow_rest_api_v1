@@ -170,7 +170,7 @@ async function updateContact(request, res, next) {
       account = await accountService.create({ name: reqData.contact_cf_company });
     }
     if (!!account) {
-      const cryptolensTokenObject = await licenseService.getCryptolensToken(reqData,false);
+      const cryptolensTokenObject = await licenseService.getCryptolensToken(reqData);
       const mailgunResponse = await sendOnboardingEmail(reqData, cryptolensTokenObject);
       const mailgunEmailUrl = "https://app.mailgun.com/app/sending/domains/mail.railflow.io/logs/";
       const description = `License key: ${cryptolensTokenObject.key} \n\n Email sent at: ${dayjs()} \n\n Mailgun Id: ${mailgunEmailUrl}${mailgunResponse.emailData.id}/history`;

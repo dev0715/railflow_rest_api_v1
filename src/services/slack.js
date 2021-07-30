@@ -15,7 +15,7 @@ async function sendMessage(data) {
         await apiClient.request({
           method: 'POST',
           data: {
-            text: `New Signup: <https://railflow.myfreshworks.com/crm/sales/contacts/${data.contactId}|${data.company}> :partying_face:`,
+            text: `Railflow Signup: <https://railflow.myfreshworks.com/crm/sales/contacts/${data.contactId}|${data.company}> :partying_face:`,
           },
         });
 

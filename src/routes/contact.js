@@ -39,6 +39,10 @@
  *           type: string
  *           description: The contact's company.
  *           example: Railflow
+ *         notify:
+ *           type: boolean
+ *           description: Notification flag.
+ *           example: True
 */
 
 "use strict";
@@ -64,8 +68,9 @@ router.get("/", (req, res) => {
  *          <br>1. Get First name, Last name, Email, Phone, Job Title from payload
  *          <br>2. Check if the email is already existed then then check "cf_license_status". 
  *          <br>--> If status is sent, response with the code 200 withe "Duplicate Registration" error message
- *          <br>--> If status is noy sent, response with the code 201 created with the new contact info
+ *          <br>--> If status is not sent, response with the code 201 created with the new contact info
  *          <br>3. Crate contact then response with the code 201 and created contact.
+ *          <br>4. Check if the flag "Notify" is True then send slack message.
  *      produces:
  *          - application/json
  *      parameters:

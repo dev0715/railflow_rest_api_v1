@@ -90,13 +90,14 @@ async function createContact(request, res, next) {
       data.account_id = account.id;
       const response = await contactService.create(data);
       if (response && response.data && response.data.contact) {
-        console.log(`> contact created. sending slack notification: ${response.data.contact.id}`);
-        const notificationData = {
-          contactId: response.data.contact.id,
-          company: request.body.company,
-        };
-
-        await slackService.sendMessage(notificationData);
+        if (typeof(request.body.notify) == 'undefined' || request.body.notify) {
+          const notificationData = {
+            contactId: response.data.contact.id,
+            company: request.body.company,
+          };
+          console.log(`> contact created. sending slack notification: ${response.data.contact.id}`);
+          await slackService.sendMessage(notificationData);
+        }
         return res.status(201).send({
           status: 201,
           data: {

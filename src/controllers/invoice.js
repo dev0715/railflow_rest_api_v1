@@ -175,7 +175,7 @@
          await noteService.create(contact.id, `Invoice: https://railflow.hiveage.com/invs/${invoice.invoice.hash_key}`);
          await noteService.accountNote(account.id, `Invoice: https://railflow.hiveage.com/invs/${invoice.invoice.hash_key}`);
          
-         await slackService.sendSlackMessage(`New Invoice: <https://railflow.myfreshworks.com/crm/sales/accounts/${account.id}|${account.name}> <https://railflow.hiveage.com/invs/${invoice.invoice.hash_key}|invoice> :slightly_smiling_face:`);
+         await slackService.sendSlackMessage(`Railflow Invoice: <https://railflow.myfreshworks.com/crm/sales/accounts/${account.id}|${account.name}> <https://railflow.hiveage.com/invs/${invoice.invoice.hash_key}|invoice> :slightly_smiling_face:`);
          
          return res.status(201).send({
              status: 201,

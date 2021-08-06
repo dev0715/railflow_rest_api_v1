@@ -180,7 +180,8 @@ async function createInvoice(data) {
                         "recipients":data.hiveage_contact_email,
                         "blind_copies":data.hiveage_notification_emails,
                         "subject":deliverEmailSubject,
-                        "message":deliverEmailContent
+                        "message":deliverEmailContent,
+                        "attachment":true
                     }
                 }
             });

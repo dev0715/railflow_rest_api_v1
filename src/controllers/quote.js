@@ -85,11 +85,11 @@ async function createQuote(req, res, next) {
             });
         }
 
-        if (isNaN(data.license_years) || data.license_years < 1 || data.license_years > 3) {
+        if (isNaN(data.license_years) || data.license_years < 1 || data.license_years > 4) {
             return res.status(400).send({
                 status: 400,
                 data: {
-                    message: 'Invalid License_years: valid values are 1-3'
+                    message: 'Invalid License_years: valid values are 1-4'
                 }
             });
         }

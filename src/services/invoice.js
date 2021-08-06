@@ -104,20 +104,32 @@ async function createInvoice(data) {
                 quantity: 1
             });
         }
-        items_attributes.push({
-            date: new Date(),
-            description: `Railflow ${capitalize(data.license_type)} License \n ${20*price_option}-${20*(price_option+1)} TestRail Users \n License Term: ${data.license_years} Year`,
-            price: price,
-            quantity: data.license_years,
-            unit: "Year"
-        });
+        let license_term = `${data.license_years} Years`;
+        if (data.license_years == 4) {
+            license_term = `Perpetual (never expiring)`;
+            items_attributes.push({
+                date: new Date(),
+                description: `Railflow ${capitalize(data.license_type)} License \n ${20*price_option}-${20*(price_option+1)} TestRail Users \n License Term: ${license_term}`,
+                price: price * 4 * 0.83,
+                quantity: 1,
+                unit: "None"
+            });
+        } else {
+            items_attributes.push({
+                date: new Date(),
+                description: `Railflow ${capitalize(data.license_type)} License \n ${20*price_option}-${20*(price_option+1)} TestRail Users \n License Term: ${license_term}`,
+                price: price,
+                quantity: data.license_years,
+                unit: "Year"
+            });
+        }
         const invoiceData = {
             invoice: {
                 connection_id: data.network.id,
                 due_date: addDays(new Date(), 30),
                 date: new Date(),
                 // summary: `Railflow ${20*price_option}-${20*(price_option+1)}, ${data.license_years} Year License Invoice`,
-                summary: `Railflow ${capitalize(data.license_type)} Invoice: ${data.license_years} Year License: ${20*price_option}-${20*(price_option+1)} Users`,
+                summary: `Railflow ${capitalize(data.license_type)} Invoice: ${license_term} License: ${20*price_option}-${20*(price_option+1)} Users`,
                 note: `Custom item note`,
                 send_reminders: false,
 
@@ -156,10 +168,10 @@ async function createInvoice(data) {
             });
             console.log('> invoice sent - default format');
         } else {
-            const deliverEmailSubject = `Invoice ${invs_response.data.invoice.statement_no} Railflow ${capitalize(data.license_type)} ${data.license_years} Years License Quote ${20*price_option} - ${20*(price_option+1)} Users`;
+            const deliverEmailSubject = `Invoice ${invs_response.data.invoice.statement_no} Railflow ${capitalize(data.license_type)} ${license_term} License Quote ${20*price_option} - ${20*(price_option+1)} Users`;
             const deliverEmailContent = `\nHi ${data.user.display_name},
             \nA new invoice has been generated for you by Railflow Customer Support Team. Here's a quick summary:
-            \nInvoice details: ${invs_response.data.invoice.statement_no} - Railflow ${capitalize(data.license_type)} Quote: ${data.license_years} Year License: ${20*price_option} - ${20*(price_option+1)} Users
+            \nInvoice details: ${invs_response.data.invoice.statement_no} - Railflow ${capitalize(data.license_type)} Quote: ${license_term} License: ${20*price_option} - ${20*(price_option+1)} Users
             \nInvoice total: USD ${parseFloat(invs_response.data.invoice.billed_total).toLocaleString('en-US',2)}
             \n\nYou can view or download a PDF by going to: http://billing.railflow.io/invs/${invs_response.data.invoice.hash_key}
             \n\nBest regards,
@@ -190,7 +202,7 @@ async function createInvoice(data) {
 
         const fsOpportunityData = {
             deal : {
-                name: `${data.account.name}: ${capitalize(data.license_type)}: ${data.license_years} Year License: ${20*price_option}-${20*(price_option+1)} Users`,
+                name: `${data.account.name}: ${capitalize(data.license_type)}: ${license_term} License: ${20*price_option}-${20*(price_option+1)} Users`,
                 amount: invs_response.data.invoice.billed_total, // created quote amount
                 sales_account_id: data.account.id,
                 expected_close: addDays(new Date(),30),

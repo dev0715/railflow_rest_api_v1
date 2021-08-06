@@ -93,11 +93,11 @@ async function createInvoice(req, res, next) {
             });
         }
 
-        if (isNaN(req.body.license_years) || data.license_years < 1 || data.license_years > 4) {
+        if (isNaN(req.body.license_years) || data.license_years < 0 || data.license_years > 3) {
             return res.status(400).send({
                 status: 400,
                 data: {
-                    message: "Invalid License_years: valid values are 1-4",
+                    message: "Invalid License_years: valid values are 0-3",
                 },
             });
         }

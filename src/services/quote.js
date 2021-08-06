@@ -62,7 +62,7 @@ async function create(data) {
             });
         }
         let license_term = `${data.license_years} Years`;
-        if (data.license_years == 4) {
+        if (data.license_years == 0) {
             license_term = `Perpetual (never expiring)`;
             items_attributes.push({
                 date: new Date(),

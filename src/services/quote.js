@@ -61,19 +61,31 @@ async function create(data) {
                 quantity: 1
             });
         }
-        items_attributes.push({
-            date: new Date(),
-            description: `Railflow ${capitalize(data.license_type)} License \n ${20*price_option}-${20*(price_option+1)} TestRail Users \n License Term: ${data.license_years} Year`,
-            price: price,
-            quantity: data.license_years,
-            unit: "Year"
-        });
+        let license_term = `${data.license_years} Years`;
+        if (data.license_years == 4) {
+            license_term = `Perpetual (never expiring)`;
+            items_attributes.push({
+                date: new Date(),
+                description: `Railflow ${capitalize(data.license_type)} License \n ${20*price_option}-${20*(price_option+1)} TestRail Users \n License Term: ${license_term}`,
+                price: price * 4 * 0.83,
+                quantity: 1,
+                unit: "None"
+            });
+        } else {
+            items_attributes.push({
+                date: new Date(),
+                description: `Railflow ${capitalize(data.license_type)} License \n ${20*price_option}-${20*(price_option+1)} TestRail Users \n License Term: ${license_term}`,
+                price: price,
+                quantity: data.license_years,
+                unit: "Year"
+            });
+        }
         const estimateData = {
             estimate: {
                 connection_id: data.network.id,
                 expire_date: "2022 -10-01",
                 date: new Date(),
-                summary: `Railflow ${capitalize(data.license_type)} Quote: ${data.license_years} Year License: ${20*price_option}-${20*(price_option+1)} Users`,
+                summary: `Railflow ${capitalize(data.license_type)} Quote: ${license_term} License: ${20*price_option}-${20*(price_option+1)} Users`,
                 note: `Custom item note`,
                 send_reminders: false,
 
@@ -113,10 +125,10 @@ async function create(data) {
             });
             console.log('> estimate sent - default settings');
         } else {
-            const deliverEmailSubject = `Estimate ${response.data.estimate.statement_no} Railflow ${capitalize(data.license_type)} ${data.license_years} Years License Quote ${20*price_option} - ${20*(price_option+1)} Users`;
+            const deliverEmailSubject = `Estimate ${response.data.estimate.statement_no} Railflow ${capitalize(data.license_type)} ${license_term} License Quote ${20*price_option} - ${20*(price_option+1)} Users`;
             const deliverEmailContent = `\nHi ${data.user.display_name},
             \nA new estimate has been generated for you by Railflow Customer Support Team. Here's a quick summary:
-            \nEstimate details: ${response.data.estimate.statement_no} - Railflow ${capitalize(data.license_type)} Quote: ${data.license_years} Year License: ${20*price_option} - ${20*(price_option+1)} Users
+            \nEstimate details: ${response.data.estimate.statement_no} - Railflow ${capitalize(data.license_type)} Quote: ${license_term} License: ${20*price_option} - ${20*(price_option+1)} Users
             \nEstimate total: USD ${parseFloat(response.data.estimate.billed_total).toLocaleString('en-US',2)}
             \n\nYou can view or download a PDF by going to: http://billing.railflow.io/estm/${response.data.estimate.hash_key}
             \n\nBest regards,
@@ -166,7 +178,7 @@ async function create(data) {
 
         const fsOpportunityData = {
             deal : {
-                name: `${data.account.name}: ${capitalize(data.license_type)}: ${data.license_years} Year License: ${20*price_option}-${20*(price_option+1)} Users`,
+                name: `${data.account.name}: ${capitalize(data.license_type)}: ${license_term} License: ${20*price_option}-${20*(price_option+1)} Users`,
                 amount: response.data.estimate.billed_total, // created quote amount
                 sales_account_id: data.account.id,
                 expected_close: addDays(new Date(),30),

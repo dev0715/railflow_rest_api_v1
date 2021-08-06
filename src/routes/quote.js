@@ -34,6 +34,16 @@
  *           type: integer
  *           description: Number of users
  *           example: 3
+ *         hiveage_contact_email:
+ *           type: string
+ *           description: Contact Email.
+ *           example:  careers@perfmeter.io
+ *         hiveage_notification_emails:
+ *           type: array
+ *           description: Contact Email.
+ *           items:
+ *             type: string
+ *           example: [email1@perfmeter.io,email2@perfmeter.io]
 */
 
 "use strict";

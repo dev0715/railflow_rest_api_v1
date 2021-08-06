@@ -90,7 +90,7 @@ router.get("/", (req, res) => {
  *               schema:
  *                  $ref: '#/components/schemas/Quote'
  *      responses:
- *          200:
+ *          201:
  *              description: Returns created contract
  *              content:
  *                application/json:

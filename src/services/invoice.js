@@ -126,7 +126,7 @@ async function createInvoice(data) {
         };
 
         const apiClient = await getApiClient(configs.HIVEAGE_BASE_URL);
-        const response = await apiClient.request({
+        const invs_response = await apiClient.request({
             method: 'POST',
             url: '/api/invs',
             headers: {
@@ -141,25 +141,57 @@ async function createInvoice(data) {
         });
 
         console.log(`> invoice created successfully`);
-
-        const deliver_response = await apiClient.request({
-            method: 'POST',
-            url: `/api/invs/${response.data.invoice.hash_key}/deliver`,
-            headers: {
-                // TODO: use environment variable
-                'Content-Type': 'application/json',
-            },
-            auth: {
-                username: configs.HIVEAGE_API_KEY,
-                password: ''
-            }
-        });
-        console.log('> invoice sent');
+        if (data.hiveage_contact_email == false) {
+            const deliver_response = await apiClient.request({
+                method: 'POST',
+                url: `/api/invs/${invs_response.data.invoice.hash_key}/deliver`,
+                headers: {
+                    // TODO: use environment variable
+                    'Content-Type': 'application/json',
+                },
+                auth: {
+                    username: configs.HIVEAGE_API_KEY,
+                    password: ''
+                },
+            });
+            console.log('> invoice sent - default format');
+        } else {
+            const deliverEmailSubject = `Invoice ${invs_response.data.invoice.statement_no} Railflow ${capitalize(data.license_type)} ${data.license_years} Years License Quote ${20*price_option} - ${20*(price_option+1)} Users`;
+            const deliverEmailContent = `\nHi ${data.user.display_name},
+            \nA new invoice has been generated for you by Railflow Customer Support Team. Here's a quick summary:
+            \nInvoice details: ${invs_response.data.invoice.statement_no} - Railflow ${capitalize(data.license_type)} Quote: ${data.license_years} Year License: ${20*price_option} - ${20*(price_option+1)} Users
+            \nInvoice total: USD ${parseFloat(invs_response.data.invoice.billed_total).toLocaleString('en-US',2)}
+            \n\nYou can view or download a PDF by going to: http://billing.railflow.io/invs/${invs_response.data.invoice.hash_key}
+            \n\nBest regards,
+            \nRailflow Customer Support Team.`;
+            const deliver_response = await apiClient.request({
+                method: 'POST',
+                url: `/api/invs/${invs_response.data.invoice.hash_key}/deliver`,
+                headers: {
+                    // TODO: use environment variable
+                    'Content-Type': 'application/json',
+                },
+                auth: {
+                    username: configs.HIVEAGE_API_KEY,
+                    password: ''
+                },
+                data: {
+                    "delivery":{
+                        "recipients":data.hiveage_contact_email,
+                        "blind_copies":data.hiveage_notification_emails,
+                        "subject":deliverEmailSubject,
+                        "message":deliverEmailContent,
+                        "attachment":true
+                    }
+                }
+            });
+            console.log('> invoice sent - custom format');
+        }
 
         const fsOpportunityData = {
             deal : {
                 name: `${data.account.name}: ${capitalize(data.license_type)}: ${data.license_years} Year License: ${20*price_option}-${20*(price_option+1)} Users`,
-                amount: response.data.invoice.billed_total, // created quote amount
+                amount: invs_response.data.invoice.billed_total, // created quote amount
                 sales_account_id: data.account.id,
                 expected_close: addDays(new Date(),30),
                 deal_stage_id: 16000263411,
@@ -201,8 +233,8 @@ async function createInvoice(data) {
                 }
             });
         }
-        response.data.fsOpportunity = fsOpportunity;
-        return response.data;
+        invs_response.data.fsOpportunity = fsOpportunity;
+        return invs_response.data;
     } catch (error) {
         console.log(`> error:invoice:service: ${error}`);
         throw new ApiError(`Error while creating invoice`);

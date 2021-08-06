@@ -153,6 +153,21 @@ async function createQuote(req, res, next) {
             }
         } 
         data.network = network;
+        if (typeof req.body.hiveage_contact_email == "undefined") {
+            data.hiveage_contact_email = false;
+        } else {
+            data.hiveage_contact_email = [
+                {
+                    email: req.body.hiveage_contact_email,
+                },
+            ];
+            data.hiveage_notification_emails = [];
+            req.body.hiveage_notification_emails.forEach((element) => {
+                data.hiveage_notification_emails.push({
+                    email: element,
+                });
+            });
+        }
         const quote = await quoteService.create(data);
         if (quote.error != null) {
             return res.status(400).send({

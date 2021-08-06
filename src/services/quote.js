@@ -98,19 +98,53 @@ async function create(data) {
 
         console.log(`> estimate created successfully`);
 
-        const deliver_response = await apiClient.request({
-            method: 'POST',
-            url: `/api/estm/${response.data.estimate.hash_key}/deliver`,
-            headers: {
-                // TODO: use environment variable
-                'Content-Type': 'application/json',
-            },
-            auth: {
-                username: configs.HIVEAGE_API_KEY,
-                password: ''
-            }
-        });
-        console.log('> estimate sent');
+        if (data.hiveage_contact_email == false) {
+            const deliver_response = await apiClient.request({
+                method: 'POST',
+                url: `/api/estm/${response.data.estimate.hash_key}/deliver`,
+                headers: {
+                    // TODO: use environment variable
+                    'Content-Type': 'application/json',
+                },
+                auth: {
+                    username: configs.HIVEAGE_API_KEY,
+                    password: ''
+                }
+            });
+            console.log('> estimate sent - default settings');
+        } else {
+            const deliverEmailSubject = `Estimate ${response.data.estimate.statement_no} Railflow ${capitalize(data.license_type)} ${data.license_years} Years License Quote ${20*price_option} - ${20*(price_option+1)} Users`;
+            const deliverEmailContent = `\nHi ${data.user.display_name},
+            \nA new estimate has been generated for you by Railflow Customer Support Team. Here's a quick summary:
+            \nEstimate details: ${response.data.estimate.statement_no} - Railflow ${capitalize(data.license_type)} Quote: ${data.license_years} Year License: ${20*price_option} - ${20*(price_option+1)} Users
+            \nEstimate total: USD ${parseFloat(response.data.estimate.billed_total).toLocaleString('en-US',2)}
+            \n\nYou can view or download a PDF by going to: http://billing.railflow.io/estm/${response.data.estimate.hash_key}
+            \n\nBest regards,
+            \nRailflow Customer Support Team.`;
+            const deliver_response = await apiClient.request({
+                method: 'POST',
+                url: `/api/estm/${response.data.estimate.hash_key}/deliver`,
+                headers: {
+                    // TODO: use environment variable
+                    'Content-Type': 'application/json',
+                },
+                auth: {
+                    username: configs.HIVEAGE_API_KEY,
+                    password: ''
+                },
+                data: {
+                    "delivery":{
+                        "recipients":data.hiveage_contact_email,
+                        "blind_copies":data.hiveage_notification_emails,
+                        "subject":deliverEmailSubject,
+                        "message":deliverEmailContent,
+                        "attachment":true
+                    }
+                }
+            });
+            console.log('> Estimate sent - custom format');
+        }
+
         const sent_response = await apiClient.request({
             method: 'PUT',
             url: `/api/estm/${response.data.estimate.hash_key}`,

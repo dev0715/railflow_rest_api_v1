@@ -72,6 +72,7 @@ router.get("/", (req, res) => {
  *          <br>3. Create quote.
  *          <br>4. Create note in contact and send slack message.
  *          <br>5. Response with code 201, quote created.
+ *          <br><br>[*] To use hiveage default format - remove hiveage_contact_email and hiveage_notification_emails
  *      produces:
  *          - application/json
  *      consumes:

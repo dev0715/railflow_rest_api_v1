@@ -12,6 +12,7 @@ const licenseRouter = require("./routes/license");
 const eventRouter = require("./routes/event");
 const invoiceRouter = require("./routes/invoice");
 const quoteRouter = require("./routes/quote");
+const pricingRouter = require("./routes/pricing");
 const accountRouter = require("./routes/account");
 
 const appConfig = require('../configs/app');
@@ -84,6 +85,7 @@ class Server {
     this.app.use("/api/event", eventRouter);
     this.app.use("/api/invoice", invoiceRouter);
     this.app.use("/api/quote", quoteRouter);
+    this.app.use("/api/pricing", pricingRouter);
 
     this.app.use((err, req, res, next) => {
       if (res.headersSent) {

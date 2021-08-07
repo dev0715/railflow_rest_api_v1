@@ -1,0 +1,16 @@
+{
+    "standard": {
+        "base": 1500,
+        "increment": 200,
+        "discount_3_year": 0.2,
+        "discount_2_year": 0.1,
+        "discount_perpetual": 0.17
+    },
+    "enterprise": {
+        "base": 1700,
+        "increment": 250,
+        "discount_3_year": 0.2,
+        "discount_2_year": 0.1,
+        "discount_perpetual": 0.17
+    }
+}

@@ -6,6 +6,7 @@ const { getApiClient } = require('../services/request');
 const ApiError = require("../errors/api");
 const accountService = require("./account");
 const opportunityService = require('./opportunity');
+const pricing = require("../config/pricing.json");
 
 function capitalize(s)
 {
@@ -27,12 +28,13 @@ async function create(data) {
             price_option = data.num_users >> 0;
         } 
         let price = 0;
-        switch (data.license_type.toLowerCase()) {
+        let pricingType = data.license_type.toLowerCase();
+        switch (pricingType) {
             case "standard":
-                price = 1500 + (300 * price_option);
+                price = pricing.standard.base + (pricing.standard.increment * price_option);
                 break;
             case "enterprise":
-                price = 1800 + (400 * price_option);
+                price = pricing.enterprise.base + (pricing.enterprise.increment * price_option);
                 break;
             default:
                 return {
@@ -41,17 +43,7 @@ async function create(data) {
                     }
                 };
         }
-        let discount_percentage = 0;
-        switch (parseInt(data.license_years)) {
-            case 3:
-                discount_percentage = 0.15;
-                break;
-            case 2:
-                discount_percentage = 0.1;
-                break;
-            default:
-                break;
-        }
+        let discount_percentage = pricing[pricingType][`discount_${data.license_years}_year`] || 0;
         let items_attributes = [];
         if (discount_percentage > 0) {
             items_attributes.push({
@@ -67,7 +59,7 @@ async function create(data) {
             items_attributes.push({
                 date: new Date(),
                 description: `Railflow ${capitalize(data.license_type)} License \n ${20*price_option}-${20*(price_option+1)} TestRail Users \n License Term: ${license_term}`,
-                price: price * 4 * 0.83,
+                price: price * 4 * (1 - pricing[pricingType].discount_perpetual),
                 quantity: 1,
                 unit: "None"
             });

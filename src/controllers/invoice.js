@@ -37,7 +37,7 @@ async function createInvoice(req, res, next) {
             contact_id: req.body.contact_id,
             num_users: req.body.num_users,
             license_type: req.body.license_type,
-            license_years: req.body.license_years || null,
+            license_years: req.body.license_years,
         };
 
         if (typeof data.contact_id == "undefined" || data.contact_id == "") {

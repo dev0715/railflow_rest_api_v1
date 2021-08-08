@@ -6,7 +6,7 @@
 
 "use strict";
 const { checkToken } = require("../services/token");
-var pricing = require("../config/pricing.json");
+const pricing = require("../config/pricing.json");
 
 /**
  * Function: Get Pricing List

@@ -7,6 +7,7 @@
 "use strict";
 const { checkToken } = require("../services/token");
 const pricing = require("../config/pricing.json");
+const users = require("../config/users.json");
 
 /**
  * Function: Get Pricing List
@@ -25,16 +26,22 @@ async function getPricing(request, res, next) {
         });
     }
     if (typeof(request.query.license_type) === "undefined" || typeof(request.query.license_years) === "undefined" || typeof(request.query.num_users) === "undefined") {
+        let tiers = [];
+        for (let index = 0; index < users.list_size; index++) {
+            tiers.push(`${index * users.increment} - ${(index + 1) * users.increment}`);
+        }
+        let resPrices = {};
+        for (const [key, value] of Object.entries(pricing)) {
+            resPrices[key] = {
+                base: value.base
+            };
+          }
         return res.status(200).send({
             message: "Only base price",
-            pricing: {
-                enterprise : {
-                    base: pricing.enterprise.base,
-                },
-                professional : {
-                    base : pricing.standard.base
-                }
+            users:{
+                tiers: tiers
             },
+            pricing: resPrices,
         });
     }
 
@@ -61,59 +68,37 @@ async function getPricing(request, res, next) {
     if (request.query.num_users != null) {
         price_option = request.query.num_users >> 0;
     } 
-    switch (request.query.license_type.toLowerCase()) {
-        case "standard":
-            resData.base = pricing.standard.base;
-            resData.increment = pricing.standard.increment;
-            resData.users = `${20*price_option}-${20*(price_option+1)}`;
-            resData.num_users = request.query.num_users;
-            resData.base_price = pricing.standard.base + (pricing.standard.increment * price_option);
-            resData.years = request.query.license_years;
-            if (request.query.license_years == 0) {
-                resData.total_price = resData.base_price * 4;
-                resData.discount_rate = pricing.standard.discount_perpetual;
-            } else {
-                resData.total_price = resData.base_price * request.query.license_years;
-                resData.discount_rate = pricing.standard[`discount_${request.query.license_years}_year`];
+    const pricingType = pricing[request.query.license_type];
+    if (pricingType == undefined || pricingType == null) {
+        return res.status(400).send({
+            data: {
+                message: "Incorrect value for license_type"
             }
-            if (resData.discount_rate) {
-                discount_amt = resData.total_price * resData.discount_rate;
-                resData.discount_amt = Math.round(discount_amt*100)/100;
-            }
-            resData.final_price = resData.total_price - Math.round(discount_amt*100)/100;
-            return res.status(200).send({
-                status: 200,
-                standard: resData
-            });
-        case "enterprise":
-            resData.base = pricing.enterprise.base;
-            resData.increment = pricing.enterprise.increment;
-            resData.users = `${20*price_option}-${20*(price_option+1)}`;
-            resData.num_users = parseInt(request.query.num_users);
-            resData.base_price = pricing.enterprise.base + (pricing.enterprise.increment * price_option);
-            resData.years = parseInt(request.query.license_years);
-            if (request.query.license_years == 0) {
-                resData.total_price = resData.base_price * 4;
-                resData.discount_rate = pricing.enterprise.discount_perpetual;
-            } else {
-                resData.total_price = resData.base_price * request.query.license_years;
-                resData.discount_rate = pricing.enterprise[`discount_${request.query.license_years}_year`];
-            }
-            if (resData.discount_rate) {
-                discount_amt = resData.total_price * resData.discount_rate;
-                resData.discount_amt = Math.round(discount_amt*100)/100;
-            }
-            resData.final_price = resData.total_price - Math.round(discount_amt*100)/100;
-            return res.status(200).send({
-                enterprise: resData
-            });
-        default:
-            return res.status(400).send({
-                data: {
-                    message: "Incorrect value for license_type"
-                }
-            });
+        });
     }
+    resData.license_type = request.query.license_type;
+    resData.base = pricingType.base;
+    resData.increment = pricingType.increment;
+    resData.users = `${20*price_option}-${20*(price_option+1)}`;
+    resData.num_users = request.query.num_users;
+    resData.base_price = pricingType.base + (pricingType.increment * price_option);
+    resData.years = request.query.license_years;
+    if (request.query.license_years == 0) {
+        resData.total_price = resData.base_price * 4;
+        resData.discount_rate = pricingType.discount_perpetual;
+    } else {
+        resData.total_price = resData.base_price * request.query.license_years;
+        resData.discount_rate = pricingType[`discount_${request.query.license_years}_year`];
+    }
+    if (resData.discount_rate) {
+        discount_amt = resData.total_price * resData.discount_rate;
+        resData.discount_amt = Math.round(discount_amt*100)/100;
+    }
+    resData.final_price = resData.total_price - Math.round(discount_amt*100)/100;
+    return res.status(200).send({
+        status: 200,
+        data:resData
+    });
 }
 
 module.exports = {

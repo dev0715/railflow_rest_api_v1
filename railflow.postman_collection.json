@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "525956db-f7ea-4a40-859a-cc8c930338e6",
+		"_postman_id": "3701114b-bbff-4705-ad21-e7f674eb8bce",
 		"name": "railflow",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -206,6 +206,40 @@
 			"response": []
 		},
 		{
+			"name": "Get Pricing",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/api/pricing?license_type=enterprise&license_years=0&num_users=5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"pricing"
+					],
+					"query": [
+						{
+							"key": "license_type",
+							"value": "enterprise"
+						},
+						{
+							"key": "license_years",
+							"value": "0"
+						},
+						{
+							"key": "num_users",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "quote api",
 			"request": {
 				"method": "POST",
@@ -233,6 +267,5 @@
 			},
 			"response": []
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }

@@ -70,23 +70,17 @@ async function createInvoice(data) {
         if (data.num_users != null) {
             price_option = data.num_users >> 0;
         } 
-        let price = 0;
-        let pricingType = data.license_type.toLowerCase();
-        switch (pricingType) {
-            case "standard":
-                price = pricing.standard.base + (pricing.standard.increment * price_option);
-                break;
-            case "enterprise":
-                price = pricing.enterprise.base + (pricing.enterprise.increment * price_option);
-                break;
-            default:
-                return {
-                    error: {
-                        message: "Incorrect value for license_type"
-                    }
-                };
+        let licenseType = data.license_type.toLowerCase();
+        const pricingType = pricing[licenseType];
+        if (pricingType == null || pricingType == undefined) {
+            return {
+                error: {
+                    message: "Incorrect value for license_type"
+                }
+            };
         }
-        let discount_percentage = pricing[pricingType][`discount_${data.license_years}_year`] || 0;
+        let price = pricingType.base + (pricingType.increment * price_option);
+        let discount_percentage = pricingType[`discount_${data.license_years}_year`] || 0;
         let items_attributes = [];
         if (discount_percentage > 0) {
             items_attributes.push({
@@ -102,7 +96,7 @@ async function createInvoice(data) {
             items_attributes.push({
                 date: new Date(),
                 description: `Railflow ${capitalize(data.license_type)} License \n ${20*price_option}-${20*(price_option+1)} TestRail Users \n License Term: ${license_term}`,
-                price: price * 4 * (1 - pricing[pricingType].discount_perpetual),
+                price: price * 4 * (1 - pricingType.discount_perpetual),
                 quantity: 1,
                 unit: "None"
             });

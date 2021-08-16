@@ -88,11 +88,12 @@ async function getPricing(request, res, next) {
         resData.users = `${20*price_option}-${20*(price_option+1)}`;
         resData.num_users = request.query.num_users;
         resData.base_price = pricingType.base + (pricingType.increment * price_option);
-        resData.years = request.query.license_years;
         if (request.query.license_years == 0) {
+            resData.licenseName = `Perpetual License`;
             resData.total_price = resData.base_price * 4;
             resData.discount_rate = pricingType.discount_perpetual;
         } else {
+            resData.licenseName = `${request.query.license_years} Year License`;
             resData.total_price = resData.base_price * request.query.license_years;
             resData.discount_rate = pricingType[`discount_${request.query.license_years}_year`];
         }

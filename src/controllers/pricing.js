@@ -122,6 +122,37 @@ async function getPricing(request, res, next) {
             },
         });
     }
+    if (!isNaN(data.license_years) && data.license_years >= 0) {
+        resData.license_type = request.query.license_type;
+        resData.base = pricingType.base;
+        resData.increment = pricingType.increment;
+        let licenseName = `${data.license_years} Year License`;
+        let licenseYear = data.license_years;
+        if (data.license_years == 0) {
+            licenseName = `Perpetual License`;
+            licenseYear = 4;
+            resData[licenseName] = {};
+            resData[licenseName].discount_rate = pricingType.discount_perpetual * 100;
+        } else {
+            resData[licenseName] = {};
+            resData[licenseName].discount_rate = pricingType[`discount_${data.license_years}_year`] * 100;
+        }
+        resData[licenseName].tiers = [];
+        price_options.forEach((price_option) => {
+            let tier = {};
+            tier.users = `${20 * price_option}-${20 * (price_option + 1)}`;
+            tier.yearly_price = pricingType.base + pricingType.increment * price_option;
+            tier.undiscount_price = tier.yearly_price * licenseYear;
+            discount_amt = tier.undiscount_price * resData[licenseName].discount_rate/100;
+            tier.discount = Math.round(discount_amt * 100) / 100;
+            tier.final_price = tier.undiscount_price - tier.discount;
+            resData[licenseName].tiers.push(tier);
+        });
+        return res.status(200).send({
+            message: "Pricing detail",
+            pricing: resData,
+        });
+    }
     for (let index = 0; index <= pricingType.years; index++) {
         resData.license_type = request.query.license_type;
         resData.base = pricingType.base;
@@ -138,7 +169,8 @@ async function getPricing(request, res, next) {
             resData[licenseName].discount_rate = pricingType[`discount_${index}_year`] * 100;
         }
         resData[licenseName].tiers = [];
-        price_options.forEach((price_option) => {
+        if (!isNaN(data.num_users) && data.num_users >= 0 && data.num_users <= 49) {
+            let price_option = data.num_users >> 0;
             let tier = {};
             tier.users = `${20 * price_option}-${20 * (price_option + 1)}`;
             tier.yearly_price = pricingType.base + pricingType.increment * price_option;
@@ -147,7 +179,18 @@ async function getPricing(request, res, next) {
             tier.discount = Math.round(discount_amt * 100) / 100;
             tier.final_price = tier.undiscount_price - tier.discount;
             resData[licenseName].tiers.push(tier);
-        });
+        } else {
+            price_options.forEach((price_option) => {
+                let tier = {};
+                tier.users = `${20 * price_option}-${20 * (price_option + 1)}`;
+                tier.yearly_price = pricingType.base + pricingType.increment * price_option;
+                tier.undiscount_price = tier.yearly_price * licenseYear;
+                discount_amt = tier.undiscount_price * resData[licenseName].discount_rate/100;
+                tier.discount = Math.round(discount_amt * 100) / 100;
+                tier.final_price = tier.undiscount_price - tier.discount;
+                resData[licenseName].tiers.push(tier);
+            });
+        }
     }
     return res.status(200).send({
         message: "Pricing detail",

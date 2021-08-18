@@ -91,14 +91,14 @@ async function getPricing(request, res, next) {
         if (request.query.license_years == 0) {
             resData.licenseName = `Perpetual License`;
             resData.total_price = resData.base_price * 4;
-            resData.discount_rate = pricingType.discount_perpetual;
+            resData.discount_rate = pricingType.discount_perpetual * 100;
         } else {
             resData.licenseName = `${request.query.license_years} Year License`;
             resData.total_price = resData.base_price * request.query.license_years;
-            resData.discount_rate = pricingType[`discount_${request.query.license_years}_year`];
+            resData.discount_rate = pricingType[`discount_${request.query.license_years}_year`] * 100;
         }
         if (resData.discount_rate) {
-            discount_amt = resData.total_price * resData.discount_rate;
+            discount_amt = resData.total_price * resData.discount_rate/100;
             resData.discount_amt = Math.round(discount_amt*100)/100;
         }
         resData.final_price = resData.total_price - Math.round(discount_amt*100)/100;
@@ -132,10 +132,10 @@ async function getPricing(request, res, next) {
             licenseName = `Perpetual License`;
             licenseYear = 4;
             resData[licenseName] = {};
-            resData[licenseName].discount_rate = pricingType.discount_perpetual;
+            resData[licenseName].discount_rate = pricingType.discount_perpetual * 100;
         } else {
             resData[licenseName] = {};
-            resData[licenseName].discount_rate = pricingType[`discount_${index}_year`];
+            resData[licenseName].discount_rate = pricingType[`discount_${index}_year`] * 100;
         }
         resData[licenseName].tiers = [];
         price_options.forEach((price_option) => {
@@ -143,7 +143,7 @@ async function getPricing(request, res, next) {
             tier.users = `${20 * price_option}-${20 * (price_option + 1)}`;
             tier.yearly_price = pricingType.base + pricingType.increment * price_option;
             tier.undiscount_price = tier.yearly_price * licenseYear;
-            discount_amt = tier.undiscount_price * resData[licenseName].discount_rate;
+            discount_amt = tier.undiscount_price * resData[licenseName].discount_rate/100;
             tier.discount = Math.round(discount_amt * 100) / 100;
             tier.final_price = tier.undiscount_price - tier.discount;
             resData[licenseName].tiers.push(tier);

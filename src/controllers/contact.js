@@ -202,11 +202,12 @@ async function updateContact(request, res, next) {
       });
     }
   } catch (error) {
-    return res.status(500).send({
-      status: 500,
+    return res.status(400).send({
+      status: 400,
       data: {
         message: `Contact not modified`,
-        contact_id: request.body.contact_id
+        contact_id: request.body.contact_id,
+        error: error
       },
     });
   }

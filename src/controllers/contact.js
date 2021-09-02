@@ -66,8 +66,8 @@ async function createContact(request, res, next) {
         });
       }
       console.log(`> contact with provided email already present: ${request.body.email}`);
-      return res.status(200).send({
-        status: 200,
+      return res.status(400).send({
+        status: 400,
         data: {
           message: `Duplicate Registration`,
           contact_id: alreadyPresent.id,
@@ -118,8 +118,8 @@ async function createContact(request, res, next) {
     });
   } catch (error) {
     if (error.message = 'BAD_REQUEST_MOBILE_NUMBER_EXISTS') {
-      return res.status(200).send({
-        status: 200,
+      return res.status(4).send({
+        status: 400,
         data: {
           message: "Duplicate Phone Number",
           phone: request.body.phone
@@ -162,8 +162,8 @@ async function updateContact(request, res, next) {
       });
     }
     if (!contact) {
-      return res.status(200).send({
-          status: 200,
+      return res.status(400).send({
+          status: 400,
           data: {
               message: `contact not found`,
           }

@@ -149,7 +149,18 @@ async function updateContact(request, res, next) {
   
   try {
     const contact_id = request.body.contact_id;
-    const contact = await contactService.getContactById(contact_id);
+    let contact = false;
+    try {
+      contact = await contactService.getContactById(contact_id);
+    } catch (error) {
+      return res.status(400).send({
+        status: 400,
+        data: {
+          message: `Cannot get contact`,
+          contact_id: request.body.contact_id
+        },
+      });
+    }
     if (!contact) {
       return res.status(200).send({
           status: 200,
@@ -166,9 +177,31 @@ async function updateContact(request, res, next) {
       contact_email: contact.email,
     };
     // get or create sales account
-    let account = await accountService.getAccountIfAlreadyPresent(reqData.contact_cf_company);
+    let account = false;
+    try {
+      account = await accountService.getAccountIfAlreadyPresent(reqData.contact_cf_company);
+    } catch (error) {
+      return res.status(400).send({
+        status: 400,
+        data: {
+          message: `Cannot get account`,
+          company: reqData.contact_cf_company
+        },
+      });
+    }
     if (!account) {
-      account = await accountService.create({ name: reqData.contact_cf_company });
+      try {
+        account = await accountService.create({ name: reqData.contact_cf_company });
+      } catch (error) {
+        return res.status(400).send({
+          status: 400,
+          data: {
+            message: `Error during creating new account`,
+            company: reqData.contact_cf_company,
+            error: error
+          },
+        });
+      }
     }
     if (!!account) {
       const cryptolensTokenObject = await licenseService.getCryptolensToken(reqData);

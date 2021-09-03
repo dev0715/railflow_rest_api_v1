@@ -58,7 +58,7 @@ async function createContact(request, res, next) {
         return res.status(201).send({
           status: 201,
           data: {
-            message: "contact created",
+            message: `Found a contact created with email: ${request.body.email}`,
             contact_id: alreadyPresent.id,
             account_id: alreadyPresent.custom_field.cf_account_id,
             company_name: alreadyPresent.custom_field.cf_company
@@ -117,7 +117,7 @@ async function createContact(request, res, next) {
       },
     });
   } catch (error) {
-    if (error.message = 'BAD_REQUEST_MOBILE_NUMBER_EXISTS') {
+    if (error.message == 'BAD_REQUEST_MOBILE_NUMBER_EXISTS') {
       return res.status(4).send({
         status: 400,
         data: {

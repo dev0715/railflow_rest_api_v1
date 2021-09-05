@@ -118,7 +118,7 @@ async function createContact(request, res, next) {
     });
   } catch (error) {
     if (error.message == 'BAD_REQUEST_MOBILE_NUMBER_EXISTS') {
-      return res.status(4).send({
+      return res.status(400).send({
         status: 400,
         data: {
           message: "Duplicate Phone Number",
@@ -126,7 +126,7 @@ async function createContact(request, res, next) {
         }
       });
     }
-    return res.status(error.status).send(error.toJSON());
+    return res.status(500).send(error.toJSON());
   }
 }
 

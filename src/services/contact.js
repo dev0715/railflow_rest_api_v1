@@ -49,7 +49,7 @@ async function create(data) {
     console.log(`> contact created: ${data.email} ${response.data.contact.id}`);
     return response;
   } catch (error) {
-    console.log(error);
+    console.log(error.response.data.errors.message[0]);
     if (error.response.data.errors.message[0] === 'The mobile number already exists.') {
       throw new ApiError('BAD_REQUEST_MOBILE_NUMBER_EXISTS');
     }

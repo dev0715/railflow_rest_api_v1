@@ -66,6 +66,7 @@ async function create(data) {
         console.log(`> account created with name: ${data.name}`);
         return response.data.sales_account;
     } catch (error) {
+
         if (error.response.data.errors.code === 400) {
             throw new BadRequestError(`Account with given company name already exists.`);
         }
@@ -140,7 +141,7 @@ async function getAccountIfAlreadyPresent(name) {
     const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL);
     const response = await apiClient.request({
         method: 'GET',
-        url: '/crm/sales/api/sales_accounts/filters',
+        url: '/crm/sales/api/lookup?q='+ name +'&entities=sales_account&f=name',
         headers: {
             // TODO: use environment variable
             // Authorization: `Token token=${process.env.FRESHSALES_API_KEY}`,
@@ -148,27 +149,10 @@ async function getAccountIfAlreadyPresent(name) {
         },
     });
 
-    if (response && response.status === 200) {
-        const filters = response.data.filters;
-        let viewId;
-        for (let f of filters) {
-            if (f.name === "All Accounts") {
-                viewId = f.id;
-            }
-        }
+    const sales_accounts = response.data.sales_accounts.sales_accounts;
 
-        const allAccounts = await getAllAccountsFromView(viewId);
-
-        if (allAccounts != null) {
-            for (let a of allAccounts) {
-                if (a.name === name) {
-                    return a;
-                }
-            }
-        }
-    }
-
-    return null;
+    if (sales_accounts.length == 0)  return null;
+    return { id: sales_accounts[0].id };
 }
 
 /**

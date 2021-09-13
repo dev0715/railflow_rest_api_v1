@@ -176,10 +176,12 @@ async function updateContact(request, res, next) {
       contact_cf_company: contact.custom_field.cf_company,
       contact_email: contact.email,
     };
+
     // get or create sales account
     let account = false;
     try {
-      account = await accountService.getAccountIfAlreadyPresent(reqData.contact_cf_company);
+      account = await accountService.getAccountIfAlreadyPresent(reqData.contact_cf_company);     
+
     } catch (error) {
       return res.status(400).send({
         status: 400,
@@ -189,9 +191,11 @@ async function updateContact(request, res, next) {
         },
       });
     }
-    if (!account) {
+
+    if (!account || account === null) {
       try {
         account = await accountService.create({ name: reqData.contact_cf_company });
+
       } catch (error) {
         return res.status(400).send({
           status: 400,
@@ -203,6 +207,8 @@ async function updateContact(request, res, next) {
         });
       }
     }
+
+
     if (!!account) {
       const cryptolensTokenObject = await licenseService.getCryptolensToken(reqData);
       const mailgunResponse = await sendOnboardingEmail(reqData, cryptolensTokenObject);
@@ -234,6 +240,7 @@ async function updateContact(request, res, next) {
         }
       });
     }
+    
   } catch (error) {
     return res.status(400).send({
       status: 400,

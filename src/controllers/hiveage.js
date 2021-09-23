@@ -212,6 +212,7 @@ const { checkToken } = require('../services/token');
         await noteService.accountNote(account.id, `Quote: https://railflow.hiveage.com/estm/${quote.estimate.hash_key}`);        
         await slackService.sendSlackMessage(`Railflow Quote: <https://railflow.myfreshworks.com/crm/sales/accounts/${account.id}|${account.name}> <https://railflow.hiveage.com/estm/${quote.estimate.hash_key}|Quote> :slightly_smiling_face:`);
 
+        
         const taskData1 = {
             owner_id: 16000006416,
             title: "Update opportunity contacts",

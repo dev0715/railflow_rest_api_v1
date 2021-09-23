@@ -133,35 +133,18 @@ async function getContactIfAlreadyPresent(email) {
   const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL);
   const response = await apiClient.request({
     method: 'GET',
-    url: '/crm/sales/api/contacts/filters',
+    //url: '/crm/sales/api/contacts/filters',
+    url: '/crm/sales/api/lookup?q='+ email +'&entities=contact&f=email',
     headers: {
       // TODO: use environment variable
       // Authorization: `Token token=${process.env.FRESHSALES_API_KEY}`,
       Authorization: `Token token=${configs.FRESHSALES_API_KEY}`,
     },
   });
+  const alreadyPresent = response.data.contacts.contacts;
 
-  if (response && response.status === 200) {
-    const filters = response.data.filters;
-    let viewId;
-    for (let f of filters) {
-      if (f.name === "All Contacts") {
-        viewId = f.id;
-      }
-    }
-
-    const allContacts = await getAllContactsFromView(viewId);
-
-    if (allContacts != null) {
-      for (let c of allContacts) {
-        if (c.email === email) {
-          return c;
-        }
-      }
-    }
-  }
-
-  return null;
+  if (alreadyPresent.length == 0)  return null;
+  return alreadyPresent[0];
 }
 
 /**

@@ -27,7 +27,7 @@ build:
     - echo 'MAILGUN_KEY="key-4c45b28d4cab5d63a74df82c99aae76c"' >> .env
     - echo 'HIVEAGE_DOMAIN="railflow"' >> .env
     - echo 'HIVEAGE_BASE_URL="https://railflow.hiveage.com/"' >> .env
-    - echo 'HIVEAGE_API_KEY="ByVEuVLBWbch9B5Ejnsq"' >> .env
+    - echo 'HIVEAGE_API_KEY="TQcCm6QAzYgCcgzrNqs7"' >> .env
     - echo 'SLACK_API_BASE_URL="https://hooks.slack.com/services/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"' >> .env
     - echo 'SLACK_SLASH_COMMAND_TOKEN="kBWbldLF6g11eDX5rpyRQUY4"' >> .env
     - echo 'CRYPTOLENS_LICENSE_EXTENSION_KEY="WyIyODk0MTIiLCIwQUx0TG1LRWxUNXZRZXJLYWJMZzBUY3NLSGJ0akgvaCtkZEx4b3h6Il0="' >> .env

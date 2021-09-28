@@ -6,7 +6,7 @@
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
     "start:daemon": "pm2 start src/app.js",
-    "test": "mocha tests/integration/contact.js --timeout=10000 --exit"
+    "test": "mocha --timeout=20000 "
   },
   "dependencies": {
     "aws-sdk": "^2.839.0",
@@ -26,6 +26,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "faker": "^5.5.3",
     "chai": "^4.3.4",
     "mocha": "^8.4.0",
     "should": "^13.2.3",

@@ -9,19 +9,19 @@
 const ApiError = require("../errors/api");
 const UnprocessableRequestError = require("../errors/unprocessablerequest");
 
-const fs = require('fs');
-const Handlebars = require('handlebars');
-const path = require('path');
-const dayjs = require('dayjs');
-const contactService = require('../services/contact');
-const accountService = require('../services/account');
-const slackService = require('../services/slack');
-const licenseService = require('../services/license');
-const emailService = require('../services/email');
-const uploadService = require('../services/upload');
-const noteService = require('../services/note');
-const taskService = require('../services/task');
-const { checkToken } = require('../services/token');
+const fs = require("fs");
+const Handlebars = require("handlebars");
+const path = require("path");
+const dayjs = require("dayjs");
+const contactService = require("../services/contact");
+const accountService = require("../services/account");
+const slackService = require("../services/slack");
+const licenseService = require("../services/license");
+const emailService = require("../services/email");
+const uploadService = require("../services/upload");
+const noteService = require("../services/note");
+const taskService = require("../services/task");
+const { checkToken } = require("../services/token");
 
 /**
  * Function: Create new Contact
@@ -36,7 +36,7 @@ async function createContact(request, res, next) {
   if (!isAuthenticated) {
     return res.status(400).send({
       status: 400,
-      message: 'token invalid or missing'
+      message: "token invalid or missing",
     });
   }
 
@@ -53,15 +53,15 @@ async function createContact(request, res, next) {
     // check if the contact is already there.
     const alreadyPresent = await contactService.getContactIfAlreadyPresent(request.body.email);
     if (alreadyPresent !== null) {
-      if (alreadyPresent.custom_field.cf_license_status == 'not_sent') {
-        console.log('> contact with provided email already present but status is not_sent');
+      if (alreadyPresent.custom_field.cf_license_status == "not_sent") {
+        console.log("> contact with provided email already present but status is not_sent");
         return res.status(201).send({
           status: 201,
           data: {
             message: `Found a contact created with email: ${request.body.email}`,
             contact_id: alreadyPresent.id,
             account_id: alreadyPresent.custom_field.cf_account_id,
-            company_name: alreadyPresent.custom_field.cf_company
+            company_name: alreadyPresent.custom_field.cf_company,
           },
         });
       }
@@ -71,7 +71,7 @@ async function createContact(request, res, next) {
         data: {
           message: `Duplicate Registration`,
           contact_id: alreadyPresent.id,
-          account_id: alreadyPresent.custom_field.cf_account_id
+          account_id: alreadyPresent.custom_field.cf_account_id,
         },
       });
     }
@@ -83,14 +83,16 @@ async function createContact(request, res, next) {
     }
 
     if (!!account) {
-      data.sales_accounts = [{
-        id: account.id,
-        is_primary: true,
-      }];
+      data.sales_accounts = [
+        {
+          id: account.id,
+          is_primary: true,
+        },
+      ];
       data.account_id = account.id;
       const response = await contactService.create(data);
       if (response && response.data && response.data.contact) {
-        if (typeof(request.body.notify) == 'undefined' || request.body.notify) {
+        if (typeof request.body.notify == "undefined" || request.body.notify) {
           const notificationData = {
             contactId: response.data.contact.id,
             company: request.body.company,
@@ -104,7 +106,7 @@ async function createContact(request, res, next) {
             message: "contact created",
             contact_id: response.data.contact.id,
             account_id: account.id,
-            company_name: response.data.contact.custom_field.cf_company
+            company_name: response.data.contact.custom_field.cf_company,
           },
         });
       }
@@ -117,13 +119,13 @@ async function createContact(request, res, next) {
       },
     });
   } catch (error) {
-    if (error.message == 'BAD_REQUEST_MOBILE_NUMBER_EXISTS') {
+    if (error.message == "BAD_REQUEST_MOBILE_NUMBER_EXISTS") {
       return res.status(400).send({
         status: 400,
         data: {
           message: "Duplicate Phone Number",
-          phone: request.body.phone
-        }
+          phone: request.body.phone,
+        },
       });
     }
     return res.status(500).send(error.toJSON());
@@ -143,10 +145,10 @@ async function updateContact(request, res, next) {
   if (!isAuthenticated) {
     return res.status(400).send({
       status: 400,
-      message: 'token invalid or missing'
+      message: "token invalid or missing",
     });
   }
-  
+
   try {
     const contact_id = request.body.contact_id;
     let contact = false;
@@ -157,16 +159,16 @@ async function updateContact(request, res, next) {
         status: 400,
         data: {
           message: `Cannot get contact`,
-          contact_id: request.body.contact_id
+          contact_id: request.body.contact_id,
         },
       });
     }
     if (!contact) {
       return res.status(400).send({
-          status: 400,
-          data: {
-              message: `contact not found`,
-          }
+        status: 400,
+        data: {
+          message: `contact not found`,
+        },
       });
     }
     const reqData = {
@@ -180,14 +182,13 @@ async function updateContact(request, res, next) {
     // get or create sales account
     let account = false;
     try {
-      account = await accountService.getAccountIfAlreadyPresent(reqData.contact_cf_company);     
-
+      account = await accountService.getAccountIfAlreadyPresent(reqData.contact_cf_company);
     } catch (error) {
       return res.status(400).send({
         status: 400,
         data: {
           message: `Cannot get account`,
-          company: reqData.contact_cf_company
+          company: reqData.contact_cf_company,
         },
       });
     }
@@ -195,122 +196,128 @@ async function updateContact(request, res, next) {
     if (!account || account === null) {
       try {
         account = await accountService.create({ name: reqData.contact_cf_company });
-
       } catch (error) {
         return res.status(400).send({
           status: 400,
           data: {
             message: `Error during creating new account`,
             company: reqData.contact_cf_company,
-            error: error
+            error: error,
           },
         });
       }
     }
 
-
     if (!!account) {
       const cryptolensTokenObject = await licenseService.getCryptolensToken(reqData);
       const mailgunResponse = await sendOnboardingEmail(reqData, cryptolensTokenObject);
       const mailgunEmailUrl = "https://app.mailgun.com/app/sending/domains/mail.railflow.io/logs/";
-      const description = `License key: ${cryptolensTokenObject.key} \n\n Email sent at: ${dayjs()} \n\n Mailgun Id: ${mailgunEmailUrl}${mailgunResponse.emailData.id}/history`;
+      const description = `License key: ${
+        cryptolensTokenObject.key
+      } \n\n Email sent at: ${dayjs()} \n\n Mailgun Id: ${mailgunEmailUrl}${
+        mailgunResponse.emailData.id
+      }/history`;
       const createNotesResponse = await noteService.create(reqData.contact_id, description);
-      const createTaskResponse = await taskService.create({contact_id: reqData.contact_id});
+      const createTaskResponse = await taskService.create({ contact_id: reqData.contact_id });
       reqData.cf_license_key = cryptolensTokenObject.key;
       const patchedContact = await contactService.update(reqData);
-  
+
       return res.status(200).send({
         status: 200,
         data: {
-            message: `contact verified`,
-            contact_id: patchedContact.id,
-            account_id: patchedContact.custom_field.cf_account_id,
-            first_name: patchedContact.first_name,
-            last_name: patchedContact.last_name,
-            address: patchedContact.address,
-            city: patchedContact.city,
-            state: patchedContact.state,
-            zipcode: patchedContact.zipcode,
-            country: patchedContact.country,
-            license_key: patchedContact.custom_field.cf_license_key,
-            license_link: mailgunResponse.licenseUrl,
-            account_id: account.id,
-            company_name: patchedContact.custom_field.cf_company,
-            mailgun_url: `${mailgunEmailUrl}${mailgunResponse.emailData.id}/history`
-        }
+          message: `contact verified`,
+          contact_id: patchedContact.id,
+          account_id: patchedContact.custom_field.cf_account_id,
+          first_name: patchedContact.first_name,
+          last_name: patchedContact.last_name,
+          address: patchedContact.address,
+          city: patchedContact.city,
+          state: patchedContact.state,
+          zipcode: patchedContact.zipcode,
+          country: patchedContact.country,
+          license_key: patchedContact.custom_field.cf_license_key,
+          license_link: mailgunResponse.licenseUrl,
+          account_id: account.id,
+          company_name: patchedContact.custom_field.cf_company,
+          mailgun_url: `${mailgunEmailUrl}${mailgunResponse.emailData.id}/history`,
+        },
       });
     }
-    
   } catch (error) {
     return res.status(400).send({
       status: 400,
       data: {
         message: `Contact not modified`,
         contact_id: request.body.contact_id,
-        error: error
+        error: error,
       },
     });
   }
 }
 // Todo: refactor this method because it is used in signup service.
 function getCryptolensTokenEmailContent(cryptolensTokenObject) {
-  return `Customer Id: ${cryptolensTokenObject.customerId} | Token: ${cryptolensTokenObject.key}`
+  return `Customer Id: ${cryptolensTokenObject.customerId} | Token: ${cryptolensTokenObject.key}`;
 }
 async function getCryptolensFileUrl(cryptolensTokenObject) {
   try {
-      const uploadRes = await uploadService.uploadToS3(cryptolensTokenObject);
-      let text = ` You can also check out your license here: ${uploadRes.url}`;
-      return {
-          url: uploadRes.url,
-          text
-      };
+    const uploadRes = await uploadService.uploadToS3(cryptolensTokenObject);
+    let text = ` You can also check out your license here: ${uploadRes.url}`;
+    return {
+      url: uploadRes.url,
+      text,
+    };
   } catch (error) {
-      throw new ApiError(`Error while uploading the file; ${error}`);
+    throw new ApiError(`Error while uploading the file; ${error}`);
   }
 }
 
 // Todo: refactor this method because it is used in signup service.
 async function sendOnboardingEmail(body, cryptolensTokenObject) {
-    try {
-        // collate all the data. pass it to general email service send.
-        let text = getCryptolensTokenEmailContent(cryptolensTokenObject);
-        const contactId = body.contact_id;
+  try {
+    // collate all the data. pass it to general email service send.
+    let text = getCryptolensTokenEmailContent(cryptolensTokenObject);
+    const contactId = body.contact_id;
 
-        cryptolensTokenObject.customerName = `${body.contact_first_name}_${body.contact_last_name}`;
-        const { url: licenseUrl, text: cryptolensLicenseFileTextContent } = await getCryptolensFileUrl(cryptolensTokenObject);
-        cryptolensTokenObject.url = licenseUrl;
-        text += cryptolensLicenseFileTextContent;
+    cryptolensTokenObject.customerName = `${body.contact_first_name}_${body.contact_last_name}`;
+    const { url: licenseUrl, text: cryptolensLicenseFileTextContent } = await getCryptolensFileUrl(
+      cryptolensTokenObject
+    );
+    cryptolensTokenObject.url = licenseUrl;
+    text += cryptolensLicenseFileTextContent;
 
-        console.log(`> onboarding email text: ${text}`);
+    console.log(`> onboarding email text: ${text}`);
 
-        const template = fs.readFileSync(path.join(__dirname, '../../email-templates/signup.hbs'), 'utf8');
-        const compiled = Handlebars.compile(template);
-        const templateData = {
-            licenseKey: cryptolensTokenObject.key,
-            licenseUrl: cryptolensTokenObject.url,
-        };
-        const html = compiled(templateData);
-        const extraInfo = {
-            "v:contactId": contactId,
-            "o:tracking": 'yes',
-            "o:tracking-clicks": 'yes',
-            html,
-        };
+    const template = fs.readFileSync(
+      path.join(__dirname, "../../email-templates/signup.hbs"),
+      "utf8"
+    );
+    const compiled = Handlebars.compile(template);
+    const templateData = {
+      licenseKey: cryptolensTokenObject.key,
+      licenseUrl: cryptolensTokenObject.url,
+    };
+    const html = compiled(templateData);
+    const extraInfo = {
+      "v:contactId": contactId,
+      "o:tracking": "yes",
+      "o:tracking-clicks": "yes",
+      html,
+    };
 
-        const to = body.contact_email || "ali.raza@agiletestware.com";
+    const to = body.contact_email || "ali.raza@agiletestware.com";
 
-        const emailData = await emailService.sendEmail(to, text, extraInfo);
-        return {
-            emailData: emailData,
-            licenseUrl: licenseUrl
-        };
-    } catch (error) {
-        throw new ApiError(`There was some issue sending email to: ${body.contact_id} ${error}`);
-        return;
-    }
+    const emailData = await emailService.sendEmail(to, text, extraInfo);
+    return {
+      emailData: emailData,
+      licenseUrl: licenseUrl,
+    };
+  } catch (error) {
+    throw new ApiError(`There was some issue sending email to: ${body.contact_id} ${error}`);
+    return;
+  }
 }
 
 module.exports = {
   createContact,
-  updateContact
+  updateContact,
 };

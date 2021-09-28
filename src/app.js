@@ -24,3 +24,5 @@ function onError(err) {
   console.log(`Error: ${err}`);
   process.exit(1);
 }
+
+module.exports = server;

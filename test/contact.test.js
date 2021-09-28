@@ -35,8 +35,9 @@ describe("POST/PATCH Contact /contact Chai Test", function () {
     };
   });
 
+  // remove all added contacts during testing
   this.afterAll(async function () {
-    await contactService.bulkDelete(addedContactIds);
+    if (addedContactIds.length > 0) await contactService.bulkDelete(addedContactIds);
   });
 
   it("create contact with unique values", async function () {

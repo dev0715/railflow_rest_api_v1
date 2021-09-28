@@ -26,6 +26,6 @@ RUN echo 'AWS_ACCESS_KEY_ID="AKIA22332JGRSQN5TNMD"' >> .env
 RUN echo 'AWS_SECRET_ACCESS_KEY="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"' >> .env
 RUN echo 'ALLOWED_PARTY_SECRET=ALL' >> .env
 
-EXPOSE 8080
+EXPOSE 9000
 
 CMD ["yarn", "start", "--", "-a", "0.0.0.0"]

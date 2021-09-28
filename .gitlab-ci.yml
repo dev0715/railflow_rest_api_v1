@@ -1,6 +1,6 @@
 # API ci
 variables:
-  SERVICE_NAME: "railflow_rest_api_v2"
+  SERVICE_NAME: "api"
  
 deploy:
   stage: deploy

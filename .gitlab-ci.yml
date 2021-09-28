@@ -1,56 +1,17 @@
-image: docker:19.03.13
-
-services:
-  - docker:19.03.13-dind
-
-stages:
-  - test
-  - build
-  - deploy
-
+# API ci
 variables:
-  DOCKER_DRIVER: overlay2
-  DOCKER_TLS_CERTDIR: ""
-
-build:
-  stage: build
-  before_script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-  script:
-    - echo 'APP_ENV=production' >> .env
-    - echo 'APP_PORT=9000' >> .env
-    - echo 'FRESHSALES_API_KEY="fPjGQStTY1ffGqtyAj9RVw"' >> .env
-    - echo 'FRESHSALES_BASE_URL="https://railflow.myfreshworks.com"' >> .env
-    - echo 'ALLOWED_DOMAINS=["http://localhost:8000", "http://localhost","http://localhost:9000", "https://railflow.io"]' >> .env
-    - echo 'CRYPTOLENS_BASE_URL="https://app.cryptolens.io"' >> .env
-    - echo 'CRYPTOLENS_API_KEY="WyI0NDk1MzMiLCJqdjFYRGJYc0RuVmFHU0NmdFlnUWptMklTcXdVai9lNVRnRklkL3Y3Il0="' >> .env
-    - echo 'MAILGUN_KEY="key-4c45b28d4cab5d63a74df82c99aae76c"' >> .env
-    - echo 'HIVEAGE_DOMAIN="railflow"' >> .env
-    - echo 'HIVEAGE_BASE_URL="https://railflow.hiveage.com/"' >> .env
-    - echo 'HIVEAGE_API_KEY="TQcCm6QAzYgCcgzrNqs7"' >> .env
-    - echo 'SLACK_API_BASE_URL="https://hooks.slack.com/services/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"' >> .env
-    - echo 'SLACK_SLASH_COMMAND_TOKEN="kBWbldLF6g11eDX5rpyRQUY4"' >> .env
-    - echo 'CRYPTOLENS_LICENSE_EXTENSION_KEY="WyIyODk0MTIiLCIwQUx0TG1LRWxUNXZRZXJLYWJMZzBUY3NLSGJ0akgvaCtkZEx4b3h6Il0="' >> .env
-    - echo 'CRYPTOLENS_RSA_PUB_KEY="<RSAKeyValue><Modulus>5TFzvx1Ygenf7BJYxliBFkcKSDebrxVTUteai/xjHP/Tmrx2z5h5vJRkQlg6vxecbLDj7g+TAvZssEVj5D1VVtur2Od1Fdqs49m0dA+QdGBv5DXt9YeqJLW/JpciMom79HcOeIvJDTHJcQssCXKLxGnQkTpMIpB22hTOuJTcj1bmLManR6mQYX2k/BZ/XkC2l61TbKaOnKww3BrX8+b2ImT89VeN0znxIEwBUla78C6pDJTkKDPZPeHItHk9gTBx9CkCCfMdzidVxwiMFvXM7PSBWSFKn2JPO5+gawJbV+0nH95890EL80dl/OH/K5O+CYTaHrKJ+zUcY7MxLqsmCw==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>"' >> .env
-    - echo 'AWS_ACCESS_KEY_ID="AKIA22332JGRSQN5TNMD"' >> .env
-    - echo 'AWS_SECRET_ACCESS_KEY="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"' >> .env
-    - echo 'ALLOWED_PARTY_SECRET='$ALLOWED_PARTY_SECRET >> .env
-    - docker build -t $CI_REGISTRY_IMAGE:latest .
-    - docker push $CI_REGISTRY_IMAGE:latest
-  only:
-    - master
-
+  SERVICE_NAME: "railflow_rest_api_v2"
+ 
 deploy:
   stage: deploy
-  image: ubuntu
-  script:
-    - "which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )"
-    - eval $(ssh-agent -s)
-    - ssh-add <(echo "$PROD_SSH_PRIVATE_KEY")
-    - mkdir -p ~/.ssh
-    - chmod 700 -R ~/.ssh
-    - ssh-keyscan -H $PROD_SERVER_HOST >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
-    - ssh root@$PROD_SERVER_HOST "docker-compose pull railflow_rest_api_v2 ;docker-compose stop railflow_rest_api_v2 railflow_rest_api_v2_nginx;docker-compose rm -f railflow_rest_api_v2 railflow_rest_api_v2_nginx;docker-compose up -d;docker image prune -a -f"
   only:
-    - master
+    - staging
+
+  image: google/cloud-sdk:latest
+  script:
+    - echo $GCP_SERVICE_ACCOUNT_STAGING > gcloud-service-key.json 
+    - gcloud auth activate-service-account --key-file gcloud-service-key.json 
+    - gcloud auth configure-docker 
+    - gcloud config set project $GCP_PROJECT_ID_STAGING 
+    - gcloud builds submit --tag gcr.io/$GCP_PROJECT_ID_STAGING/$SERVICE_NAME 
+    - gcloud run deploy $SERVICE_NAME --image gcr.io/$GCP_PROJECT_ID_STAGING/$SERVICE_NAME --region=us-central1 --platform managed --allow-unauthenticated 

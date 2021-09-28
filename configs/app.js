@@ -6,7 +6,7 @@ dotenv.config();
 const configs = {
     development: {
         // hard code these in this object
-        APP_PORT: 9000,
+        APP_PORT: 8080,
         FRESHSALES_API_KEY: "fPjGQStTY1ffGqtyAj9RVw",
         FRESHSALES_BASE_URL: "https://railflow.myfreshworks.com",
         ALLOWED_DOMAINS: ["http://localhost:8000", "http://localhost","http://localhost:9000", "https://railflow.io"],

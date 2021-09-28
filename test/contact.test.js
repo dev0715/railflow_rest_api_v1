@@ -26,12 +26,14 @@ describe("POST/PATCH Contact /contact Chai Test", function () {
 
   this.beforeEach(function () {
     data = {
-      firstName: faker.name.firstName(),
-      lastName: faker.name.lastName(),
-      email: faker.internet.email(faker.name.firstName(), faker.name.lastName(), "mailinator.com"),
+      firstName: "test_" + faker.name.firstName(),
+      lastName: "test_" + faker.name.lastName(),
+      email:
+        "test_" +
+        faker.internet.email(faker.name.firstName(), faker.name.lastName(), "mailinator.com"),
       phone: faker.phone.phoneNumber(),
-      jobTitle: faker.name.jobTitle(),
-      company: faker.company.companySuffix() + faker.company.companyName(0),
+      jobTitle: "test_" + faker.name.jobTitle(),
+      company: "test_" + faker.company.companySuffix() + faker.company.companyName(0),
     };
   });
 

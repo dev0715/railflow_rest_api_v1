@@ -57,7 +57,6 @@ describe("POST/PATCH Contact /contact Chai Test", function () {
       .request(server)
       .patch("/api/contact")
       .send({ contact_id: createdContactRes.body.data.contact_id });
-    console.log(updatedContactRes.body);
     expect(updatedContactRes.body.status).eql(200);
     expect(updatedContactRes.body).to.be.an("object");
     expect(updatedContactRes.body.data).to.be.an("object");
@@ -107,9 +106,9 @@ describe("POST/PATCH Contact /contact Chai Test", function () {
         company: faker.company.companySuffix() + faker.company.companyName(0),
       });
 
-    console.log(duplicatedPhoneRes.body);
     expect(duplicatedPhoneRes.body.status).equal(201);
     expect(duplicatedPhoneRes.body).to.be.an("object");
+    expect(duplicatedPhoneRes.body.data).to.be.an("object");
 
     addedContactIds.push(res.body.data.contact_id);
   });

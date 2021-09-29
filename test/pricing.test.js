@@ -34,37 +34,65 @@ describe("Pricing e2e testing", function () {
     if (addedContactIds.length > 0) await contactService.bulkDelete(addedContactIds);
   });
 
-  // it("should get professional pricing since valid queries", async function () {
-  //   const createdContactRes = await chai.request(server).post("/api/contact").send(contactData);
+  it("should get professional pricing since valid queries", async function () {
+    const createdContactRes = await chai.request(server).post("/api/contact").send(contactData);
 
-  //   const pricingRes = await chai.request(server).get("/api/pricing").query({
-  //     license_type: "professional",
-  //     license_years: 2,
-  //     account_id: createdContactRes.body.data.account_id,
-  //     contact_id: createdContactRes.body.data.contact_id,
-  //     num_users: 5,
-  //   });
+    const pricingRes = await chai.request(server).get("/api/pricing").query({
+      license_type: "professional",
+      license_years: 2,
+      account_id: createdContactRes.body.data.account_id,
+      contact_id: createdContactRes.body.data.contact_id,
+      num_users: 5,
+    });
 
-  //   expect(pricingRes.body.status).eql(200);
-  //   expect(pricingRes.body.message).eql("Only base price");
-  //   expect(pricingRes.body.users).to.be.an("object");
-  //   expect(pricingRes.body.pricing).to.be.an("object");
-  // });
+    expect(pricingRes.body.status).eql(200);
+    expect(pricingRes.body.message).eql("Pricing detail");
+    expect(pricingRes.body.pricing).to.be.an("object");
+    expect(pricingRes.body.pricing.license_type).eql("professional");
+  });
 
-  // it("should not base price, not valid license_type", async function () {
-  //   const createdContactRes = await chai.request(server).post("/api/contact").send(contactData);
+  it("should get base price", async function () {
+    const createdContactRes = await chai.request(server).post("/api/contact").send(contactData);
 
-  //   const pricingRes = await chai.request(server).get("/api/pricing").query({
-  //     //   license_type: "professional",
-  //     license_years: 2,
-  //     account_id: createdContactRes.body.data.account_id,
-  //     contact_id: createdContactRes.body.data.contact_id,
-  //     num_users: 5,
-  //   });
+    const pricingRes = await chai.request(server).get("/api/pricing").query({
+      //   license_type: "professional",
+      license_years: 2,
+      account_id: createdContactRes.body.data.account_id,
+      contact_id: createdContactRes.body.data.contact_id,
+      num_users: 5,
+    });
 
-  //   expect(pricingRes.body.status).eql(200);
-  //   expect(pricingRes.body.message).eql("Only base price");
-  //   expect(pricingRes.body.users).to.be.an("object");
-  //   expect(pricingRes.body.pricing).to.be.an("object");
-  // });
+    expect(pricingRes.body.status).eql(200);
+    expect(pricingRes.body.message).eql("Only base price");
+    expect(pricingRes.body.users).to.be.an("object");
+    expect(pricingRes.body.pricing).to.be.an("object");
+  });
+
+  it("should get 400 status, num_users is greater than 49", async function () {
+    const createdContactRes = await chai.request(server).post("/api/contact").send(contactData);
+
+    const pricingRes = await chai.request(server).get("/api/pricing").query({
+      license_type: "professional",
+      license_years: 2,
+      account_id: createdContactRes.body.data.account_id,
+      contact_id: createdContactRes.body.data.contact_id,
+      num_users: 50,
+    });
+
+    expect(pricingRes.body.status).eql(400);
+  });
+
+  it("should get 400 status, license_years is greater than 3 ", async function () {
+    const createdContactRes = await chai.request(server).post("/api/contact").send(contactData);
+
+    const pricingRes = await chai.request(server).get("/api/pricing").query({
+      license_type: "professional",
+      license_years: 5,
+      account_id: createdContactRes.body.data.account_id,
+      contact_id: createdContactRes.body.data.contact_id,
+      num_users: 5,
+    });
+
+    expect(pricingRes.body.status).eql(400);
+  });
 });

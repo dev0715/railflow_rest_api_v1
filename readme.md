@@ -14,74 +14,83 @@ yarn install
 yarn dev
 ```
 
+### Test
+
+```
+yarn test
+```
+
 ### Local Docker
+
 1. Install docker on your local `https://docs.docker.com/get-docker/`
 2. Build your docker image locally and run docker-compose Up by running below command
+
 ```bash
 cd <path_to_railflow_api_folder>
 docker-compose up -d --build
 ```
 
 ### Updating Swagger Documentation
-1. The swagger documents are stored in `/src/swagger`. 
+
+1. The swagger documents are stored in `/src/swagger`.
 2. Follow below example to update the swagger document for Contact API.
-    * The contact api swagger will be `/src/swagger/contact.js`. The schema, description and parameters will be stored in this file. 
-    * Update the Contact category as following example
-    ```yaml
-    /**
-    * @swagger
-    * tags:
-    *   - name: Contact
-    *     description: Contact API
-    */
-    ```
-    * Update the schema as following example
-    ``` yaml
-    /**
-    * @swagger
-    * components:
-    *   schemas:
-    *     Contact:
-    *       type: object
-    *       properties:
-    *         firstName:
-    *           type: string
-    *           description: The contact's first name.
-    *           example: John
-    *         lastName:
-    *           type: string
-    *           description: The contact's last name.
-    *           example: Doe
-    *           .....
-    */
-    ```
-    * Update the POST function as following example
-    ```yaml
-    /**
-    * @swagger
-    * /api/register:
-    *    post:
-    *      tags:
-    *        - Contact
-    *      summary: Register a contact
-    *      produces:
-    *          - application/json
-    *      parameters:
-    *          - name: Contact
-    *            description: Contact information
-    *            in: body
-    *            required: true
-    *            schema:
-    *              $ref: '#/components/schemas/Contact'
-    *      responses:
-    *          200:
-    *              description: Returns created contract
-    *              content:
-    *                application/json:
-    *                  schema:
-    *                    $ref: '#/components/schemas/Contact'
-    */
-    ```
+   - The contact api swagger will be `/src/swagger/contact.js`. The schema, description and parameters will be stored in this file.
+   - Update the Contact category as following example
+   ```yaml
+   /**
+   * @swagger
+   * tags:
+   *   - name: Contact
+   *     description: Contact API
+   */
+   ```
+   - Update the schema as following example
+   ```yaml
+   /**
+   * @swagger
+   * components:
+   *   schemas:
+   *     Contact:
+   *       type: object
+   *       properties:
+   *         firstName:
+   *           type: string
+   *           description: The contact's first name.
+   *           example: John
+   *         lastName:
+   *           type: string
+   *           description: The contact's last name.
+   *           example: Doe
+   *           .....
+   */
+   ```
+   - Update the POST function as following example
+   ```yaml
+   /**
+   * @swagger
+   * /api/register:
+   *    post:
+   *      tags:
+   *        - Contact
+   *      summary: Register a contact
+   *      produces:
+   *          - application/json
+   *      parameters:
+   *          - name: Contact
+   *            description: Contact information
+   *            in: body
+   *            required: true
+   *            schema:
+   *              $ref: '#/components/schemas/Contact'
+   *      responses:
+   *          200:
+   *              description: Returns created contract
+   *              content:
+   *                application/json:
+   *                  schema:
+   *                    $ref: '#/components/schemas/Contact'
+   */
+   ```
 
 ### Configs
 
@@ -94,7 +103,8 @@ To change the port on which app is running:
 > Change the `APP_PORT` variable in `configs/app.js`.
 
 > Change the `ALLOWED_PARTY_SECRET` variable in `configs/app.js`. This is allow you to secure the api endpoints by enabling the token middleware.
->> You can temporary disable the middleware by set `ALLOWED_PARTY_SECRET = ALL`
+>
+> > You can temporary disable the middleware by set `ALLOWED_PARTY_SECRET = ALL`
 
 > Add token to your request header `token: your_token_here`. The default token in localhost is `HAhFXukfwrN3SrDMhhYetfAE`
 > If the token is missing or missmatch, system will return the 400 error `token invalid or missing`
@@ -112,11 +122,11 @@ For production:
 If no variable called APP_ENV is found, we take the default as `development` and hence the development environment variables from the `configs/app.js` will be picked up.
 
 ## Using Slack Slash Command
+
 We have set up a slack slash command `/license` plase walkthrough the usage below:
 
 Follow the example `/license ali raza:acme corp:myemail@gmail.com:12`, parameters separated by `/` follow the formula: `/license customer name:company:email:duration`
 
-The duration is between 0-36 months. If the duration equal 0 or undefined, the duration is set to 14 days. 
+The duration is between 0-36 months. If the duration equal 0 or undefined, the duration is set to 14 days.
 
 Slack command will return the successful message and the license information after executing the payload.
-

@@ -5,7 +5,7 @@ variables:
 deploy:
   stage: deploy
   only:
-    - production
+    - master
 
   image: google/cloud-sdk:latest
   script:

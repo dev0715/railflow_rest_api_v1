@@ -26,14 +26,14 @@ describe("Contact e2e testing", function () {
 
   this.beforeEach(function () {
     data = {
-      firstName: "test_" + faker.name.firstName(),
-      lastName: "test_" + faker.name.lastName(),
+      firstName: "test+" + faker.name.firstName(),
+      lastName: "test+" + faker.name.lastName(),
       email:
-        "test_" +
+        "test" +
         faker.internet.email(faker.name.firstName(), faker.name.lastName(), "mailinator.com"),
       phone: faker.phone.phoneNumber(),
-      jobTitle: "test_" + faker.name.jobTitle(),
-      company: "test_" + faker.company.companySuffix() + faker.company.companyName(0),
+      jobTitle: "test+" + faker.name.jobTitle(),
+      company: "test+" + faker.company.companySuffix() + faker.company.companyName(0),
     };
   });
 
@@ -44,7 +44,7 @@ describe("Contact e2e testing", function () {
 
   it("create contact with unique values", async function () {
     const res = await chai.request(server).post("/api/contact").send(data);
-
+    console.log(res.body);
     expect(res.body.status).eql(201);
     expect(res.body).to.be.an("object");
     expect(res.body.data).to.be.an("object");
@@ -60,6 +60,7 @@ describe("Contact e2e testing", function () {
       .request(server)
       .patch("/api/contact")
       .send({ contact_id: createdContactRes.body.data.contact_id });
+
     expect(updatedContactRes.body.status).eql(200);
     expect(updatedContactRes.body).to.be.an("object");
     expect(updatedContactRes.body.data).to.be.an("object");
@@ -96,7 +97,7 @@ describe("Contact e2e testing", function () {
 
   it("create contact with duplicate email - no error - returns record back ", async function () {
     const res = await chai.request(server).post("/api/contact").send(data);
-    console.log(res.body);
+    console.log("created =============>", res.body);
     const duplicatedPhoneRes = await chai
       .request(server)
       .post("/api/contact")
@@ -108,7 +109,7 @@ describe("Contact e2e testing", function () {
         jobTitle: faker.name.jobTitle(),
         company: faker.company.companySuffix() + faker.company.companyName(0),
       });
-    console.log(duplicatedPhoneRes.body);
+    console.log("================>", duplicatedPhoneRes.body);
 
     expect(duplicatedPhoneRes.body.status).equal(201);
     expect(duplicatedPhoneRes.body).to.be.an("object");

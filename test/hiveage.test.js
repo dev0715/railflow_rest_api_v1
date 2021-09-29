@@ -110,7 +110,6 @@ describe("Hievage e2e testing", function () {
       license_type: "license_type_test",
       license_years: 2,
     });
-    console.log(res.body.data.account_id);
     expect(res.body.status).eql(404);
     expect(res.body.data).to.be.an("object");
     expect(res.body.data.message).to.eql("Account does not exist");

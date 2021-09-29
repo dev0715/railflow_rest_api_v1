@@ -53,12 +53,12 @@ describe("Account e2e Testing", function () {
         zipcode: faker.address.zipCode(),
         country: faker.address.cityName(),
         hiveage_contact_email:
-          "test_" +
+          "test_o" +
           faker.internet.email(faker.name.firstName(), faker.name.lastName(), "mailinator.com"),
         primary_contact_first_name: faker.name.findName(),
         primary_contact_last_name: faker.name.findName(),
       });
-    expect(res.body.status).eql(201);
+    expect(res.body.status).eql(200);
     expect(res.body.data).to.be.an("object");
     expect(res.body.data).have.property("hiveage");
     expect(res.body.data.hiveage).to.be.an("object");

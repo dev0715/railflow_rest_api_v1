@@ -95,26 +95,26 @@ describe("Contact e2e testing", function () {
     addedContactIds.push(res.body.data.contact_id);
   });
 
-  it("create contact with duplicate email - no error - returns record back ", async function () {
-    const res = await chai.request(server).post("/api/contact").send(data);
-    console.log("created =============>", res.body);
-    const duplicatedPhoneRes = await chai
-      .request(server)
-      .post("/api/contact")
-      .send({
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
-        email: data.email,
-        phone: faker.phone.phoneNumber(),
-        jobTitle: faker.name.jobTitle(),
-        company: faker.company.companySuffix() + faker.company.companyName(0),
-      });
-    console.log("================>", duplicatedPhoneRes.body);
+  // it("create contact with duplicate email - no error - returns record back ", async function () {
+  //   const res = await chai.request(server).post("/api/contact").send(data);
+  //   console.log("created =============>", res.body);
+  //   const duplicatedPhoneRes = await chai
+  //     .request(server)
+  //     .post("/api/contact")
+  //     .send({
+  //       firstName: faker.name.firstName(),
+  //       lastName: faker.name.lastName(),
+  //       email: data.email,
+  //       phone: faker.phone.phoneNumber(),
+  //       jobTitle: faker.name.jobTitle(),
+  //       company: faker.company.companySuffix() + faker.company.companyName(0),
+  //     });
+  //   console.log("================>", duplicatedPhoneRes.body);
 
-    expect(duplicatedPhoneRes.body.status).equal(201);
-    expect(duplicatedPhoneRes.body).to.be.an("object");
-    expect(duplicatedPhoneRes.body.data).to.be.an("object");
+  //   expect(duplicatedPhoneRes.body.status).equal(201);
+  //   expect(duplicatedPhoneRes.body).to.be.an("object");
+  //   expect(duplicatedPhoneRes.body.data).to.be.an("object");
 
-    addedContactIds.push(res.body.data.contact_id);
-  });
+  //   addedContactIds.push(res.body.data.contact_id);
+  // });
 });

@@ -1,3 +1,5 @@
+process.env.APP_ENV = "test";
+
 const chai = require("chai");
 const expect = chai.expect;
 const should = require("should");
@@ -10,7 +12,7 @@ const contactService = require("../src/services/contact");
 
 chai.use(chaiHttp);
 
-describe("Test Hievage creation", function () {
+describe("Hievage e2e testing", function () {
   let contactData = {};
   const addedContactIds = [];
 
@@ -40,7 +42,7 @@ describe("Test Hievage creation", function () {
       contact_id: createdContactRes.body.data.contact_id,
       account_id: createdContactRes.body.data.account_id,
       num_users: 20,
-      license_type: "license_type_test",
+      license_type: "professional", // professional or enterprise
       license_years: 2,
     });
     expect(res.body.status).eql(201);
@@ -72,7 +74,7 @@ describe("Test Hievage creation", function () {
       contact_id: createdContactRes.body.data.contact_id,
       account_id: createdContactRes.body.data.account_id,
       num_users: 100,
-      license_type: "license_type_test",
+      license_type: "professional",
       license_years: 2,
     });
     expect(res.body.status).eql(400);
@@ -88,10 +90,9 @@ describe("Test Hievage creation", function () {
       contact_id: 1000,
       account_id: createdContactRes.body.data.account_id,
       num_users: 20,
-      license_type: "license_type_test",
+      license_type: "professional",
       license_years: 2,
     });
-    console.log(res.body);
     expect(res.body.status).eql(404);
     expect(res.body.data).to.be.an("object");
     expect(res.body.data.message).to.eql("Contact does not exist");
@@ -109,9 +110,10 @@ describe("Test Hievage creation", function () {
       license_type: "license_type_test",
       license_years: 2,
     });
+    console.log(res.body.data.account_id);
     expect(res.body.status).eql(404);
     expect(res.body.data).to.be.an("object");
     expect(res.body.data.message).to.eql("Account does not exist");
-    expect(res.body.data.account_id).eql(1000);
+    expect(res.body.data.account_id).eql(10000);
   });
 });

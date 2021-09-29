@@ -20,7 +20,7 @@ const contactService = require("../src/services/contact");
 
 chai.use(chaiHttp);
 
-describe("POST/PATCH Contact /contact Chai Test", function () {
+describe("Contact e2e testing", function () {
   let data = {};
   const addedContactIds = [];
 
@@ -76,16 +76,16 @@ describe("POST/PATCH Contact /contact Chai Test", function () {
       .request(server)
       .post("/api/contact")
       .send({
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
+        firstName: "test_" + faker.name.firstName(),
+        lastName: "test_" + faker.name.lastName(),
         email: faker.internet.email(
-          faker.name.firstName(),
+          "test_" + faker.name.firstName(),
           faker.name.lastName(),
           "mailinator.com"
         ),
         phone: data.phone,
-        jobTitle: faker.name.jobTitle(),
-        company: faker.company.companySuffix() + faker.company.companyName(0),
+        jobTitle: "test_" + faker.name.jobTitle(),
+        company: "test_" + faker.company.companySuffix() + faker.company.companyName(0),
       });
     expect(duplicatedPhoneRes.body.status).equal(400);
     expect(duplicatedPhoneRes.body).to.be.an("object");
@@ -96,7 +96,7 @@ describe("POST/PATCH Contact /contact Chai Test", function () {
 
   it("create contact with duplicate email - no error - returns record back ", async function () {
     const res = await chai.request(server).post("/api/contact").send(data);
-
+    console.log(res.body);
     const duplicatedPhoneRes = await chai
       .request(server)
       .post("/api/contact")
@@ -108,6 +108,7 @@ describe("POST/PATCH Contact /contact Chai Test", function () {
         jobTitle: faker.name.jobTitle(),
         company: faker.company.companySuffix() + faker.company.companyName(0),
       });
+    console.log(duplicatedPhoneRes.body);
 
     expect(duplicatedPhoneRes.body.status).equal(201);
     expect(duplicatedPhoneRes.body).to.be.an("object");

@@ -4,8 +4,8 @@ services:
   - docker:19.03.13-dind
 
 stages:
-  - test
   - build
+  - test
   - deploy
 
 variables:
@@ -60,4 +60,4 @@ test:
   dependencies:
     - npm
   script:
-    - npm test
+    - npm

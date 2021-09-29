@@ -43,17 +43,17 @@
  *           type: boolean
  *           description: Notification flag.
  *           example: True
-*/
+ */
 
 "use strict";
 
 const express = require("express");
 const router = express.Router();
 
-const { createContact,updateContact } = require('../controllers/contact');
+const { createContact, updateContact, searchContact } = require("../controllers/contact");
 
 router.get("/", (req, res) => {
-  res.status(200).send("Contact Resource");
+  return searchContact(req, res);
 });
 
 /**
@@ -66,7 +66,7 @@ router.get("/", (req, res) => {
  *      description: |
  *          POST method to create a contact
  *          <br>1. Get First name, Last name, Email, Phone, Job Title from payload
- *          <br>2. Check if the email is already existed then then check "cf_license_status". 
+ *          <br>2. Check if the email is already existed then then check "cf_license_status".
  *          <br>--> If status is sent, response with the code 200 withe "Duplicate Registration" error message
  *          <br>--> If status is not sent, response with the code 201 created with the new contact info
  *          <br>3. Crate contact then response with the code 201 and created contact.
@@ -123,9 +123,9 @@ router.post("/", (req, res, next) => {
  *          <br>1. Check if contact existed
  *          <br>--> YES, then update the contact
  *          <br>--> NO, response with the status code 200, error message "contact not found"
- *          <br>2. Get account by contact_cf_company. 
+ *          <br>2. Get account by contact_cf_company.
  *          <br>--> YES, get account info
- *          <br>--> NO, crate new account 
+ *          <br>--> NO, crate new account
  *          <br>3. Create Notes and Task.
  *          <br>4. Update contact accordingly and response with the code 200 "contact verified".
  *      produces:
@@ -200,6 +200,53 @@ router.post("/", (req, res, next) => {
  */
 router.patch("/", (req, res, next) => {
   return updateContact(req, res, next);
+});
+
+/**
+ * @swagger
+ * /api/contact:
+ *    get:
+ *      tags:
+ *        - Contact
+ *      summary: Search a contact
+ *      description: |
+ *          POST method to create a contact
+ *          <br>1. Get email from payload
+ *          <br>2. Search for email from FreshWork API.
+ *          <br>--> If status is exist, response with the code 200 together with an unempty array of contact
+ *          <br>--> If status is not exist, response with the code 404 and return an empty array.
+ *      produces:
+ *          - application/json
+ *
+ *      requestBody:
+ *         content:
+ *            application/json:
+ *               schema:
+ *                  type: object
+ *      responses:
+ *          200:
+ *              description: Returns created contract
+ *              content:
+ *                application/json:
+ *                  schema:
+ *                    type: object
+ *                    properties:
+ *                      message:
+ *                        type: string
+ *                        description: Response message.
+ *                        example: "Account created"
+ *                      contact_id:
+ *                        type: integer
+ *                        description: The contact's id.
+ *                        example: 16004426279
+ *                      company_name:
+ *                        type: string
+ *                        description: The contact's company.
+ *                        example: Railflow
+ */
+
+router.get("/", (req, res) => {
+  return searchContact(req, res);
 });
 
 module.exports = router;

@@ -57,7 +57,5 @@ deploy:
 
 test:
   stage: test
-  dependencies:
-    - npm
   script:
-    - npm
+    - npm test

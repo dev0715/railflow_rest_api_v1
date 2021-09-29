@@ -25,7 +25,8 @@ async function getPricing(request, res, next) {
       message: "token invalid or missing",
     });
   }
-  if (typeof request.query.license_type === "undefined") {
+
+  if (!request.query.license_type) {
     let tiers = [];
     for (let index = 0; index < users.list_size; index++) {
       tiers.push(`${index * users.increment} - ${(index + 1) * users.increment}`);

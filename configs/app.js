@@ -20,7 +20,7 @@ const configs = {
     MAILGUN_KEY: "key-4c45b28d4cab5d63a74df82c99aae76c",
     HIVEAGE_DOMAIN: "railflow",
     HIVEAGE_BASE_URL: "https://railflow.hiveage.com/",
-    HIVEAGE_API_KEY: "ByVEuVLBWbch9B5Ejnsq",
+    HIVEAGE_API_KEY: "TQcCm6QAzYgCcgzrNqs7",
     SLACK_API_BASE_URL:
       "https://hooks.slack.com/services/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",
     SLACK_SLASH_COMMAND_TOKEN: "kBWbldLF6g11eDX5rpyRQUY4",

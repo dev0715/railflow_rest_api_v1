@@ -54,3 +54,10 @@ deploy:
     - ssh root@$PROD_SERVER_HOST "docker-compose pull railflow_rest_api_v2 ;docker-compose stop railflow_rest_api_v2 railflow_rest_api_v2_nginx;docker-compose rm -f railflow_rest_api_v2 railflow_rest_api_v2_nginx;docker-compose up -d;docker image prune -a -f"
   only:
     - master
+
+test:
+  stage: test
+  dependencies:
+    - npm
+  script:
+    - npm test

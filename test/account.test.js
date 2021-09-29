@@ -90,7 +90,6 @@ describe("Account e2e Testing", function () {
         primary_contact_first_name: faker.name.findName(),
         primary_contact_last_name: faker.name.findName(),
       });
-    console.log(res.body);
     expect(res.body.status).eql(200);
     expect(res.body.data).to.be.an("object");
     expect(res.body.data.message).eql("account not found");

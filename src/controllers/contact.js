@@ -317,7 +317,51 @@ async function sendOnboardingEmail(body, cryptolensTokenObject) {
   }
 }
 
+/**
+ * Function: Search for Contact
+ * @param {*} request Request
+ * @param {*} res Response
+ * @returns Response
+ */
+async function searchContact(request, res) {
+  try {
+    const { email } = request.query;
+    let contacts = [];
+    let statusCode = 404;
+
+    if (email) {
+      const response = await contactService.search(email);
+      contacts = response.contacts.contacts;
+
+      if (contacts.length) {
+        statusCode = 200;
+      }
+
+      return res.status(statusCode).send({
+        status: statusCode,
+        data: contacts,
+      });
+    }
+
+    return res.status(statusCode).send({
+      status: statusCode,
+      data: contacts,
+    });
+  } catch (error) {
+    const code = error.code ? error.code : 400;
+    const message = error.message ? error.message : "server either does not recognize the request.";
+
+    return res.status(code).send({
+      status: code,
+      data: {
+        message,
+      },
+    });
+  }
+}
+
 module.exports = {
   createContact,
   updateContact,
+  searchContact,
 };

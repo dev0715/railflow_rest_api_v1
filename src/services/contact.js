@@ -198,10 +198,32 @@ async function bulkDelete(ids) {
     throw new ApiError(`> Error while bulkDelete contacts by ids: ${error}`);
   }
 }
+/**
+ * Service: Search for Contact
+ * @param email user email
+ * @returns Promise
+ */
+async function search(email) {
+  try {
+    const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL);
+    const response = await apiClient.request({
+      method: "GET",
+      url: `crm/sales/api/lookup?q=${email}&entities=contact&f=email`,
+      headers: {
+        Authorization: `Token token=${configs.FRESHSALES_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw new ApiError(`> Error while searching the contact: ${error}`);
+  }
+}
 
 module.exports = {
   create,
   update,
+  search,
   getContactIfAlreadyPresent,
   getContactById,
   bulkDelete,

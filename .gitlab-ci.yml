@@ -58,4 +58,4 @@ deploy:
 test:
   stage: test
   script:
-    - npm test
+    - yarn test

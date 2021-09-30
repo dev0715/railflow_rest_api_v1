@@ -260,7 +260,7 @@ function getCryptolensTokenEmailContent(cryptolensTokenObject) {
 }
 async function getCryptolensFileUrl(cryptolensTokenObject) {
   try {
-    const uploadRes = await uploadService.uploadToS3(cryptolensTokenObject);
+    const uploadRes = await uploadService.uploadToGoogleCloudStorage(cryptolensTokenObject);
     let text = ` You can also check out your license here: ${uploadRes.url}`;
     return {
       url: uploadRes.url,

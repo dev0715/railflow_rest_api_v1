@@ -7,14 +7,14 @@
 "use strict";
 
 const ApiError = require("../errors/api");
-const { getApiClient } = require('../services/request');
+const { getApiClient } = require("../services/request");
 
-const emailService = require('../services/email');
-const noteService = require('../services/note');
-const licenseService = require('../services/license');
-const contactService = require('../services/contact');
-const uploadService = require('../services/upload');
-const { checkToken, checkTokenSlash } = require('../services/token');
+const emailService = require("../services/email");
+const noteService = require("../services/note");
+const licenseService = require("../services/license");
+const contactService = require("../services/contact");
+const uploadService = require("../services/upload");
+const { checkToken, checkTokenSlash } = require("../services/token");
 
 /**
  * Function: Extend License base on contact_cf_extension_period in the body
@@ -29,7 +29,7 @@ async function extendLicense(req, res, next) {
   if (!isAuthenticated) {
     return res.status(400).send({
       status: 400,
-      message: 'token invalid or missing'
+      message: "token invalid or missing",
     });
   }
 
@@ -37,13 +37,16 @@ async function extendLicense(req, res, next) {
     const license = await licenseService.extend(req.body);
     const description = `License has been extended by ${req.body.contact_cf_extension_period} days`;
     const createNotesResponse = await noteService.create(req.body.contact_id, description);
-    await sendLicenseExtensionEmail(req.body, `Your license has been extended by ${req.body.contact_cf_extension_period} days.`);
+    await sendLicenseExtensionEmail(
+      req.body,
+      `Your license has been extended by ${req.body.contact_cf_extension_period} days.`
+    );
 
     return res.status(200).send({
       status: 200,
       data: {
         message: `license extended successfully for the contact: ${req.body.contact_id}`,
-      }
+      },
     });
   } catch (error) {
     console.log(`> error while extending license for: ${req.body.contact_id}: ${error}`);
@@ -63,15 +66,15 @@ async function extendLicenseSlack(req, res, next) {
   if (!isAuthenticated) {
     return res.status(400).send({
       status: 400,
-      message: 'token invalid or missing'
+      message: "token invalid or missing",
     });
   }
   const payloadParams = req.body.text.split(":");
 
-  if (typeof payloadParams[2] === 'undefined' || payloadParams[2] === '') {
+  if (typeof payloadParams[2] === "undefined" || payloadParams[2] === "") {
     return res.json({
-      "response_type": "in_channel", // public to the channel
-      "text": "Email is invalid, please follow this example (periods 0-36 months, Zero is default to 14 days):\n`/license Customer Name:Company:Email:Duration`"
+      response_type: "in_channel", // public to the channel
+      text: "Email is invalid, please follow this example (periods 0-36 months, Zero is default to 14 days):\n`/license Customer Name:Company:Email:Duration`",
     });
   } else {
     const apiClient = await getApiClient(req.body.response_url);
@@ -82,11 +85,11 @@ async function extendLicenseSlack(req, res, next) {
       var today = new Date();
       var newDate = new Date();
       newDate.setMonth(today.getMonth() + req.body.contact_cf_extension_period);
-      licensePeriods = (newDate - today)/ (1000 * 60 * 60 * 24);
+      licensePeriods = (newDate - today) / (1000 * 60 * 60 * 24);
     }
     res.json({
-      "response_type": "in_channel", // public to the channel
-      "text": `Extending license for ${payloadParams[2]} duration: ${licensePeriods} days`
+      response_type: "in_channel", // public to the channel
+      text: `Extending license for ${payloadParams[2]} duration: ${licensePeriods} days`,
     });
     const contact = await contactService.getContactIfAlreadyPresent(req.body.contact_email);
     if (contact != null) {
@@ -98,8 +101,11 @@ async function extendLicenseSlack(req, res, next) {
       req.body.contact_last_name = contact.last_name;
       req.body.contact_cf_company = payloadParams[1];
 
-      const cryptolensTokenObject = await licenseService.getCryptolensToken(req.body,licensePeriods);
-      const uploadRes = await uploadService.uploadToS3(cryptolensTokenObject);
+      const cryptolensTokenObject = await licenseService.uploadToGoogleCloudStorage(
+        req.body,
+        licensePeriods
+      );
+      const uploadRes = await uploadService.uploadToGoogleCloudStorage(cryptolensTokenObject);
       const extendedLicense = await licenseService.extend(req.body);
       if (extendedLicense.result == 0) {
         const description = `License has been extended by ${req.body.contact_cf_extension_period} days`;
@@ -108,31 +114,31 @@ async function extendLicenseSlack(req, res, next) {
         await contactService.update({
           contact_id: contact.id,
           cf_license_key: cryptolensTokenObject.key,
-          cf_license_key_url: uploadRes.url
+          cf_license_key_url: uploadRes.url,
         });
         return await apiClient.request({
-          method: 'POST',
+          method: "POST",
           data: {
-            "response_type": "in_channel", // public to the channel
-            text: `License extended.\nLicense Key: ${cryptolensTokenObject.key}\nLicense Url: ${uploadRes.url}`
-          }
+            response_type: "in_channel", // public to the channel
+            text: `License extended.\nLicense Key: ${cryptolensTokenObject.key}\nLicense Url: ${uploadRes.url}`,
+          },
         });
       } else {
         return await apiClient.request({
-          method: 'POST',
+          method: "POST",
           data: {
-            "response_type": "in_channel", // public to the channel
-            text: `Error while extending the license.`
-          }
+            response_type: "in_channel", // public to the channel
+            text: `Error while extending the license.`,
+          },
         });
       }
     } else {
       return await apiClient.request({
-        method: 'POST',
+        method: "POST",
         data: {
-          "response_type": "in_channel", // public to the channel
-          text: `Error: Cannot find customer related to email ${req.body.contact_email}.`
-        }
+          response_type: "in_channel", // public to the channel
+          text: `Error: Cannot find customer related to email ${req.body.contact_email}.`,
+        },
       });
     }
   }
@@ -151,7 +157,7 @@ async function sendLicenseExtensionEmail(body, text) {
     const html = `<p>${text}</p>`;
     const extraInfo = {
       "v:contactId": contactId,
-      html
+      html,
     };
 
     const to = body.contact_email || "railflowio@yopmail.com";
@@ -165,5 +171,5 @@ async function sendLicenseExtensionEmail(body, text) {
 
 module.exports = {
   extendLicense,
-  extendLicenseSlack
+  extendLicenseSlack,
 };

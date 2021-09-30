@@ -31,6 +31,9 @@ const configs = {
     AWS_ACCESS_KEY_ID: "AKIA22332JGRSQN5TNMD",
     AWS_SECRET_ACCESS_KEY: "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",
     ALLOWED_PARTY_SECRET: "ALL",
+    GCP_BUCKET_NAME: "railflow-development",
+    GOOGLE_CLOUD_BUCKET: "gs://railflow-staging.appspot.com",
+    GOOGLE_CLOUD_BUCKET_PATH: "https://storage.googleapis.com",
   },
   production: {
     // set the node_env as `prod`. values
@@ -50,6 +53,9 @@ const configs = {
     AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
     AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
     ALLOWED_PARTY_SECRET: process.env.ALLOWED_PARTY_SECRET,
+    GCP_BUCKET_NAME: process.env.GCP_BUCKET_NAME,
+    GOOGLE_CLOUD_BUCKET: process.env.GOOGLE_CLOUD_BUCKET,
+    GOOGLE_CLOUD_BUCKET_PATH: process.env.GOOGLE_CLOUD_BUCKET_PATH,
   },
   test: {
     // hard code these in this object
@@ -78,6 +84,9 @@ const configs = {
     AWS_ACCESS_KEY_ID: "AKIA22332JGRSQN5TNMD",
     AWS_SECRET_ACCESS_KEY: "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",
     ALLOWED_PARTY_SECRET: "ALL",
+    GCP_BUCKET_NAME: "railflow-test",
+    GOOGLE_CLOUD_BUCKET: "gs://railflow-staging.appspot.com",
+    GOOGLE_CLOUD_BUCKET_PATH: "https://storage.googleapis.com",
   },
 };
 

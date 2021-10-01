@@ -22,13 +22,12 @@
     "handlebars": "^4.7.7",
     "mailgun-js": "^0.22.0",
     "node-machine-id": "^1.1.12",
-    "swagger-jsdoc": "5.0.1",
     "swagger-ui-express": "^4.1.6",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "faker": "^5.5.3",
     "chai": "^4.3.4",
+    "faker": "^5.5.3",
     "mocha": "^8.4.0",
     "should": "^13.2.3",
     "supertest": "^6.1.6"

@@ -12,7 +12,7 @@ const { v4: uuidv4 } = require("uuid");
 // The name of the bucket that you have created
 const storage = new Storage({
   keyFilename: "railflow-gcp-prod.json",
-  // projectId: "railflow-production",
+  projectId: "railflow-production",
 });
 
 /**
@@ -25,9 +25,6 @@ async function uploadToGoogleCloudStorage(data) {
     const TOKEN = configs.CRYPTOLENS_LICENSE_EXTENSION_KEY;
     const RSA_PUB_KEY = configs.CRYPTOLENS_RSA_PUB_KEY;
 
-    // const isBucketCreated = await createBucket("bucket_test");
-    // if (!isBucketCreated)
-    //   throw new ApiError(`Error while creating bucket with bucket name ${bucketName}`);
     const PRODUCT_ID = 8245;
     const bucket = storage.bucket(configs.GOOGLE_CLOUD_BUCKET);
     const code = await machineId();
@@ -36,6 +33,7 @@ async function uploadToGoogleCloudStorage(data) {
     const file = bucket.file(filename);
     const fileFullPath = `${configs.GOOGLE_CLOUD_BUCKET_PATH}/${bucket.name}/${filename}`;
     await file.save(Helpers.SaveAsString(licenseKey));
+
     return { url: fileFullPath };
   } catch (error) {
     console.log(error.response);
@@ -47,7 +45,7 @@ async function createBucket(bucketName) {
   try {
     // Creates the new bucket
 
-    const bucketExists = await storage.bucket(bucketName).exists();
+    const [bucketExists] = await storage.bucket(bucketName).exists();
 
     if (!bucketExists) {
       await storage.createBucket(bucketName);

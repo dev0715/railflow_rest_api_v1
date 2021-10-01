@@ -33,7 +33,7 @@ const configs = {
     ALLOWED_PARTY_SECRET: "ALL",
     GCP_BUCKET_NAME: "railflow-development",
     GOOGLE_CLOUD_BUCKET: "gs://railflow-staging.appspot.com",
-    GOOGLE_CLOUD_BUCKET_PATH: "https://storage.googleapis.com",
+    GOOGLE_CLOUD_BUCKET_PATH: "https://storage.cloud.google.com",
   },
   production: {
     // set the node_env as `prod`. values
@@ -86,7 +86,7 @@ const configs = {
     ALLOWED_PARTY_SECRET: "ALL",
     GCP_BUCKET_NAME: "railflow-test",
     GOOGLE_CLOUD_BUCKET: "gs://railflow-staging.appspot.com",
-    GOOGLE_CLOUD_BUCKET_PATH: "https://storage.googleapis.com",
+    GOOGLE_CLOUD_BUCKET_PATH: "https://storage.cloud.google.com",
   },
 };
 

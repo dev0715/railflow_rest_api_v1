@@ -7,6 +7,7 @@
 "use strict";
 
 const dayjs = require("dayjs");
+const logger = require("../config/logger");
 
 const BadRequestError = require("../errors/badrequest");
 const noteService = require("../services/note");
@@ -60,8 +61,8 @@ async function createEvent(req, res, next) {
       },
     });
   } catch (error) {
-    console.log(
-      `> error while creating event for: ${req.body["event-data"]["user-variables"].contactId}: ${error}`
+    logger.error(
+      `error while creating event for: ${req.body["event-data"]["user-variables"].contactId}: ${error}`
     );
     return res.status(error.status).send(error.toJSON());
   }

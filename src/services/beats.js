@@ -1,5 +1,6 @@
 const { getApiClient } = require("./request");
 const appConfig = require("../../configs/app");
+const logger = require("../config/logger");
 const configs = appConfig.getConfigs(process.env.APP_ENV);
 
 exports.registerBeatsToCryptolens = async (args) => {
@@ -17,6 +18,7 @@ exports.registerBeatsToCryptolens = async (args) => {
     });
     return response;
   } catch (error) {
+    logger.error(error);
     throw error;
   }
 };

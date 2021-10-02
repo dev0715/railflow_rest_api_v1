@@ -11,6 +11,7 @@ const { getApiClient } = require("./request");
 
 const ApiError = require("../errors/api");
 const BadRequestError = require("../errors/badrequest");
+const logger = require("../config/logger");
 
 /**
  * Service: Update an account
@@ -31,8 +32,7 @@ async function update(account_id, data) {
       },
       data: data,
     });
-
-    console.log(`> account updated with name: ${response.data.sales_account.name}`);
+    logger.info(`> account updated with name: ${response.data.sales_account.name}`);
     return response.data.sales_account;
   } catch (error) {
     if (error.response.data.errors.code === 400) {
@@ -64,6 +64,7 @@ async function create(data) {
         sales_account: { name: data.name },
       },
     });
+    logger.info(`> account created with name: ${data.name}`);
 
     console.log(`> account created with name: ${data.name}`);
     return response.data.sales_account;
@@ -99,7 +100,7 @@ async function updateHiveageHash(account_id, hash) {
       },
     });
 
-    console.log(`> hiveage hash added to account`);
+    logger.info(`> hiveage hash added to account`);
     return response.data.sales_account;
   } catch (error) {
     throw new ApiError(
@@ -132,7 +133,7 @@ async function getAccountById(account_id) {
     if (error.response.status == 404) {
       return false;
     }
-    console.log("error when query contact info from freshworks.com");
+    logger.error("error when query contact info from freshworks.com");
     return false;
   }
 }
@@ -180,10 +181,10 @@ async function createHiveageNetwork(network) {
         password: "",
       },
     });
-    console.log(`> hiveage network created successfully`);
+    logger.info(`> hiveage network created successfully`);
     return response.data.network;
   } catch (error) {
-    console.log("error when create hiveage network");
+    logger.error("error when create hiveage network");
     return false;
   }
 }
@@ -210,10 +211,10 @@ async function updateHiveageNetwork(hash_key, network) {
         password: "",
       },
     });
-    console.log(`> hiveage network updated successfully`);
+    logger.info(`> hiveage network updated successfully`);
     return response.data.network;
   } catch (error) {
-    console.log("error when update hiveage network");
+    logger.error("error when update hiveage network");
     return false;
   }
 }
@@ -238,10 +239,10 @@ async function getHiveageNetwork(hash) {
         password: "",
       },
     });
-    console.log(`> hiveage connection retrieved successfully`);
+    logger.info(`> hiveage connection retrieved successfully`);
     return response.data.network;
   } catch (error) {
-    console.log("error when retrive hiveage network");
+    logger.error("error when retrive hiveage network");
     return false;
   }
 }

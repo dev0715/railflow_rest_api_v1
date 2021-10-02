@@ -4,6 +4,7 @@ const cors = require("cors");
 const express = require("express");
 const bodyParser = require("body-parser");
 const swaggerUi = require("swagger-ui-express");
+const morgan = require("morgan");
 
 // routes
 const contactRouter = require("./routes/contact");
@@ -31,6 +32,7 @@ class Server {
     this.config();
     this.routes();
     this.app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerFile));
+    this.app.use(morgan("dev"));
   }
 
   config() {

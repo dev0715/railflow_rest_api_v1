@@ -6,6 +6,7 @@
 
 "use strict";
 
+const logger = require("../config/logger");
 const { registerBeatsToCryptolens } = require("../services/beats");
 /**
  * Function: Register new Beats
@@ -46,6 +47,7 @@ exports.registerBeats = (req, res) => {
       },
     });
   } catch (error) {
+    logger.error("Error When Register Beat", error);
     const code = error.code ? error.code : 400;
     const message = error.message ? error.message : "server either does not recognize the request.";
 

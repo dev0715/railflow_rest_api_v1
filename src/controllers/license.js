@@ -15,6 +15,7 @@ const licenseService = require("../services/license");
 const contactService = require("../services/contact");
 const uploadService = require("../services/upload");
 const { checkToken, checkTokenSlash } = require("../services/token");
+const logger = require("../config/logger");
 
 /**
  * Function: Extend License base on contact_cf_extension_period in the body
@@ -49,7 +50,7 @@ async function extendLicense(req, res, next) {
       },
     });
   } catch (error) {
-    console.log(`> error while extending license for: ${req.body.contact_id}: ${error}`);
+    logger.error(`> error while extending license for: ${req.body.contact_id}`, error);
     return res.status(error.status).send(error.toJSON());
   }
 }
@@ -164,7 +165,7 @@ async function sendLicenseExtensionEmail(body, text) {
     const emailData = await emailService.sendEmail(to, text, extraInfo);
     return emailData;
   } catch (error) {
-    console.log(`> error: ${error}`);
+    logger.error(`> error when sendLicenseExtensionEmail`, error);
     throw new ApiError(`There was some issue sending email to: ${body.contact_id}`);
   }
 }

@@ -22,6 +22,7 @@ const uploadService = require("../services/upload");
 const noteService = require("../services/note");
 const taskService = require("../services/task");
 const { checkToken } = require("../services/token");
+const logger = require("../config/logger");
 
 /**
  * Function: Create new Contact
@@ -54,7 +55,7 @@ async function createContact(request, res, next) {
     const alreadyPresent = await contactService.getContactIfAlreadyPresent(request.body.email);
     if (alreadyPresent !== null) {
       if (alreadyPresent.custom_field.cf_license_status == "not_sent") {
-        console.log("> contact with provided email already present but status is not_sent");
+        logger.info("> contact with provided email already present but status is not_sent");
         return res.status(201).send({
           status: 201,
           data: {
@@ -65,7 +66,7 @@ async function createContact(request, res, next) {
           },
         });
       }
-      console.log(`> contact with provided email already present: ${request.body.email}`);
+      logger.info(`> contact with provided email already present: ${request.body.email}`);
       return res.status(400).send({
         status: 400,
         data: {
@@ -97,7 +98,7 @@ async function createContact(request, res, next) {
             contactId: response.data.contact.id,
             company: request.body.company,
           };
-          console.log(`> contact created. sending slack notification: ${response.data.contact.id}`);
+          logger.info(`> contact created. sending slack notification: ${response.data.contact.id}`);
           await slackService.sendMessage(notificationData);
         }
         return res.status(201).send({
@@ -155,6 +156,7 @@ async function updateContact(request, res, next) {
     try {
       contact = await contactService.getContactById(contact_id);
     } catch (error) {
+      logger.error("Error when updating Contact", error);
       return res.status(400).send({
         status: 400,
         data: {

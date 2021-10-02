@@ -8,6 +8,7 @@ const key = require("cryptolens").Key;
 const { Storage } = require("@google-cloud/storage");
 const Helpers = require("cryptolens").Helpers;
 const { v4: uuidv4 } = require("uuid");
+const logger = require("../config/logger");
 
 // The name of the bucket that you have created
 const storage = new Storage({
@@ -36,7 +37,7 @@ async function uploadToGoogleCloudStorage(data) {
 
     return { url: fileFullPath };
   } catch (error) {
-    console.log(error.response);
+    logger.error("Error When trying to upload file to google storage", error.response);
     throw new ApiError(`Error while uploading license; ${error}`);
   }
 }

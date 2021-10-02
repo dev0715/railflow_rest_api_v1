@@ -13,6 +13,7 @@ const appConfigs = require("../../configs/app");
 const configs = appConfigs.getConfigs(process.env.APP_ENV || "development");
 
 const ApiError = require("../errors/api");
+const logger = require("../config/logger");
 
 /**
  * Service: create new contact
@@ -46,7 +47,7 @@ async function create(data) {
       },
     });
 
-    console.log(`> contact created: ${data.email} ${response.data.contact.id}`);
+    logger.info(`> contact created: ${data.email} ${response.data.contact.id}`);
     return response;
   } catch (error) {
     console.log(error.response.data.errors.message[0]);
@@ -86,11 +87,10 @@ async function update(data) {
       },
     });
 
-    console.log(`> contact status updated successfully for id: ${data.contact_id}`);
+    logger.info(`> contact status updated successfully for id: ${data.contact_id}`);
     return response.data.contact;
   } catch (error) {
     throw new ApiError(`> Error while updating the contact: ${error}`);
-    return;
   }
 }
 
@@ -119,7 +119,7 @@ async function getContactById(contact_id) {
     if (error.response.status == 404) {
       return false;
     }
-    console.log("error when query contact info from freshworks.com");
+    logger.error("error when query contact info from freshworks.com");
     return false;
   }
 }
@@ -192,7 +192,7 @@ async function bulkDelete(ids) {
       },
     });
 
-    console.log(response.data);
+    logger.info(response.data);
     return response.data;
   } catch (error) {
     throw new ApiError(`> Error while bulkDelete contacts by ids: ${error}`);

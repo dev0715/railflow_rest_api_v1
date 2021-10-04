@@ -12,7 +12,7 @@ const logger = require("../config/logger");
 
 // The name of the bucket that you have created
 const storage = new Storage({
-  keyFilename: "railflow-gcp-prod-2.json",
+  keyFilename: "railflow-gcp-prod.json",
   projectId: "railflow-production",
 });
 

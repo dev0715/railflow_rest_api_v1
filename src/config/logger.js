@@ -4,7 +4,7 @@ const winston = require("winston");
 const { LoggingWinston } = require("@google-cloud/logging-winston");
 
 const loggingWinston = new LoggingWinston({
-  keyFilename: "railflow-gcp-prdo.json",
+  keyFilename: "railflow-gcp-prod.json",
 });
 
 const logger = winston.createLogger({

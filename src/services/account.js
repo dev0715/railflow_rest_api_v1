@@ -32,7 +32,7 @@ async function update(account_id, data) {
       },
       data: data,
     });
-    logger.info(`> account updated with name: ${response.data.sales_account.name}`);
+    logger.info(`account updated with name: ${response.data.sales_account.name}`);
     return response.data.sales_account;
   } catch (error) {
     if (error.response.data.errors.code === 400) {
@@ -64,13 +64,13 @@ async function create(data) {
         sales_account: { name: data.name },
       },
     });
-    logger.info(`> account created with name: ${data.name}`);
+    logger.info(`Account created with name: ${data.name}`);
 
-    console.log(`> account created with name: ${data.name}`);
+    console.log(`Account created with name: ${data.name}`);
     return response.data.sales_account;
   } catch (error) {
     if (error.response.data.errors.code === 400) {
-      throw new BadRequestError(`Account with given company name already exists.`);
+      throw new BadRequestError(`Account with given company name ${data.name} already exists.`);
     }
     throw new ApiError(
       `Error while creating the account: ${error.response.data.errors.message[0]}`
@@ -100,7 +100,7 @@ async function updateHiveageHash(account_id, hash) {
       },
     });
 
-    logger.info(`> hiveage hash added to account`);
+    logger.info(`Hiveage hash added to account for this account_id: ${account_id}`);
     return response.data.sales_account;
   } catch (error) {
     throw new ApiError(
@@ -181,10 +181,10 @@ async function createHiveageNetwork(network) {
         password: "",
       },
     });
-    logger.info(`> hiveage network created successfully`);
+    logger.info(`hiveage network created successfully, with email: ${network.business_email}`);
     return response.data.network;
   } catch (error) {
-    logger.error("error when create hiveage network");
+    logger.error(`error when create hiveage network with email: ${network.business_email}`);
     return false;
   }
 }
@@ -211,7 +211,7 @@ async function updateHiveageNetwork(hash_key, network) {
         password: "",
       },
     });
-    logger.info(`> hiveage network updated successfully`);
+    logger.info(`hiveage network updated successfully with email: ${network.business_email}`);
     return response.data.network;
   } catch (error) {
     logger.error("error when update hiveage network");
@@ -239,10 +239,9 @@ async function getHiveageNetwork(hash) {
         password: "",
       },
     });
-    logger.info(`> hiveage connection retrieved successfully`);
     return response.data.network;
   } catch (error) {
-    logger.error("error when retrive hiveage network");
+    logger.error(`error when retrive hiveage network, hash: ${hash}`);
     return false;
   }
 }

@@ -26,7 +26,7 @@ async function updateFsOpportunity(id, data) {
       data: data,
     });
 
-    logger.info(`> Opportunity updated with name: ${response.data.deal.name}`);
+    logger.info(`Opportunity updated with name: ${response.data.deal.name}`);
     return response.data.deal;
   } catch (error) {
     throw new ApiError(
@@ -54,7 +54,7 @@ async function createFsOpportunity(data) {
       data: data,
     });
 
-    logger.info(`> Opportunity created with name: ${data.deal.name}`);
+    logger.info(`Opportunity created with name: ${data.deal.name}`);
     return response.data.deal;
   } catch (error) {
     if (error.response.data.errors.code === 400) {
@@ -84,13 +84,10 @@ async function getFsOpportunity(id) {
       },
     });
 
-    logger.info(`> Opportunity retrived`);
+    logger.info(`Opportunity retrived with ID ${id}`);
     return response.data.deal;
   } catch (error) {
     return false;
-    throw new ApiError(
-      `Error while retriveing the opportunity: ${error.response.data.errors.message[0]}`
-    );
   }
 }
 module.exports = {

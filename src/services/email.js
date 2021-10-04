@@ -26,7 +26,7 @@ async function sendEmail(to, text, extraInfo = {}) {
 
   try {
     const body = await mg.messages().send(data);
-    logger.info(`> email queued successfully to: ${to} | email_id: ${body.id}`);
+    logger.info(`Email queued successfully to: ${to} | email_id: ${body.id}`);
     return {
       id: body.id,
     };

@@ -32,7 +32,7 @@ async function create(targetableId, description) {
       },
     });
 
-    logger.info(`> note created successfully for contact id: ${targetableId}`);
+    logger.info(`Note created successfully for contact id: ${targetableId}`);
     return response.data;
   } catch (error) {
     logger.error("Note Create Error", error);

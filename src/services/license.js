@@ -78,7 +78,7 @@ async function extend(data) {
     });
 
     if (response.data.result === 0) {
-      logger.info(`> license extended for: ${data.contact_id}`);
+      logger.info(`License extended for: ${data.contact_id}`);
       return response.data;
     }
   } catch (error) {

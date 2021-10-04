@@ -35,7 +35,7 @@ function addDays(theDate, days) {
  * @returns Promise
  */
 async function createInvoiceClient(data) {
-  logger.info(`> creating invoice for: ${JSON.stringify(data)}`);
+  logger.info(`creating invoice for: ${JSON.stringify(data)}`);
   try {
     const apiClient = await getApiClient(configs.HIVEAGE_BASE_URL);
     const response = await apiClient.request({
@@ -52,7 +52,7 @@ async function createInvoiceClient(data) {
       },
     });
 
-    logger.info(`> invoice client created for: ${data.name} | ${data.business_email}`);
+    logger.info(`invoice client created for: ${data.name} | ${data.business_email}`);
     return response;
   } catch (error) {
     throw new ApiError(`Invoice client creation failed`);
@@ -148,7 +148,7 @@ async function createInvoice(data) {
       },
     });
 
-    logger.info(`> invoice created successfully`);
+    logger.info(`invoice created successfully for connection_id ${data.network.id}`);
     if (data.hiveage_contact_email == false) {
       const deliver_response = await apiClient.request({
         method: "POST",
@@ -162,7 +162,9 @@ async function createInvoice(data) {
           password: "",
         },
       });
-      logger.info("> invoice sent - default format");
+      logger.info(
+        ` invoice sent - default format, with  invs: ${invs_response.data.invoice.hash_key}  `
+      );
     } else {
       const deliverEmailSubject = `Invoice ${
         invs_response.data.invoice.statement_no
@@ -203,7 +205,7 @@ async function createInvoice(data) {
           },
         },
       });
-      logger.info("> invoice sent - custom format");
+      logger.info("invoice sent - custom format");
     }
 
     const fsOpportunityData = {

@@ -105,7 +105,7 @@ async function create(data) {
       },
     });
 
-    logger.info(`> estimate created successfully`);
+    logger.info(`Estimate created successfully for connection_id: ${data.network.id}`);
 
     if (data.hiveage_contact_email == false) {
       const deliver_response = await apiClient.request({
@@ -120,7 +120,9 @@ async function create(data) {
           password: "",
         },
       });
-      logger.info("> estimate sent - default settings");
+      logger.info(
+        `Estimate sent - default settings, for /api/estm/${response.data.estimate.hash_key}/deliver `
+      );
     } else {
       const deliverEmailSubject = `Estimate ${
         response.data.estimate.statement_no
@@ -162,7 +164,7 @@ async function create(data) {
           },
         },
       });
-      logger.info("> Estimate sent - custom format");
+      logger.info(`/api/estm/${response.data.estimate.hash_key}/deliver`);
     }
 
     const sent_response = await apiClient.request({
@@ -182,7 +184,9 @@ async function create(data) {
         password: "",
       },
     });
-    logger.info("> estimate status updated to sent");
+    logger.info(
+      `> estimate status updated to sent , url : /api/estm/${response.data.estimate.hash_key}`
+    );
 
     const fsOpportunityData = {
       deal: {
@@ -206,7 +210,7 @@ async function create(data) {
       );
       if (!fsOpportunity || fsOpportunity.amount != fsOpportunityData.deal.amount) {
         fsOpportunity = await opportunityService.createFsOpportunity(fsOpportunityData);
-        logger.info(`> opportunity created under account: ${data.account.id}`);
+        logger.info(`Opportunity created under account: ${data.account.id}`);
         const updatedAccount = await accountService.update(data.account.id, {
           sales_account: {
             custom_field: {
@@ -217,7 +221,7 @@ async function create(data) {
       }
     } else {
       fsOpportunity = await opportunityService.createFsOpportunity(fsOpportunityData);
-      logger.info(`> opportunity created under account: ${data.account.id}`);
+      logger.info(`Opportunity created under account: ${data.account.id}`);
       const updatedAccount = await accountService.update(data.account.id, {
         sales_account: {
           custom_field: {

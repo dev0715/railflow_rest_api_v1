@@ -47,10 +47,10 @@ async function create(data) {
       },
     });
 
-    logger.info(`> contact created: ${data.email} ${response.data.contact.id}`);
+    logger.info(`contact created: ${data.email} ${response.data.contact.id}`);
     return response;
   } catch (error) {
-    console.log(error.response.data.errors.message[0]);
+    logger.error(error.response.data.errors.message[0]);
     if (error.response.data.errors.message[0] === "The mobile number already exists.") {
       throw new ApiError("BAD_REQUEST_MOBILE_NUMBER_EXISTS");
     }
@@ -87,7 +87,7 @@ async function update(data) {
       },
     });
 
-    logger.info(`> contact status updated successfully for id: ${data.contact_id}`);
+    logger.info(`contact status updated successfully for id: ${data.contact_id}`);
     return response.data.contact;
   } catch (error) {
     throw new ApiError(`> Error while updating the contact: ${error}`);

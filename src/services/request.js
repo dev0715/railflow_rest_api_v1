@@ -21,11 +21,12 @@ async function getApiClient(baseURL) {
 
     (error) => {
       if (error.response) {
-        logger.error("Axios error data", error.response.data);
         if (error.response.config) {
-          logger.error("Request URL", { url: `${baseURL}${error.response.config.url}` });
-          logger.error("Request Headers", error.response.config.headers);
-          if (error.response.config.data) logger.error("Request Data", error.response.config.data);
+          logger.error("Request Data", {
+            ...error.response.data,
+            ...error.response.config.headers,
+            url: `${baseURL}${error.response.config.url}`,
+          });
         }
       }
     }

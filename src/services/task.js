@@ -40,7 +40,7 @@ async function create(data) {
       });
     }
 
-    logger.info(`> tasks created successfully for contact id: ${data.contact_id}`);
+    logger.info(`Tasks created successfully for contact id: ${data.contact_id}`);
     return {
       success: true,
       message: `${afterDays.length} Tasks created successfully`,
@@ -80,9 +80,7 @@ async function createTask(data) {
       },
     });
 
-    logger.info(
-      `> tasks created successfully for ${data.targetable_type} id: ${data.targetable_id}`
-    );
+    logger.info(`Tasks created successfully for ${data.targetable_type} id: ${data.targetable_id}`);
     return {
       success: true,
       message: `Task: ${data.title} created successfully`,

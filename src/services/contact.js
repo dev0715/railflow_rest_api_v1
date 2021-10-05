@@ -87,10 +87,12 @@ async function update(data) {
       },
     });
 
+    if (!response.data || !response.data.contact)
+      throw new ApiError(`Error while updating the contact: ${data.contact_id}`);
     logger.info(`contact status updated successfully for id: ${data.contact_id}`);
     return response.data.contact;
   } catch (error) {
-    throw new ApiError(`> Error while updating the contact: ${error}`);
+    throw new ApiError(`Error while updating the contact: ${error}`);
   }
 }
 

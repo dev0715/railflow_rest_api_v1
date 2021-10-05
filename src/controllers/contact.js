@@ -218,7 +218,7 @@ async function updateContact(request, res, next) {
         cryptolensTokenObject.key
       } \n\n Email sent at: ${dayjs()} \n\n Mailgun Id: ${mailgunEmailUrl}${
         mailgunResponse.emailData.id
-      }/history`;
+      }/history \n\n License URL: ${mailgunResponse.licenseUrl}`;
       const createNotesResponse = await noteService.create(reqData.contact_id, description);
       const createTaskResponse = await taskService.create({ contact_id: reqData.contact_id });
       reqData.cf_license_key = cryptolensTokenObject.key;

@@ -14,6 +14,7 @@ const slackService = require("../services/slack");
 const quoteService = require("../services/quote");
 const taskService = require("../services/task");
 const { checkToken } = require("../services/token");
+const logger = require("../config/logger");
 
 /**
  * Function: Create new Invoice
@@ -253,8 +254,11 @@ async function createHiveage(req, res, next) {
       opportunityQuoteLink: `https://railflow.myfreshworks.com/crm/sales/deals/${quote.fsOpportunity.id}`,
     });
   } catch (error) {
-    console.log(`> error:controllers:hievage: ${error}`);
-    return res.status(error.status).send(error.toJSON());
+    logger.error(`controllers:hievage:`, error);
+    return res.status(500).send({
+      status: 500,
+      message: "something went wrong",
+    });
   }
 }
 

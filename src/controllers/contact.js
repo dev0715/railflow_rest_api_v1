@@ -129,7 +129,10 @@ async function createContact(request, res, next) {
         },
       });
     }
-    return res.status(500).send(error.toJSON());
+    return res.status(500).send({
+      status: 500,
+      message: "something went wrong",
+    });
   }
 }
 

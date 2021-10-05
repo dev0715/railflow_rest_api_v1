@@ -64,7 +64,10 @@ async function createEvent(req, res, next) {
     logger.error(
       `error while creating event for: ${req.body["event-data"]["user-variables"].contactId}: ${error}`
     );
-    return res.status(error.status).send(error.toJSON());
+    return res.status(500).send({
+      status: 500,
+      message: "something went wrong",
+    });
   }
 }
 

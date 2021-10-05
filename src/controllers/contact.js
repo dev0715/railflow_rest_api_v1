@@ -120,6 +120,7 @@ async function createContact(request, res, next) {
       },
     });
   } catch (error) {
+    logger.error("Error when creating contact", error);
     if (error.message == "BAD_REQUEST_MOBILE_NUMBER_EXISTS") {
       return res.status(400).send({
         status: 400,

@@ -287,7 +287,7 @@ async function sendOnboardingEmail(body, cryptolensTokenObject) {
     cryptolensTokenObject.url = licenseUrl;
     text += cryptolensLicenseFileTextContent;
 
-    console.log(`> onboarding email text: ${text}`);
+    logger.info(`Onboarding email text: ${text}`);
 
     const template = fs.readFileSync(
       path.join(__dirname, "../../email-templates/signup.hbs"),

@@ -66,7 +66,7 @@ async function accountNote(targetableId, description) {
       },
     });
 
-    console.log(`> note created successfully for account id: ${targetableId}`);
+    logger.info(`Note created successfully for account id: ${targetableId}`);
     return response.data;
   } catch (error) {
     throw new ApiError(`Error while creating node for account id: ${targetableId}`);

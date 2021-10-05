@@ -50,8 +50,11 @@ async function extendLicense(req, res, next) {
       },
     });
   } catch (error) {
-    logger.error(`> error while extending license for: ${req.body.contact_id}`, error);
-    return res.status(error.status).send(error.toJSON());
+    logger.error(`Error while extending license for: ${req.body.contact_id}`, error);
+    return res.status(500).send({
+      status: 500,
+      message: "something went wrong",
+    });
   }
 }
 

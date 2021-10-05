@@ -208,8 +208,11 @@ async function createInvoice(req, res, next) {
       opportunityLink: `https://railflow.myfreshworks.com/crm/sales/deals/${invoice.fsOpportunity.id}`,
     });
   } catch (error) {
-    logger.error(`> error:controllers:invoice`, error);
-    return res.status(error.status).send(error.toJSON());
+    logger.error(`controllers:invoice`, error);
+    return res.status(500).send({
+      status: 500,
+      message: "something went wrong",
+    });
   }
 }
 

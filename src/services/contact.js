@@ -46,7 +46,9 @@ async function create(data) {
         sales_accounts: data.sales_accounts,
       },
     });
-
+    logger.info(
+      `Contact created with email: ${data.email}, phone ${data.phone} and name ${data.firstName} ${data.lastName} `
+    );
     return response;
   } catch (error) {
     if (error.response?.data?.errors?.message[0] === "The mobile number already exists.") {

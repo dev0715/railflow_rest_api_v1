@@ -56,7 +56,7 @@ describe("Event e2e testing", function () {
     expect(addedEventRes.body.status).eql(200);
   });
 
-  it("should not create event and return status 400 ", async function () {
+  it("should not create event and return status 400 contactId not sent ", async function () {
     const createdContactRes = await chai.request(server).post("/api/contact").send(contactData);
     addedContactIds.push(createdContactRes.body.data.contact_id);
 
@@ -78,7 +78,7 @@ describe("Event e2e testing", function () {
     expect(addedEventRes.body.status).eql(400);
   });
 
-  it("should not create event and return status 400 ", async function () {
+  it("should not create event and return status 400 event not sent", async function () {
     const createdContactRes = await chai.request(server).post("/api/contact").send(contactData);
     addedContactIds.push(createdContactRes.body.data.contact_id);
 
@@ -100,7 +100,7 @@ describe("Event e2e testing", function () {
     expect(addedEventRes.body.status).eql(400);
   });
 
-  it("should not create event and return status 400 ", async function () {
+  it("should not create event and return status 400 timestamp not sent", async function () {
     const createdContactRes = await chai.request(server).post("/api/contact").send(contactData);
     addedContactIds.push(createdContactRes.body.data.contact_id);
 

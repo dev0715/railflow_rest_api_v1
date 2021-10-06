@@ -32,13 +32,13 @@ async function createEvent(req, res, next) {
 
   try {
     if (
-      !(
-        req.body["event-data"]["user-variables"] &&
-        req.body["event-data"]["user-variables"].contactId
-      )
+      !req.body["event-data"] ||
+      !req.body["event-data"]["user-variables"] ||
+      !req.body["event-data"]["user-variables"].contactId
     ) {
       throw new BadRequestError(`Contact id is required to register event`);
     }
+
     if (!req.body.signature || !req.body.signature.timestamp) {
       throw new BadRequestError(`signature.timestamp required to register event`);
     }
@@ -61,9 +61,12 @@ async function createEvent(req, res, next) {
       },
     });
   } catch (error) {
-    logger.error(
-      `error while creating event for: ${req.body["event-data"]["user-variables"].contactId}: ${error}`
-    );
+    if (error.status && error.message) {
+      return res.status(error.status).send({
+        status: error.status,
+        message: error.message,
+      });
+    }
     return res.status(500).send({
       status: 500,
       message: "something went wrong",

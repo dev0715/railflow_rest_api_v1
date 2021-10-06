@@ -29,6 +29,7 @@ async function getApiClient(baseURL) {
           });
         }
       }
+      return error;
     }
   );
   return apiClient;

@@ -44,7 +44,6 @@ describe("Contact e2e testing", function () {
 
   it("create contact with unique values", async function () {
     const res = await chai.request(server).post("/api/contact").send(data);
-    console.log(res.body);
     expect(res.body.status).eql(201);
     expect(res.body).to.be.an("object");
     expect(res.body.data).to.be.an("object");

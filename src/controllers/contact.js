@@ -116,7 +116,7 @@ async function createContact(request, res, next) {
     return res.status(500).send({
       status: 500,
       data: {
-        message: `Account creation failed with status code: ${response.status} for: ${req.body.email}`,
+        message: `Account creation failed for email: ${request.body.email}`,
       },
     });
   } catch (error) {

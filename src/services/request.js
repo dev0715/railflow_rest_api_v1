@@ -16,22 +16,6 @@ async function getApiClient(baseURL) {
     withCredentials: true,
   });
 
-  apiClient.interceptors.response.use(
-    (response) => response,
-
-    (error) => {
-      if (error.response) {
-        if (error.response.config) {
-          logger.error("Request Data", {
-            ...error.response.data,
-            ...error.response.config.headers,
-            url: `${baseURL}${error.response.config.url}`,
-          });
-        }
-      }
-      return error;
-    }
-  );
   return apiClient;
 }
 

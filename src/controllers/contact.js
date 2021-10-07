@@ -331,9 +331,13 @@ async function sendOnboardingEmail(body, cryptolensTokenObject) {
  */
 async function searchContact(request, res) {
   try {
-    const { email } = request.query;
+    const { email, phone } = request.query;
     let contacts = [];
     let statusCode = 404;
+
+    if (email && phone) {
+      return res.status(400).send({ status: 400, message: "please only select phone or email" });
+    }
 
     if (email) {
       const response = await contactService.search(email);
@@ -345,13 +349,22 @@ async function searchContact(request, res) {
 
       return res.status(statusCode).send({
         status: statusCode,
-        data: contacts,
+      });
+    } else if (phone) {
+      const response = await contactService.searchByPhone(phone);
+      contacts = response.contacts.contacts;
+
+      if (contacts.length) {
+        statusCode = 200;
+      }
+
+      return res.status(statusCode).send({
+        status: statusCode,
       });
     }
 
     return res.status(statusCode).send({
       status: statusCode,
-      data: contacts,
     });
   } catch (error) {
     const code = error.code ? error.code : 400;

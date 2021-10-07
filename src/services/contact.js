@@ -224,6 +224,23 @@ async function search(email) {
   }
 }
 
+async function searchByPhone(phone) {
+  try {
+    const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL);
+    const response = await apiClient.request({
+      method: "GET",
+      url: `crm/sales/api/lookup?q=${phone}&entities=contact&f=mobile_number`,
+      headers: {
+        Authorization: `Token token=${configs.FRESHSALES_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw new ApiError(`> Error while searching the contact: ${error}`);
+  }
+}
+
 module.exports = {
   create,
   update,
@@ -231,4 +248,5 @@ module.exports = {
   getContactIfAlreadyPresent,
   getContactById,
   bulkDelete,
+  searchByPhone,
 };

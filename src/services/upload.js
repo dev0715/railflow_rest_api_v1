@@ -1,76 +1,64 @@
-'use strict';
+"use strict";
 
-const appConfig = require('../../configs/app');
+const appConfig = require("../../configs/app");
 const configs = appConfig.getConfigs(process.env.APP_ENV);
 const ApiError = require("../errors/api");
-
-const fs = require('fs');
-const { machineId } = require('node-machine-id');
-const key = require('cryptolens').Key;
-const Helpers = require('cryptolens').Helpers;
-const AWS = require('aws-sdk');
-const path = require('path');
-
-const ID = configs.AWS_ACCESS_KEY_ID;
-const SECRET = configs.AWS_SECRET_ACCESS_KEY;
+const { machineId } = require("node-machine-id");
+const key = require("cryptolens").Key;
+const { Storage } = require("@google-cloud/storage");
+const Helpers = require("cryptolens").Helpers;
+const { v4: uuidv4 } = require("uuid");
+const logger = require("../config/logger");
 
 // The name of the bucket that you have created
-const BUCKET_NAME = 'test-bucket';
-
-const s3 = new AWS.S3({
-    accessKeyId: ID,
-    secretAccessKey: SECRET
+const storage = new Storage({
+  keyFilename: "railflow-gcp-prod.json",
+  projectId: "railflow-production",
 });
 
 /**
- * Service: use S3 to upload images
- * @param {*} data 
- * @returns 
+ * Service: use Google Cloud to upload images
+ * @param {*} data
+ * @returns
  */
-async function uploadToS3(data) {
-    try {
-        const PRODUCT_ID = 8245;
-        const TOKEN = configs.CRYPTOLENS_LICENSE_EXTENSION_KEY;
-        const RSA_PUB_KEY = configs.CRYPTOLENS_RSA_PUB_KEY;
-        const code = await machineId();
-        const licenseKey = await key.Activate(TOKEN, RSA_PUB_KEY, PRODUCT_ID, data.key, code);
+async function uploadToGoogleCloudStorage(data) {
+  try {
+    const TOKEN = configs.CRYPTOLENS_LICENSE_EXTENSION_KEY;
+    const RSA_PUB_KEY = configs.CRYPTOLENS_RSA_PUB_KEY;
 
-        const dir = path.join(__dirname, '../../cryptolens');
+    const PRODUCT_ID = 8245;
+    const bucket = storage.bucket(configs.GOOGLE_CLOUD_BUCKET);
+    const code = await machineId();
+    const licenseKey = await key.Activate(TOKEN, RSA_PUB_KEY, PRODUCT_ID, data.key, code);
+    const filename = `${uuidv4()}/railflow_license.skm`;
+    const file = bucket.file(filename);
+    const fileFullPath = `${configs.GOOGLE_CLOUD_BUCKET_PATH}/${bucket.name}/${filename}`;
+    await file.save(Helpers.SaveAsString(licenseKey));
 
-        if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir);
-        }
+    return { url: fileFullPath };
+  } catch (error) {
+    logger.error("Error When trying to upload file to google storage", error.response);
+    throw new ApiError(`Error while uploading license; ${error}`);
+  }
+}
 
-        fs.writeFileSync(path.join(__dirname, `../../cryptolens/${data.customerName}.skm`), Helpers.SaveAsString(licenseKey), { encoding: 'utf-8' });
-        const fileContent = fs.readFileSync(path.join(__dirname, `../../cryptolens/${data.customerName}.skm`)).toString();
-        // upload to s3
-        const uniqueHash = Math.random().toString(36).substr(2, 12);
-        const params = {
-            Key: `${uniqueHash}/railflow_license.skm`,
-            Bucket: "railflow",
-            Body: fileContent
-        };
+async function createBucket(bucketName) {
+  try {
+    // Creates the new bucket
 
-        // Uploading files to the bucket
-        return new Promise((resolve, reject) => {
-            s3.putObject(params, function (err, data) {
-                if (err) {
-                    console.log(err, err.stack);
-                    reject(err);
-                }
-                else {
-                    console.log(data);
-                    resolve({
-                        url: `https://railflow.s3.amazonaws.com/${params.Key}`
-                    });
-                }
-            });
-        });
-    } catch (error) {
-        throw new ApiError(`Error while uploading license; ${error}`);
+    const [bucketExists] = await storage.bucket(bucketName).exists();
+
+    if (!bucketExists) {
+      await storage.createBucket(bucketName);
+      console.log(`Bucket ${bucketName} created.`);
     }
+    return true;
+  } catch (error) {
+    console.log("============", error);
+    return false;
+  }
 }
 
 module.exports = {
-    uploadToS3
+  uploadToGoogleCloudStorage,
 };

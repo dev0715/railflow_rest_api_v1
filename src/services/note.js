@@ -1,9 +1,10 @@
-'use strict';
+"use strict";
 
-const appConfig = require('../../configs/app');
+const appConfig = require("../../configs/app");
 const configs = appConfig.getConfigs(process.env.APP_ENV);
-const { getApiClient } = require('../services/request');
+const { getApiClient } = require("../services/request");
 const ApiError = require("../errors/api");
+const logger = require("../config/logger");
 
 /**
  * Service: Add a note into tagetable ID
@@ -12,30 +13,31 @@ const ApiError = require("../errors/api");
  * @returns Promise
  */
 async function create(targetableId, description) {
-    try {
-        const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL); // put railflow host
-        const response = await apiClient.request({
-            method: 'POST',
-            url: '/crm/sales/api/notes',
-            headers: {
-                // TODO: use environment variable
-                Authorization: `Token token=${configs.FRESHSALES_API_KEY}`, // fPjGQStTY1ffGqtyAj9RVw
-                // 'Content-Type': 'application/json',
-            },
-            data: {
-                note: {
-                    description,
-                    targetable_type: "Contact",
-                    targetable_id: targetableId,
-                }
-            }
-        });
+  try {
+    const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL); // put railflow host
+    const response = await apiClient.request({
+      method: "POST",
+      url: "/crm/sales/api/notes",
+      headers: {
+        // TODO: use environment variable
+        Authorization: `Token token=${configs.FRESHSALES_API_KEY}`, // fPjGQStTY1ffGqtyAj9RVw
+        // 'Content-Type': 'application/json',
+      },
+      data: {
+        note: {
+          description,
+          targetable_type: "Contact",
+          targetable_id: targetableId,
+        },
+      },
+    });
 
-        console.log(`> note created successfully for contact id: ${targetableId}`);
-        return response.data;
-    } catch (error) {
-        throw new ApiError(`Error while creating note for contact id: ${targetableId}`);
-    }
+    logger.info(`Note created successfully for contact id: ${targetableId}`);
+    return response.data;
+  } catch (error) {
+    logger.error("Note Create Error", error);
+    throw new ApiError(`Error while creating note for contact id: ${targetableId}`);
+  }
 }
 
 /**
@@ -45,33 +47,33 @@ async function create(targetableId, description) {
  * @returns Promise
  */
 async function accountNote(targetableId, description) {
-    try {
-        const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL); // put railflow host
-        const response = await apiClient.request({
-            method: 'POST',
-            url: '/crm/sales/api/notes',
-            headers: {
-                // TODO: use environment variable
-                Authorization: `Token token=${configs.FRESHSALES_API_KEY}`, // fPjGQStTY1ffGqtyAj9RVw
-                'Content-Type': 'application/json',
-            },
-            data: {
-                note: {
-                    description,
-                    targetable_type: "SalesAccount",
-                    targetable_id: targetableId,
-                }
-            }
-        });
+  try {
+    const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL); // put railflow host
+    const response = await apiClient.request({
+      method: "POST",
+      url: "/crm/sales/api/notes",
+      headers: {
+        // TODO: use environment variable
+        Authorization: `Token token=${configs.FRESHSALES_API_KEY}`, // fPjGQStTY1ffGqtyAj9RVw
+        "Content-Type": "application/json",
+      },
+      data: {
+        note: {
+          description,
+          targetable_type: "SalesAccount",
+          targetable_id: targetableId,
+        },
+      },
+    });
 
-        console.log(`> note created successfully for account id: ${targetableId}`);
-        return response.data;
-    } catch (error) {
-        throw new ApiError(`Error while creating node for account id: ${targetableId}`);
-    }
+    logger.info(`Note created successfully for account id: ${targetableId}`);
+    return response.data;
+  } catch (error) {
+    throw new ApiError(`Error while creating node for account id: ${targetableId}`);
+  }
 }
 
 module.exports = {
-    create,
-    accountNote
+  create,
+  accountNote,
 };

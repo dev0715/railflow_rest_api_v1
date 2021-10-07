@@ -1,47 +1,52 @@
-'use strict';
+"use strict";
 
-const appConfigs = require('../../configs/app');
+const appConfigs = require("../../configs/app");
 const configs = appConfigs.getConfigs(process.env.APP_ENV || "development");
 const ApiError = require("../errors/api");
 
-const { getApiClient } = require('../services/request');
+const { getApiClient } = require("../services/request");
 
 const BadRequestError = require("../errors/badrequest");
 
-const qs = require('qs');
+const qs = require("qs");
+const logger = require("../config/logger");
 
 /**
  * Service: Get new license
  * @param {*} body Input data
  * @returns Promise
  */
-async function getCryptolensToken(body,periods = 14) {
+async function getCryptolensToken(body, periods = 14) {
   try {
     const apiClient = await getApiClient(configs.CRYPTOLENS_BASE_URL);
     const response = await apiClient.request({
-        method: 'POST',
-        url: '/api/key/CreateKey',
-        headers: {
-            // TODO: use environment variable
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        data: qs.stringify({
-            token: configs.CRYPTOLENS_API_KEY,
-            ProductId: 8245,
-            Period: periods,
-            F1: true,
-            F2: true,
-            NewCustomer: true,
-            Name: `${body.contact_first_name} ${body.contact_last_name}`,
-            Email: body.contact_email,
-            CompanyName: body.contact_cf_company
-        }),
+      method: "POST",
+      url: "/api/key/CreateKey",
+      headers: {
+        // TODO: use environment variable
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      data: qs.stringify({
+        token: configs.CRYPTOLENS_API_KEY,
+        ProductId: 8245,
+        Period: periods,
+        F1: true,
+        F2: true,
+        NewCustomer: true,
+        Name: `${body.contact_first_name} ${body.contact_last_name}`,
+        Email: body.contact_email,
+        CompanyName: body.contact_cf_company,
+      }),
     });
 
-    console.log(`> generated the cryptolens token: ${JSON.stringify(response.data)} for: ${body.contact_email} duration: ${periods} days`);
+    logger.info(
+      `generated the cryptolens token: ${JSON.stringify(response.data)} for: ${
+        body.contact_email
+      } duration: ${periods} days`
+    );
     return response.data;
   } catch (error) {
-    console.log(`> error generating token: ${error}`);
+    logger.error(`> error generating token: ${error}`);
     throw new ApiError(`Error while getting cryptolens token`);
   }
 }
@@ -58,11 +63,11 @@ async function extend(data) {
     }
     const apiClient = await getApiClient(configs.CRYPTOLENS_BASE_URL);
     const response = await apiClient.request({
-      method: 'POST',
-      url: '/api/key/ExtendLicense',
+      method: "POST",
+      url: "/api/key/ExtendLicense",
       headers: {
         // TODO: use environment variable
-        'Content-Type': 'application/x-www-form-urlencoded',
+        "Content-Type": "application/x-www-form-urlencoded",
       },
       data: qs.stringify({
         token: configs.CRYPTOLENS_LICENSE_EXTENSION_KEY,
@@ -73,16 +78,16 @@ async function extend(data) {
     });
 
     if (response.data.result === 0) {
-      console.log(`> license extended for: ${data.contact_id}`);
+      logger.info(`License extended for: ${data.contact_id}`);
       return response.data;
     }
   } catch (error) {
+    logger.error(error);
     throw new ApiError(`There was some error in extending the license`);
   }
 }
 
 module.exports = {
   extend,
-  getCryptolensToken
-}
-
+  getCryptolensToken,
+};

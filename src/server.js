@@ -3,9 +3,10 @@
 const cors = require("cors");
 const express = require("express");
 const bodyParser = require("body-parser");
+const swaggerUi = require("swagger-ui-express");
+const morgan = require("morgan");
 
-const swaggerJSDoc = require('swagger-jsdoc');
-const swaggerUi = require('swagger-ui-express');
+// routes
 const contactRouter = require("./routes/contact");
 const signupRouter = require("./routes/signup");
 const licenseRouter = require("./routes/license");
@@ -15,54 +16,23 @@ const quoteRouter = require("./routes/quote");
 const pricingRouter = require("./routes/pricing");
 const accountRouter = require("./routes/account");
 const hiveageRouter = require("./routes/hiveage");
+const beatsRouter = require("./routes/beats");
 
-const appConfig = require('../configs/app');
+// swagger file
+const swaggerFile = require("../swagger.json");
+
+// config
+const appConfig = require("../configs/app");
+
 const config = appConfig.getConfigs(process.env.APP_ENV || "development");
 
 class Server {
   constructor() {
-    const swaggerDefinition = {
-      openapi: '3.0.0',
-      info: {
-        title: 'Express API for Railflow',
-        version: '1.0.0',
-        description:
-          'This is a REST API application made with Express. It retrieves data from Railflow.',
-        license: {
-          name: 'Licensed Under MIT',
-          url: 'https://spdx.org/licenses/MIT.html',
-        },
-        contact: {
-          name: 'Railflow',
-          url: 'https://railflow.io',
-        },
-      },
-      servers: [
-        {
-          url: 'http://localhost:9000',
-          description: 'Development server',
-        },
-        {
-          url: 'http://localhost',
-          description: 'Local Docker',
-        },
-        {
-          url: 'https://api.railflow.io',
-          description: 'Production server',
-        },
-      ],
-    };
-
-    const options = {
-      swaggerDefinition,
-      apis: ['src/swagger/*.js','src/routes/*.js']
-    };
-
-    const swaggerSpec = swaggerJSDoc(options);
     this.app = express();
     this.config();
     this.routes();
-    this.app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+    this.app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerFile));
+    this.app.use(morgan("dev"));
   }
 
   config() {
@@ -88,6 +58,7 @@ class Server {
     this.app.use("/api/quote", quoteRouter);
     this.app.use("/api/pricing", pricingRouter);
     this.app.use("/api/hiveage", hiveageRouter);
+    this.app.use("/api/beats", beatsRouter);
 
     this.app.use((err, req, res, next) => {
       if (res.headersSent) {
@@ -95,7 +66,6 @@ class Server {
       }
     });
   }
-
 }
 
 module.exports = new Server().app;

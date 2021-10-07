@@ -6,11 +6,13 @@
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
     "start:daemon": "pm2 start src/app.js",
-    "test": "mocha tests/integration/contact.js --timeout=10000 --exit"
+    "test": "mocha --timeout=50000 "
   },
   "dependencies": {
+    "@google-cloud/logging-winston": "^4.1.1",
+    "@google-cloud/storage": "^5.14.4",
     "aws-sdk": "^2.839.0",
-    "axios": "^0.21.1",
+    "axios": "^0.22.0",
     "body-parser": "^1.19.0",
     "chai-http": "^4.3.0",
     "cors": "^2.8.5",
@@ -20,13 +22,15 @@
     "express": "^4.17.1",
     "handlebars": "^4.7.7",
     "mailgun-js": "^0.22.0",
+    "morgan": "^1.10.0",
     "node-machine-id": "^1.1.12",
-    "swagger-jsdoc": "5.0.1",
     "swagger-ui-express": "^4.1.6",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "chai": "^4.3.4",
+    "faker": "^5.5.3",
     "mocha": "^8.4.0",
     "should": "^13.2.3",
     "supertest": "^6.1.6"

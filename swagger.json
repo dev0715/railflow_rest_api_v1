@@ -1,0 +1,1288 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "Swagger Documentation for Railflow Rest APi V2",
+    "version": "2.0.0",
+    "title": "Express API for Railflow",
+    "termsOfService": "",
+    "contact": {
+      "name": "Railflow",
+      "url": "https://railflow.io"
+    },
+    "license": {
+      "name": "Licensed Under MIT",
+      "url": "https://spdx.org/licenses/MIT.html"
+    }
+  },
+  "tags": [
+    {
+      "name": "Account",
+      "description": "Account API"
+    },
+    {
+      "name": "Beat",
+      "description": "Beat API"
+    },
+    {
+      "name": "Contact",
+      "description": "Contact API"
+    },
+    {
+      "name": "Event",
+      "description": "Event API"
+    },
+    {
+      "name": "signature",
+      "description": "signature API"
+    },
+    {
+      "name": "Hiveage",
+      "description": "Hiveage API"
+    },
+    {
+      "name": "event-data",
+      "description": "event-data API"
+    },
+    {
+      "name": "Invoice",
+      "description": "Invoice API"
+    },
+    {
+      "name": "License",
+      "description": "License API"
+    },
+    {
+      "name": "Pricing",
+      "description": "Pricing API"
+    },
+    {
+      "name": "Quote",
+      "description": "Quote API"
+    },
+    {
+      "name": "User",
+      "description": "User API"
+    }
+  ],
+  "paths": {
+    "/api/account": {
+      "put": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Update a account",
+        "description": "PUT method to update a account\n<br>1. Get account by ID\n<br>2. Get Hiveage network, if does not exist then create new network\n<br>3. Update account accordingly then response with the status 200\n<br>4. If account does not exist, response with the status 200 with the message \"account not found\".\n",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "API Security Token",
+            "required": true,
+            "example": "YOUR_TOKEN_HERE",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns signed up user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "account_id": {
+                      "type": "integer",
+                      "description": "The account's id.",
+                      "example": 16001181618
+                    },
+                    "hiveage": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "description": "The connection's id.",
+                          "example": 16004429999
+                        },
+                        "hash_key": {
+                          "type": "integer",
+                          "description": "The connection's hash.",
+                          "example": "xxxxxxxx"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/beats": {
+      "post": {
+        "tags": [
+          "Beats"
+        ],
+        "summary": "Create Beats",
+        "description": "POST method to register a beat\n<br>1. Validate the payload\n<br>2. Send request to cryptolens together with the params data.\n<br>3. Response with code 200, beat registered.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Beat"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns register beat",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Beat"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/contact": {
+      "patch": {
+        "tags": [
+          "Contact"
+        ],
+        "summary": "Update a contact",
+        "description": "PATCH method to update a contact\n<br>1. Check if contact existed\n<br>--> YES, then update the contact\n<br>--> NO, response with the status code 200, error message \"contact not found\"\n<br>2. Get account by contact_cf_company.\n<br>--> YES, get account info\n<br>--> NO, crate new account\n<br>3. Create Notes and Task.\n<br>4. Update contact accordingly and response with the code 200 \"contact verified\".\n",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "API Security Token",
+            "required": true,
+            "example": "YOUR_TOKEN_HERE",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "contact_id": {
+                    "type": "integer",
+                    "description": "The contact's id.",
+                    "example": 16004426279
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns signed up user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "contact_id": {
+                      "type": "integer",
+                      "description": "The contact's id.",
+                      "example": 16004426279
+                    },
+                    "account_id": {
+                      "type": "integer",
+                      "description": "The contact's id.",
+                      "example": 16004429999
+                    },
+                    "company_name": {
+                      "type": "string",
+                      "description": "The contact's company.",
+                      "example": "Railflow"
+                    },
+                    "first_name": {
+                      "type": "string",
+                      "description": "The contact's first name.",
+                      "example": "John"
+                    },
+                    "last_name": {
+                      "type": "string",
+                      "description": "The contact's last name.",
+                      "example": "Doe"
+                    },
+                    "address": {
+                      "type": "string",
+                      "description": "The contact's address.",
+                      "example": "123 Ping Street, Heaven"
+                    },
+                    "city": {
+                      "type": "string",
+                      "description": "The contact's city.",
+                      "example": "Heaven City"
+                    },
+                    "state": {
+                      "type": "string",
+                      "description": "The contact's state.",
+                      "example": "Heaven State"
+                    },
+                    "zipcode": {
+                      "type": "string",
+                      "description": "The contact's zipcode.",
+                      "example": 3000
+                    },
+                    "country": {
+                      "type": "string",
+                      "description": "The contact's country.",
+                      "example": "Sky"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Contact"
+        ],
+        "summary": "Create a contact",
+        "description": "POST method to create a contact\n<br>1. Get First name, Last name, Email, Phone, Job Title from payload\n<br>2. Check if the email is already existed then then check \"cf_license_status\".\n<br>--> If status is sent, response with the code 200 withe \"Duplicate Registration\" error message\n<br>--> If status is not sent, response with the code 201 created with the new contact info\n<br>3. Crate contact then response with the code 201 and created contact.\n<br>4. Check if the flag \"Notify\" is True then send slack message.\n",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "API Security Token",
+            "required": true,
+            "example": "YOUR_TOKEN_HERE",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Contact"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns created contract",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Response message.",
+                      "example": "Account created"
+                    },
+                    "contact_id": {
+                      "type": "integer",
+                      "description": "The contact's id.",
+                      "example": 16004426279
+                    },
+                    "company_name": {
+                      "type": "string",
+                      "description": "The contact's company.",
+                      "example": "Railflow"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/event": {
+      "post": {
+        "tags": [
+          "Event"
+        ],
+        "summary": "Event webhook",
+        "description": "POST method to create an event\n<br>1. Validate the payload\n<br>2. Update the event. \n<br>3. Add note.\n<br>4. Response with code 200, account created.\n",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "API Security Token",
+            "required": true,
+            "example": "YOUR_TOKEN_HERE",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "signature": {
+                    "$ref": "#/components/schemas/signature"
+                  },
+                  "event": {
+                    "$ref": "#/components/schemas/event-data"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Return created event for contact ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/event-data"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/hiveage": {
+      "post": {
+        "tags": [
+          "Hiveage"
+        ],
+        "summary": "Create Hiveage",
+        "description": "POST method to create an hiveage\n<br>1. Validate the payload\n<br>2. Get contact info, if does not exist -> response with 404 not found message. \n<br>3. Create Invoice.\n<br>4. Create note in contact and send slack message.\n<br>5. License year = 0,1,2,3 (0 means perpetual).\n<br>6. Response with code 201, invoice created.\n<br><br>[*] To use hiveage default format - remove hiveage_contact_email and hiveage_notification_emails\n",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "API Security Token",
+            "required": true,
+            "example": "YOUR_TOKEN_HERE",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Invoice"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Returns created contract",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Invoice"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/invoice": {
+      "post": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Create Invoice",
+        "description": "POST method to create an invoice\n<br>1. Validate the payload\n<br>2. Get contact info, if does not exist -> response with 404 not found message. \n<br>3. Create Invoice.\n<br>4. Create note in contact and send slack message.\n<br>5. License year = 0,1,2,3 (0 means perpetual).\n<br>6. Response with code 201, invoice created.\n<br><br>[*] To use hiveage default format - remove hiveage_contact_email and hiveage_notification_emails\n",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "API Security Token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "YOUR_TOKEN_HERE"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Invoice"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Returns created contract",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Invoice"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/license": {
+      "get": {
+        "tags": [
+          "License"
+        ],
+        "summary": "Gets a list of licenses",
+        "description": "Returns a list of licenses",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "API Security Token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "YOUR_TOKEN_HERE"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of licenses",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/License"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pricing": {
+      "get": {
+        "tags": [
+          "Pricing"
+        ],
+        "summary": "Gets a list of Pricing",
+        "description": "Returns a list of Pricing\n<br>1. if no query params are passing, only return the base price for both in response\n<br>2. when passing other params, calculate the price according to formula and return the pricing for the specified type + year + num_users\n",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "API Security Token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "YOUR_TOKEN_HERE"
+          },
+          {
+            "name": "license_type",
+            "in": "query",
+            "description": "License Type",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "enterprise"
+          },
+          {
+            "name": "license_years",
+            "in": "query",
+            "description": "License Years",
+            "required": false,
+            "schema": {
+              "type": "number"
+            },
+            "example": 0
+          },
+          {
+            "name": "num_users",
+            "in": "query",
+            "description": "User Index",
+            "required": false,
+            "schema": {
+              "type": "number"
+            },
+            "example": 5
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of Pricing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pricing"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/quote": {
+      "post": {
+        "tags": [
+          "Quote"
+        ],
+        "summary": "Create Quote",
+        "description": "POST method to create a quote\n<br>1. Validate the payload\n<br>2. Get contact info, if does not exist -> response with 404 not found message. \n<br>3. Create quote.\n<br>4. Create note in contact and send slack message.\n<br>5. License year = 0,1,2,3 (0 means perpetual).\n<br>6. Response with code 201, quote created.\n<br><br>[*] To use hiveage default format - remove hiveage_contact_email and hiveage_notification_emails\n",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "API Security Token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "YOUR_TOKEN_HERE"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Quote"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Returns created contract",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Quote"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/verify": {
+      "post": {
+        "tags": [
+          "Contact"
+        ],
+        "summary": "Verify a contact",
+        "description": "POST method to create a quote\n<br>1. Validate the payload\n<br>2. Get cryptolen token\n<br>3. Send onboarding email\n<br>4. Create note and task\n<br>5. Update contact.\n<br>6. Response with 201 code, message \"contact verified\"\n",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "API Security Token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "YOUR_TOKEN_HERE"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns signed up user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Account": {
+        "type": "object",
+        "properties": {
+          "account_id": {
+            "type": "integer",
+            "description": "The account's id.",
+            "example": 16001181618
+          },
+          "company_name": {
+            "type": "string",
+            "description": "The company name.",
+            "example": "Railflow"
+          },
+          "address": {
+            "type": "string",
+            "description": "The account's address.",
+            "example": "123 Ping Street, Heaven"
+          },
+          "city": {
+            "type": "string",
+            "description": "The account's city.",
+            "example": "Heaven City"
+          },
+          "state": {
+            "type": "string",
+            "description": "The account's state.",
+            "example": "Heaven State"
+          },
+          "zipcode": {
+            "type": "string",
+            "description": "The account's zipcode.",
+            "example": 3000
+          },
+          "country": {
+            "type": "string",
+            "description": "The account's country.",
+            "example": "Sky"
+          },
+          "hiveage_contact_email": {
+            "type": "string",
+            "description": "The account's hiveage email.",
+            "example": "JohnDoe@3mail.com"
+          },
+          "hiveage_fname": {
+            "type": "string",
+            "description": "The hiveage first name.",
+            "example": "John"
+          },
+          "hivage_lname": {
+            "type": "string",
+            "description": "The hiveage last name.",
+            "example": "Doe"
+          }
+        }
+      },
+      "Beat": {
+        "type": "object",
+        "properties": {
+          "feature": {
+            "type": "string",
+            "description": "Feature name",
+            "example": "Test sample"
+          },
+          "event": {
+            "type": "string",
+            "description": "Event name"
+          },
+          "key": {
+            "type": "string",
+            "description": "Key name",
+            "example": "sample key"
+          },
+          "value": {
+            "type": "string",
+            "description": "Value name",
+            "example": "sample value"
+          },
+          "metadata": {
+            "type": "object"
+          }
+        }
+      },
+      "Contact": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "description": "The contact's first name.",
+            "example": "John"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The contact's last name.",
+            "example": "Doe"
+          },
+          "email": {
+            "type": "string",
+            "description": "The contact's email.",
+            "example": "johndoe@mail.me"
+          },
+          "phone": {
+            "type": "string",
+            "description": "The contact's phone.",
+            "example": "0987654321"
+          },
+          "jobTitle": {
+            "type": "string",
+            "description": "The contact's job title.",
+            "example": "Developer"
+          },
+          "company": {
+            "type": "string",
+            "description": "The contact's company.",
+            "example": "Railflow"
+          },
+          "notify": {
+            "type": "boolean",
+            "description": "Notification flag.",
+            "example": true
+          }
+        }
+      },
+      "signature": {
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "example": 1610120663
+          },
+          "token": {
+            "type": "string",
+            "description": "Token",
+            "example": "852e50b93c2ec0ea98878a6795f30e7caa411e3faead7248ba"
+          },
+          "signature": {
+            "type": "string",
+            "example": "cd25e64c20f708cedec5d84179b668459d31e40c3d9577d3a1593aae1851d92d"
+          }
+        }
+      },
+      "event-data": {
+        "type": "object",
+        "properties": {
+          "tags": {
+            "type": "array",
+            "description": "Tags",
+            "items": {
+              "type": "string"
+            }
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "Timestamp",
+            "example": 1610120663
+          },
+          "storage": {
+            "type": "object",
+            "description": "Storage",
+            "properties": {
+              "url": {
+                "type": "string",
+                "description": "URL",
+                "example": "https://sw.api.mailgun.net/v3/domains/mail.railflow.io/messages/AgEFgJp6plBQ1kJyvilMpZnJD-c1sAG8ZA=="
+              },
+              "key": {
+                "type": "string",
+                "description": "Key",
+                "example": "AgEFgJp6plBQ1kJyvilMpZnJD-c1sAG8ZA=="
+              }
+            }
+          },
+          "recipient-domain": {
+            "type": "string",
+            "description": "Recipient Domain",
+            "example": "agiletestware.com"
+          },
+          "campaigns": {
+            "type": "array",
+            "description": "Tags",
+            "items": {
+              "type": "string"
+            }
+          },
+          "user-variables": {
+            "type": "object",
+            "description": "Storage",
+            "properties": {
+              "contactId": {
+                "type": "string",
+                "description": "Contact ID",
+                "example": 16002128724
+              }
+            }
+          },
+          "flags": {
+            "type": "object",
+            "description": "Storage",
+            "properties": {
+              "is-routed": {
+                "type": "boolean",
+                "description": "Is Routed",
+                "example": false
+              },
+              "is-authenticated": {
+                "type": "boolean",
+                "description": "Is Authenticated",
+                "example": true
+              },
+              "is-system-test": {
+                "type": "boolean",
+                "description": "Is System Test",
+                "example": false
+              },
+              "is-test-mode": {
+                "type": "boolean",
+                "description": "Is Test Mode",
+                "example": false
+              }
+            }
+          },
+          "log-level": {
+            "type": "string",
+            "description": "ID.",
+            "example": "info"
+          },
+          "envelope": {
+            "type": "object",
+            "description": "Envelope",
+            "properties": {
+              "sending-ip": {
+                "type": "string",
+                "description": "Sending IP",
+                "example": "159.135.228.13"
+              },
+              "sender": {
+                "type": "string",
+                "description": "Sender",
+                "example": "postmaster@mail.railflow.io"
+              },
+              "transport": {
+                "type": "string",
+                "description": "Transport",
+                "example": "smtp"
+              },
+              "targets": {
+                "type": "string",
+                "description": "Targets",
+                "example": "ali.raza@agiletestware.com"
+              }
+            }
+          },
+          "message": {
+            "type": "object",
+            "description": "Envelope",
+            "properties": {
+              "header": {
+                "description": "Message Header",
+                "type": "object",
+                "properties": {
+                  "to": {
+                    "type": "string",
+                    "description": "To",
+                    "example": "hellosumedhdev@gmail.com, sales@railflow.myfreshworks.com"
+                  },
+                  "message-id": {
+                    "type": "string",
+                    "description": "Message ID",
+                    "example": "20210108144141.1.06C9CD9FF505E245@mail.railflow.io"
+                  },
+                  "from": {
+                    "type": "string",
+                    "description": "From",
+                    "example": "Railflow Support <mail@railflow.io>"
+                  },
+                  "subject": {
+                    "type": "string",
+                    "description": "Subject",
+                    "example": "Railflow: Your license key is here."
+                  }
+                }
+              },
+              "attachments": {
+                "description": "Attachments",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "size": {
+                "type": "integer",
+                "description": "Size",
+                "example": 480
+              }
+            }
+          },
+          "recipient": {
+            "type": "string",
+            "description": "Recipient",
+            "example": "ali.raza@agiletestware.com"
+          },
+          "event": {
+            "type": "string",
+            "description": "Event",
+            "example": "delivered"
+          },
+          "delivery-status": {
+            "type": "object",
+            "description": "Delivery Status",
+            "properties": {
+              "tls": {
+                "type": "boolean",
+                "description": "TLS Encryption",
+                "example": true
+              },
+              "mx-hos": {
+                "type": "string",
+                "description": "MX Host",
+                "example": "aspmx.l.google.com"
+              },
+              "attempt-no": {
+                "type": "integer",
+                "description": "Attemps",
+                "example": 1
+              },
+              "description": {
+                "type": "string",
+                "description": "Targets",
+                "example": null
+              },
+              "session-seconds": {
+                "type": "number",
+                "format": "float",
+                "description": "Session Seconds",
+                "example": 4.092444181442261
+              },
+              "utf8": {
+                "type": "boolean",
+                "description": "UTF8 Character Code",
+                "example": true
+              },
+              "code": {
+                "type": "integer",
+                "description": "Code",
+                "example": 250
+              },
+              "message": {
+                "type": "string",
+                "description": "Message",
+                "example": "This is message"
+              },
+              "certificate-verified": {
+                "type": "boolean",
+                "description": "Certificate Verified",
+                "example": true
+              }
+            }
+          }
+        }
+      },
+      "Hiveage": {
+        "type": "object",
+        "properties": {
+          "account_id": {
+            "type": "integer",
+            "description": "Account ID.",
+            "example": 16001181618
+          },
+          "contact_id": {
+            "type": "integer",
+            "description": "Contact ID.",
+            "example": 16004439128
+          },
+          "num_users": {
+            "type": "integer",
+            "description": "Number of users",
+            "example": 21
+          },
+          "license_type": {
+            "type": "string",
+            "description": "Contact ID.",
+            "example": "standard"
+          },
+          "license_years": {
+            "type": "integer",
+            "description": "Number of users",
+            "example": 3
+          },
+          "hiveage_contact_email": {
+            "type": "string",
+            "description": "Contact Email.",
+            "example": "careers@perfmeter.io"
+          },
+          "hiveage_notification_emails": {
+            "type": "array",
+            "description": "Contact Email.",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "email1@perfmeter.io",
+              "email2@perfmeter.io"
+            ]
+          }
+        }
+      },
+      "Invoice": {
+        "type": "object",
+        "properties": {
+          "account_id": {
+            "type": "integer",
+            "description": "Account ID.",
+            "example": 16001181618
+          },
+          "contact_id": {
+            "type": "integer",
+            "description": "Contact ID.",
+            "example": 16004439128
+          },
+          "num_users": {
+            "type": "integer",
+            "description": "Number of users",
+            "example": 21
+          },
+          "license_type": {
+            "type": "string",
+            "description": "Contact ID.",
+            "example": "standard"
+          },
+          "license_years": {
+            "type": "integer",
+            "description": "Number of users",
+            "example": 3
+          },
+          "hiveage_contact_email": {
+            "type": "string",
+            "description": "Contact Email.",
+            "example": "careers@perfmeter.io"
+          },
+          "hiveage_notification_emails": {
+            "type": "array",
+            "description": "Contact Email.",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "email1@perfmeter.io",
+              "email2@perfmeter.io"
+            ]
+          }
+        }
+      },
+      "License": {
+        "type": "object",
+        "properties": {
+          "contact_id": {
+            "type": "integer",
+            "description": "The contact's id.",
+            "example": 16003502848
+          },
+          "contact_cf_license_key": {
+            "type": "string",
+            "description": "The contact's id.",
+            "example": "ICWUF-JHARN-GEGRI-XDMYN"
+          },
+          "contact_cf_extension_period": {
+            "type": "integer",
+            "description": "The contact's extension period.",
+            "example": 6
+          },
+          "contact_first_name": {
+            "type": "string",
+            "description": "The contact's first name.",
+            "example": "John"
+          },
+          "contact_last_name": {
+            "type": "string",
+            "description": "The contact's last name.",
+            "example": "Doe"
+          },
+          "contact_email": {
+            "type": "string",
+            "description": "The contact's email.",
+            "example": "hellosumedhdev@gmail.com"
+          },
+          "phone": {
+            "type": "string",
+            "description": "The contact's phone.",
+            "example": "0987654321"
+          },
+          "jobTitle": {
+            "type": "string",
+            "description": "The contact's job title.",
+            "example": "Developer"
+          },
+          "company": {
+            "type": "string",
+            "description": "The contact's company.",
+            "example": "Railflow"
+          }
+        }
+      },
+      "Pricing": {
+        "type": "object",
+        "properties": {
+          "base": {
+            "type": "number",
+            "description": "Base price.",
+            "example": 1700
+          },
+          "increment": {
+            "type": "number",
+            "description": "Increment.",
+            "example": 250
+          },
+          "users": {
+            "type": "string",
+            "description": "User range.",
+            "example": "100-120"
+          },
+          "num_users": {
+            "type": "number",
+            "description": "User index.",
+            "example": 5
+          },
+          "base_price": {
+            "type": "number",
+            "description": "base + (users_index * increment).",
+            "example": 2950
+          },
+          "years": {
+            "type": "number",
+            "description": "License years",
+            "example": 2
+          },
+          "total_price": {
+            "type": "number",
+            "description": "years * base_price",
+            "example": 11800
+          },
+          "discount_rate": {
+            "type": "number",
+            "description": "Discount Rate",
+            "example": 0.1
+          },
+          "discount_amt": {
+            "type": "number",
+            "description": "discount_rate * total_price",
+            "example": 2006
+          },
+          "final_price": {
+            "type": "number",
+            "description": "total_price - discount_amt",
+            "example": 9794
+          }
+        }
+      },
+      "Quote": {
+        "type": "object",
+        "properties": {
+          "account_id": {
+            "type": "integer",
+            "description": "Account ID.",
+            "example": 16001181618
+          },
+          "contact_id": {
+            "type": "integer",
+            "description": "Contact ID.",
+            "example": 16004439128
+          },
+          "num_users": {
+            "type": "integer",
+            "description": "Number of users",
+            "example": 21
+          },
+          "license_type": {
+            "type": "string",
+            "description": "Contact ID.",
+            "example": "standard"
+          },
+          "license_years": {
+            "type": "integer",
+            "description": "Number of users",
+            "example": 3
+          },
+          "hiveage_contact_email": {
+            "type": "string",
+            "description": "Contact Email.",
+            "example": "careers@perfmeter.io"
+          },
+          "hiveage_notification_emails": {
+            "type": "array",
+            "description": "Contact Email.",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "email1@perfmeter.io",
+              "email2@perfmeter.io"
+            ]
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "contact_id": {
+            "type": "integer",
+            "description": "The contact's id.",
+            "example": 16004426279
+          },
+          "contact_first_name": {
+            "type": "string",
+            "description": "The contact's first name.",
+            "example": "ali"
+          },
+          "contact_last_name": {
+            "type": "string",
+            "description": "The contact's last name.",
+            "example": "raza"
+          },
+          "contact_email": {
+            "type": "string",
+            "description": "The contact's email.",
+            "example": "test@perfmeter.io"
+          },
+          "contact_cf_company": {
+            "type": "string",
+            "description": "The contact's company.",
+            "example": "c1"
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:9000",
+      "description": "Development server"
+    },
+    {
+      "url": "http://localhost",
+      "description": "Local Docker"
+    },
+    {
+      "url": "https://api.railflow.io",
+      "description": "Production server"
+    }
+  ]
+}

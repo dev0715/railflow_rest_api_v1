@@ -1,4 +1,6 @@
-const axios = require('axios');
+const axios = require("axios");
+
+const logger = require("../config/logger");
 
 /**
  * Init an axios client
@@ -6,17 +8,17 @@ const axios = require('axios');
  * @returns Initialized Axios
  */
 async function getApiClient(baseURL) {
-    const apiClient = axios.create({
-        baseURL,
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        withCredentials: true,
-    });
+  const apiClient = axios.create({
+    baseURL,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    withCredentials: true,
+  });
 
-    return apiClient;
+  return apiClient;
 }
 
 module.exports = {
-    getApiClient
-}
+  getApiClient,
+};

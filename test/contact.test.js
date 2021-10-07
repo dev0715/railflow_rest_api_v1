@@ -51,7 +51,6 @@ describe("Contact e2e testing", function () {
 
     addedContactIds.push(res.body.data.contact_id);
   });
-  // patch test
   it("patch contact and check license_key returns ", async function () {
     const createdContactRes = await chai.request(server).post("/api/contact").send(data);
 
@@ -87,6 +86,7 @@ describe("Contact e2e testing", function () {
         jobTitle: "test_" + faker.name.jobTitle(),
         company: "test_" + faker.company.companySuffix() + faker.company.companyName(0),
       });
+
     expect(duplicatedPhoneRes.body.status).equal(400);
     expect(duplicatedPhoneRes.body).to.be.an("object");
     expect(duplicatedPhoneRes.body.data.message).equal("Duplicate Phone Number");
@@ -96,6 +96,7 @@ describe("Contact e2e testing", function () {
 
   it("create contact with duplicate email - no error - returns record back ", async function () {
     const res = await chai.request(server).post("/api/contact").send(data);
+    await sleep(5000);
     const duplicatedPhoneRes = await chai
       .request(server)
       .post("/api/contact")
@@ -114,4 +115,8 @@ describe("Contact e2e testing", function () {
 
     addedContactIds.push(res.body.data.contact_id);
   });
+
+  function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
 });

@@ -46,7 +46,7 @@ async function createContact(request, res, next) {
       firstName: request.body.firstName,
       lastName: request.body.lastName,
       email: request.body.email,
-      work_number: request.body.phone,
+      phone: request.body.phone,
       jobTitle: request.body.jobTitle,
       company: request.body.company,
     };

@@ -45,6 +45,7 @@ describe("Hievage e2e testing", function () {
       license_type: "professional", // professional or enterprise
       license_years: 2,
     });
+    console.log(res.body);
     expect(res.body.status).eql(201);
     expect(res.body).to.be.an("object");
     expect(res.body.message).to.eql("Invoice / quote created");

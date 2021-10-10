@@ -3,7 +3,7 @@ const winston = require("winston");
 // Imports the Google Cloud client library for Winston
 const { LoggingWinston } = require("@google-cloud/logging-winston");
 
-const loggingWinston = new LoggingWinston({ keyFilename: "railflow-gcp-logging.json" });
+const loggingWinston = new LoggingWinston({ keyFilename: "railflow-gcp-prod.json" });
 
 const logger = winston.createLogger({
   //   level: "info",

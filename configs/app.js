@@ -30,7 +30,7 @@ const configs = {
       "<RSAKeyValue><Modulus>5TFzvx1Ygenf7BJYxliBFkcKSDebrxVTUteai/xjHP/Tmrx2z5h5vJRkQlg6vxecbLDj7g+TAvZssEVj5D1VVtur2Od1Fdqs49m0dA+QdGBv5DXt9YeqJLW/JpciMom79HcOeIvJDTHJcQssCXKLxGnQkTpMIpB22hTOuJTcj1bmLManR6mQYX2k/BZ/XkC2l61TbKaOnKww3BrX8+b2ImT89VeN0znxIEwBUla78C6pDJTkKDPZPeHItHk9gTBx9CkCCfMdzidVxwiMFvXM7PSBWSFKn2JPO5+gawJbV+0nH95890EL80dl/OH/K5O+CYTaHrKJ+zUcY7MxLqsmCw==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>",
     ALLOWED_PARTY_SECRET: "ALL",
     GCP_BUCKET_NAME: "railflow-development",
-    GOOGLE_CLOUD_BUCKET: "gs://railflow-licenses",
+    GOOGLE_CLOUD_BUCKET: "gs://railflow_licenses",
     GOOGLE_CLOUD_BUCKET_PATH: "https://storage.googleapis.com",
   },
   production: {
@@ -79,7 +79,7 @@ const configs = {
       "<RSAKeyValue><Modulus>5TFzvx1Ygenf7BJYxliBFkcKSDebrxVTUteai/xjHP/Tmrx2z5h5vJRkQlg6vxecbLDj7g+TAvZssEVj5D1VVtur2Od1Fdqs49m0dA+QdGBv5DXt9YeqJLW/JpciMom79HcOeIvJDTHJcQssCXKLxGnQkTpMIpB22hTOuJTcj1bmLManR6mQYX2k/BZ/XkC2l61TbKaOnKww3BrX8+b2ImT89VeN0znxIEwBUla78C6pDJTkKDPZPeHItHk9gTBx9CkCCfMdzidVxwiMFvXM7PSBWSFKn2JPO5+gawJbV+0nH95890EL80dl/OH/K5O+CYTaHrKJ+zUcY7MxLqsmCw==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>",
     ALLOWED_PARTY_SECRET: "ALL",
     GCP_BUCKET_NAME: "railflow-test",
-    GOOGLE_CLOUD_BUCKET: "gs://railflow-licenses",
+    GOOGLE_CLOUD_BUCKET: "gs://railflow_licenses",
     GOOGLE_CLOUD_BUCKET_PATH: "https://storage.googleapis.com",
   },
 };

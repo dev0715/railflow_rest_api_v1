@@ -32,6 +32,10 @@ const configs = {
     GCP_BUCKET_NAME: "railflow-development",
     GOOGLE_CLOUD_BUCKET: "gs://railflow_licenses",
     GOOGLE_CLOUD_BUCKET_PATH: "https://storage.googleapis.com",
+    SPACES_KEY: "Q532IXKKF2WUGFCEMKRS",
+    SPACES_SECRET: "UZv5uxItW7OZquGBlGWGEsGUdS7H1GUz/OucXWDOFiw",
+    SPACE_NAME: "railflow",
+    SPACE_ENDPOINT: "sfo3.digitaloceanspaces.com",
   },
   production: {
     // set the node_env as `prod`. values
@@ -52,6 +56,10 @@ const configs = {
     GCP_BUCKET_NAME: process.env.GCP_BUCKET_NAME,
     GOOGLE_CLOUD_BUCKET: process.env.GOOGLE_CLOUD_BUCKET,
     GOOGLE_CLOUD_BUCKET_PATH: process.env.GOOGLE_CLOUD_BUCKET_PATH,
+    SPACES_KEY: process.env.SPACES_KEY,
+    SPACES_SECRET: process.env.SPACES_SECRET,
+    SPACE_NAME: process.env.SPACE_NAME,
+    SPACE_ENDPOINT: process.env.SPACE_ENDPOINT,
   },
   test: {
     // hard code these in this object
@@ -81,6 +89,11 @@ const configs = {
     GCP_BUCKET_NAME: "railflow-test",
     GOOGLE_CLOUD_BUCKET: "gs://railflow_licenses",
     GOOGLE_CLOUD_BUCKET_PATH: "https://storage.googleapis.com",
+    SPACES_KEY: "Q532IXKKF2WUGFCEMKRS",
+    SPACES_SECRET: "UZv5uxItW7OZquGBlGWGEsGUdS7H1GUz/OucXWDOFiw",
+
+    SPACE_NAME: "railflow",
+    SPACE_ENDPOINT: "sfo3.digitaloceanspaces.com",
   },
 };
 

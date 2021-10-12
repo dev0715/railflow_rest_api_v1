@@ -16,7 +16,7 @@ const configs = {
       "https://railflow.io",
     ],
     CRYPTOLENS_BASE_URL: "https://app.cryptolens.io",
-    CRYPTOLENS_API_KEY: "WyI0NDk1MzMiLCJqdjFYRGJYc0RuVmFHU0NmdFlnUWptMklTcXdVai9lNVRnRklkL3Y3Il0=",
+    CRYPTOLENS_API_KEY: "WyIyNTEwMTI4IiwiRjY4Q21uUE9GWE1SYjFmUHg3RFVZWFhIbDNoRDdOYXQ4bGowWWhWLyJd",
     MAILGUN_KEY: "key-4c45b28d4cab5d63a74df82c99aae76c",
     HIVEAGE_DOMAIN: "railflow",
     HIVEAGE_BASE_URL: "https://railflow.hiveage.com/",
@@ -36,6 +36,7 @@ const configs = {
     SPACES_SECRET: "UZv5uxItW7OZquGBlGWGEsGUdS7H1GUz/OucXWDOFiw",
     SPACE_NAME: "railflow",
     SPACE_ENDPOINT: "sfo3.digitaloceanspaces.com",
+    PRODUCT_ID: "8245",
   },
   production: {
     // set the node_env as `prod`. values
@@ -60,6 +61,7 @@ const configs = {
     SPACES_SECRET: process.env.SPACES_SECRET,
     SPACE_NAME: process.env.SPACE_NAME,
     SPACE_ENDPOINT: process.env.SPACE_ENDPOINT,
+    PRODUCT_ID: process.env.PRODUCT_ID,
   },
   test: {
     // hard code these in this object
@@ -73,7 +75,7 @@ const configs = {
       "https://railflow.io",
     ],
     CRYPTOLENS_BASE_URL: "https://app.cryptolens.io",
-    CRYPTOLENS_API_KEY: "WyI0NDk1MzMiLCJqdjFYRGJYc0RuVmFHU0NmdFlnUWptMklTcXdVai9lNVRnRklkL3Y3Il0=",
+    CRYPTOLENS_API_KEY: "WyIyNTEwMTI4IiwiRjY4Q21uUE9GWE1SYjFmUHg3RFVZWFhIbDNoRDdOYXQ4bGowWWhWLyJd",
     MAILGUN_KEY: "key-4c45b28d4cab5d63a74df82c99aae76c",
     HIVEAGE_DOMAIN: "railflow",
     HIVEAGE_BASE_URL: "https://railflow.hiveage.com/",
@@ -94,6 +96,7 @@ const configs = {
 
     SPACE_NAME: "railflow",
     SPACE_ENDPOINT: "sfo3.digitaloceanspaces.com",
+    PRODUCT_ID: "8245",
   },
 };
 

@@ -13,7 +13,7 @@ const emailService = require("../services/email");
 const noteService = require("../services/note");
 const licenseService = require("../services/license");
 const contactService = require("../services/contact");
-const uploadService = require("../services/upload");
+const uploadService = require("../services/upload-digitalOcean");
 const { checkToken, checkTokenSlash } = require("../services/token");
 const logger = require("../config/logger");
 
@@ -105,11 +105,11 @@ async function extendLicenseSlack(req, res, next) {
       req.body.contact_last_name = contact.last_name;
       req.body.contact_cf_company = payloadParams[1];
 
-      const cryptolensTokenObject = await licenseService.uploadToGoogleCloudStorage(
+      const cryptolensTokenObject = await licenseService.getCryptolensToken(
         req.body,
         licensePeriods
       );
-      const uploadRes = await uploadService.uploadToGoogleCloudStorage(cryptolensTokenObject);
+      const uploadRes = await uploadService.uploadToDigitalOcean(cryptolensTokenObject);
       const extendedLicense = await licenseService.extend(req.body);
       if (extendedLicense.result == 0) {
         const description = `License has been extended by ${req.body.contact_cf_extension_period} days`;

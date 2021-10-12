@@ -19,7 +19,7 @@ const emailService = require("../services/email");
 const noteService = require("../services/note");
 const taskService = require("../services/task");
 const licenseService = require("../services/license");
-const uploadService = require("../services/upload");
+const uploadService = require("../services/upload-digitalOcean");
 const { checkToken } = require("../services/token");
 
 async function createLead(req, res, next) {
@@ -85,7 +85,7 @@ function getCryptolensTokenEmailContent(cryptolensTokenObject) {
 
 async function getCryptolensFileUrl(cryptolensTokenObject) {
   try {
-    const uploadRes = await uploadService.uploadToGoogleCloudStorage(cryptolensTokenObject);
+    const uploadRes = await uploadService.uploadToDigitalOcean(cryptolensTokenObject);
     let text = ` You can also check out your license here: ${uploadRes.url}`;
     // text = uploadRes.Location;
     return {

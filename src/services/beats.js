@@ -5,17 +5,20 @@ const configs = appConfig.getConfigs(process.env.APP_ENV);
 
 exports.registerBeatsToCryptolens = async (args) => {
   try {
-    const apiClient = await getApiClient(configs.CRYPTOLENS_REGISTER);
+    const apiClient = await getApiClient(configs.CRYPTOLENS_BASE_URL);
     const response = await apiClient.request({
       method: "POST",
-      url: `api/ai/RegisterEvent?token=${configs.CRYPTOLENS_TOKEN}`,
+      url: `/api/ai/RegisterEvent?token=${configs.CRYPTOLENS_API_KEY}`,
       headers: {
         "Content-Type": "application/json",
       },
       data: {
         ...args,
+        ProductId: configs.PRODUCT_ID,
       },
     });
+
+    logger.info("response", response.data);
     return response;
   } catch (error) {
     logger.error(error);

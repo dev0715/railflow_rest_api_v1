@@ -11,7 +11,6 @@ const logger = require("../config/logger");
 
 const AWS = require("aws-sdk");
 
-console.log(configs.SPACE_ENDPOINT);
 const spacesEndpoint = new AWS.Endpoint(configs.SPACE_ENDPOINT);
 const s3 = new AWS.S3({
   endpoint: spacesEndpoint,
@@ -44,12 +43,9 @@ async function uploadToDigitalOcean(data) {
     };
     await s3.putObject(params, function (err, data) {
       if (err) {
-        console.log(err, err.stack);
-      } else {
-        console.log(data);
+        logger.error("error when uploading file to digital ocean", error);
       }
     });
-    console.log(fileFullPath);
     return { url: fileFullPath };
   } catch (error) {
     logger.error("Error When trying to upload file to Digital Ocean", error);

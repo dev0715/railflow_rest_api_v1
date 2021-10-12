@@ -15,7 +15,7 @@ const { registerBeatsToCryptolens } = require("../services/beats");
  * @param {*} next Next
  * @returns Promise
  */
-exports.registerBeats = (req, res) => {
+exports.registerBeats = async (req, res) => {
   try {
     const { metadata, feature, event, key, value } = req.body;
 
@@ -39,7 +39,7 @@ exports.registerBeats = (req, res) => {
       throw new Error("Value field is required.");
     }
 
-    registerBeatsToCryptolens({ metadata, feature, event, key, value });
+    await registerBeatsToCryptolens({ metadata, feature, event, key, value });
     return res.status(200).send({
       status: 200,
       data: {

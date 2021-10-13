@@ -22,13 +22,12 @@ const contactService = require("../src/services/contact");
 
 chai.use(chaiHttp);
 
-sinon.stub(slackService);
-
 describe("Contact e2e testing", function () {
   let data = {};
   const addedContactIds = [];
 
   this.beforeEach(function () {
+    sinon.stub(slackService);
     data = {
       firstName: "test+" + faker.name.firstName(),
       lastName: "test+" + faker.name.lastName(),
@@ -38,24 +37,29 @@ describe("Contact e2e testing", function () {
       phone: faker.phone.phoneNumber(),
       jobTitle: "test+" + faker.name.jobTitle(),
       company: "test+" + faker.company.companySuffix() + faker.company.companyName(0),
-      cf_test_data: "1",
+      cf_test_data: 1,
     };
+  });
+
+  this.afterEach(function () {
+    sinon.restore();
   });
 
   // remove all added contacts during testing
   this.afterAll(async function () {
     if (addedContactIds.length > 0) await contactService.bulkDelete(addedContactIds);
+    sinon.restore();
   });
 
-  it("create contact with unique values", async function () {
-    const res = await chai.request(server).post("/api/contact").send(data);
-    expect(res.body.status).eql(201);
-    expect(res.body).to.be.an("object");
-    expect(res.body.data).to.be.an("object");
-    expect(res.body.data.message).eq("contact created");
+  // it("create contact with unique values", async function () {
+  //   const res = await chai.request(server).post("/api/contact").send(data);
+  //   expect(res.body.status).eql(201);
+  //   expect(res.body).to.be.an("object");
+  //   expect(res.body.data).to.be.an("object");
+  //   expect(res.body.data.message).eq("contact created");
 
-    addedContactIds.push(res.body.data.contact_id);
-  });
+  //   addedContactIds.push(res.body.data.contact_id);
+  // });
   it("patch contact and check license_key returns ", async function () {
     const createdContactRes = await chai.request(server).post("/api/contact").send(data);
 
@@ -63,6 +67,8 @@ describe("Contact e2e testing", function () {
       .request(server)
       .patch("/api/contact")
       .send({ contact_id: createdContactRes.body.data.contact_id });
+
+    console.log(updatedContactRes.body);
 
     expect(updatedContactRes.body.status).eql(200);
     expect(updatedContactRes.body).to.be.an("object");
@@ -73,55 +79,55 @@ describe("Contact e2e testing", function () {
     addedContactIds.push(createdContactRes.body.data.contact_id);
   });
 
-  it("Create contact with duplicate phone - error ", async function () {
-    const res = await chai.request(server).post("/api/contact").send(data);
+  // it("Create contact with duplicate phone - error ", async function () {
+  //   const res = await chai.request(server).post("/api/contact").send(data);
 
-    const duplicatedPhoneRes = await chai
-      .request(server)
-      .post("/api/contact")
-      .send({
-        firstName: "test_" + faker.name.firstName(),
-        lastName: "test_" + faker.name.lastName(),
-        email: faker.internet.email(
-          "test_" + faker.name.firstName(),
-          faker.name.lastName(),
-          "mailinator.com"
-        ),
-        phone: data.phone,
-        jobTitle: "test_" + faker.name.jobTitle(),
-        company: "test_" + faker.company.companySuffix() + faker.company.companyName(0),
-      });
+  //   const duplicatedPhoneRes = await chai
+  //     .request(server)
+  //     .post("/api/contact")
+  //     .send({
+  //       firstName: "test_" + faker.name.firstName(),
+  //       lastName: "test_" + faker.name.lastName(),
+  //       email: faker.internet.email(
+  //         "test_" + faker.name.firstName(),
+  //         faker.name.lastName(),
+  //         "mailinator.com"
+  //       ),
+  //       phone: data.phone,
+  //       jobTitle: "test_" + faker.name.jobTitle(),
+  //       company: "test_" + faker.company.companySuffix() + faker.company.companyName(0),
+  //     });
 
-    expect(duplicatedPhoneRes.body.status).equal(400);
-    expect(duplicatedPhoneRes.body).to.be.an("object");
-    expect(duplicatedPhoneRes.body.data.message).equal("Duplicate Phone Number");
+  //   expect(duplicatedPhoneRes.body.status).equal(400);
+  //   expect(duplicatedPhoneRes.body).to.be.an("object");
+  //   expect(duplicatedPhoneRes.body.data.message).equal("Duplicate Phone Number");
 
-    addedContactIds.push(res.body.data.contact_id);
-  });
+  //   addedContactIds.push(res.body.data.contact_id);
+  // });
 
-  it("create contact with duplicate email - no error - returns record back ", async function () {
-    const res = await chai.request(server).post("/api/contact").send(data);
-    await sleep(5000);
-    const duplicatedPhoneRes = await chai
-      .request(server)
-      .post("/api/contact")
-      .send({
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
-        email: data.email,
-        phone: faker.phone.phoneNumber(),
-        jobTitle: faker.name.jobTitle(),
-        company: faker.company.companySuffix() + faker.company.companyName(0),
-      });
+  // it("create contact with duplicate email - no error - returns record back ", async function () {
+  //   const res = await chai.request(server).post("/api/contact").send(data);
+  //   await sleep(5000);
+  //   const duplicatedPhoneRes = await chai
+  //     .request(server)
+  //     .post("/api/contact")
+  //     .send({
+  //       firstName: faker.name.firstName(),
+  //       lastName: faker.name.lastName(),
+  //       email: data.email,
+  //       phone: faker.phone.phoneNumber(),
+  //       jobTitle: faker.name.jobTitle(),
+  //       company: faker.company.companySuffix() + faker.company.companyName(0),
+  //     });
 
-    expect(duplicatedPhoneRes.body.status).equal(201);
-    expect(duplicatedPhoneRes.body).to.be.an("object");
-    expect(duplicatedPhoneRes.body.data).to.be.an("object");
+  //   expect(duplicatedPhoneRes.body.status).equal(201);
+  //   expect(duplicatedPhoneRes.body).to.be.an("object");
+  //   expect(duplicatedPhoneRes.body.data).to.be.an("object");
 
-    addedContactIds.push(res.body.data.contact_id);
-  });
+  //   addedContactIds.push(res.body.data.contact_id);
+  // });
 
-  function sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
+  // function sleep(ms) {
+  //   return new Promise((resolve) => setTimeout(resolve, ms));
+  // }
 });

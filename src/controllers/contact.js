@@ -49,6 +49,7 @@ async function createContact(request, res, next) {
       phone: request.body.phone,
       jobTitle: request.body.jobTitle,
       company: request.body.company,
+      cf_test_data: request.body.cf_test_data,
     };
 
     // check if the contact is already there.

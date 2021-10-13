@@ -42,6 +42,7 @@ async function create(data) {
           cf_account_id: data.account_id,
           cf_extension_period: 14, // setting this 14 as default. sales agent can change this number before firing license extension webhook.
           cf_license_status: "not_sent", // default is not sent -> after patch -> update to sent
+          cf_test_data: data.cf_test_data ? data.cf_test_data : undefined,
         },
         sales_accounts: data.sales_accounts,
       },
@@ -49,8 +50,10 @@ async function create(data) {
     logger.info(
       `Contact created with email: ${data.email}, phone ${data.phone} and name ${data.firstName} ${data.lastName} `
     );
+    console.log(response.data);
     return response;
   } catch (error) {
+    console.log(error.response.data);
     if (error.response?.data?.errors?.message[0] === "The mobile number already exists.") {
       throw new ApiError("BAD_REQUEST_MOBILE_NUMBER_EXISTS");
     }

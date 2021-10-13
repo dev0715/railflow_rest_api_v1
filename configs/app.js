@@ -29,9 +29,7 @@ const configs = {
     CRYPTOLENS_RSA_PUB_KEY:
       "<RSAKeyValue><Modulus>5TFzvx1Ygenf7BJYxliBFkcKSDebrxVTUteai/xjHP/Tmrx2z5h5vJRkQlg6vxecbLDj7g+TAvZssEVj5D1VVtur2Od1Fdqs49m0dA+QdGBv5DXt9YeqJLW/JpciMom79HcOeIvJDTHJcQssCXKLxGnQkTpMIpB22hTOuJTcj1bmLManR6mQYX2k/BZ/XkC2l61TbKaOnKww3BrX8+b2ImT89VeN0znxIEwBUla78C6pDJTkKDPZPeHItHk9gTBx9CkCCfMdzidVxwiMFvXM7PSBWSFKn2JPO5+gawJbV+0nH95890EL80dl/OH/K5O+CYTaHrKJ+zUcY7MxLqsmCw==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>",
     ALLOWED_PARTY_SECRET: "ALL",
-    GCP_BUCKET_NAME: "railflow-development",
-    GOOGLE_CLOUD_BUCKET: "gs://railflow_licenses",
-    GOOGLE_CLOUD_BUCKET_PATH: "https://storage.googleapis.com",
+
     SPACES_KEY: "Q532IXKKF2WUGFCEMKRS",
     SPACES_SECRET: "UZv5uxItW7OZquGBlGWGEsGUdS7H1GUz/OucXWDOFiw",
     SPACE_NAME: "railflow",
@@ -54,9 +52,6 @@ const configs = {
     CRYPTOLENS_LICENSE_EXTENSION_KEY: process.env.CRYPTOLENS_LICENSE_EXTENSION_KEY,
     CRYPTOLENS_RSA_PUB_KEY: process.env.CRYPTOLENS_RSA_PUB_KEY,
     ALLOWED_PARTY_SECRET: process.env.ALLOWED_PARTY_SECRET,
-    GCP_BUCKET_NAME: process.env.GCP_BUCKET_NAME,
-    GOOGLE_CLOUD_BUCKET: process.env.GOOGLE_CLOUD_BUCKET,
-    GOOGLE_CLOUD_BUCKET_PATH: process.env.GOOGLE_CLOUD_BUCKET_PATH,
     SPACES_KEY: process.env.SPACES_KEY,
     SPACES_SECRET: process.env.SPACES_SECRET,
     SPACE_NAME: process.env.SPACE_NAME,
@@ -88,12 +83,8 @@ const configs = {
     CRYPTOLENS_RSA_PUB_KEY:
       "<RSAKeyValue><Modulus>5TFzvx1Ygenf7BJYxliBFkcKSDebrxVTUteai/xjHP/Tmrx2z5h5vJRkQlg6vxecbLDj7g+TAvZssEVj5D1VVtur2Od1Fdqs49m0dA+QdGBv5DXt9YeqJLW/JpciMom79HcOeIvJDTHJcQssCXKLxGnQkTpMIpB22hTOuJTcj1bmLManR6mQYX2k/BZ/XkC2l61TbKaOnKww3BrX8+b2ImT89VeN0znxIEwBUla78C6pDJTkKDPZPeHItHk9gTBx9CkCCfMdzidVxwiMFvXM7PSBWSFKn2JPO5+gawJbV+0nH95890EL80dl/OH/K5O+CYTaHrKJ+zUcY7MxLqsmCw==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>",
     ALLOWED_PARTY_SECRET: "ALL",
-    GCP_BUCKET_NAME: "railflow-test",
-    GOOGLE_CLOUD_BUCKET: "gs://railflow_licenses",
-    GOOGLE_CLOUD_BUCKET_PATH: "https://storage.googleapis.com",
     SPACES_KEY: "Q532IXKKF2WUGFCEMKRS",
     SPACES_SECRET: "UZv5uxItW7OZquGBlGWGEsGUdS7H1GUz/OucXWDOFiw",
-
     SPACE_NAME: "railflow",
     SPACE_ENDPOINT: "sfo3.digitaloceanspaces.com",
     PRODUCT_ID: "8245",

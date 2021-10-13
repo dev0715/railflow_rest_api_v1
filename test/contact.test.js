@@ -13,12 +13,16 @@ const expect = chai.expect;
 const should = require("should");
 const chaiHttp = require("chai-http");
 const faker = require("faker");
+const sinon = require("sinon");
 
+const slackService = require("../src/services/slack");
 var server = require("../src/app");
 
 const contactService = require("../src/services/contact");
 
 chai.use(chaiHttp);
+
+sinon.stub(slackService);
 
 describe("Contact e2e testing", function () {
   let data = {};
@@ -34,6 +38,7 @@ describe("Contact e2e testing", function () {
       phone: faker.phone.phoneNumber(),
       jobTitle: "test+" + faker.name.jobTitle(),
       company: "test+" + faker.company.companySuffix() + faker.company.companyName(0),
+      cf_test_data: "1",
     };
   });
 

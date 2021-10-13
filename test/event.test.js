@@ -10,6 +10,7 @@ const sinon = require("sinon");
 var server = require("../src/app");
 
 const contactService = require("../src/services/contact");
+const slackService = require("../src/services/slack");
 
 chai.use(chaiHttp);
 

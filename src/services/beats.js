@@ -1,7 +1,7 @@
 const { getApiClient } = require("./request");
 const appConfig = require("../../configs/app");
 const logger = require("../config/logger");
-const configs = appConfig.getConfigs(process.env.APP_ENV);
+const configs = appConfig.getConfigs();
 
 exports.registerBeatsToCryptolens = async (args) => {
   try {

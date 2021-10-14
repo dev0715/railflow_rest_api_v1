@@ -24,7 +24,7 @@ const swaggerFile = require("../swagger.json");
 // config
 const appConfig = require("../configs/app");
 
-const config = appConfig.getConfigs(process.env.APP_ENV || "development");
+const config = appConfig.getConfigs();
 
 class Server {
   constructor() {

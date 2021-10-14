@@ -1,7 +1,7 @@
 "use strict";
 
 const appConfig = require("../../configs/app");
-const configs = appConfig.getConfigs(process.env.APP_ENV);
+const configs = appConfig.getConfigs();
 
 const ApiError = require("../errors/api");
 const mailgun = require("mailgun-js");

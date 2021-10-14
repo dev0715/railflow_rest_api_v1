@@ -10,7 +10,7 @@ const { createAccount } = require("../services/account");
 const { getApiClient } = require("../services/request");
 
 const appConfigs = require("../../configs/app");
-const configs = appConfigs.getConfigs(process.env.APP_ENV || "development");
+const configs = appConfigs.getConfigs();
 
 const ApiError = require("../errors/api");
 const logger = require("../config/logger");

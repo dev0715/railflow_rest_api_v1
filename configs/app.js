@@ -16,7 +16,7 @@ const configs = {
       "https://railflow.io",
     ],
     CRYPTOLENS_BASE_URL: "https://app.cryptolens.io",
-    CRYPTOLENS_API_KEY: "WyI1NTc3MzY4IiwiZnphbENoMGJnWDAvN1FYeHl6MUI0b3Zac3RTUFUwY1RsTG50TUNhSCJd",
+    CRYPTOLENS_API_KEY: "WyI1NTkwNTYzIiwidE1WQ1NjaUlwR05adHhZK1BaaEZlamVpUEZ5RElJQ3ZBZGlPVzFkUCJd",
     MAILGUN_KEY: "key-4c45b28d4cab5d63a74df82c99aae76c",
     HIVEAGE_DOMAIN: "railflow",
     HIVEAGE_BASE_URL: "https://railflow.hiveage.com/",
@@ -25,7 +25,7 @@ const configs = {
       "https://hooks.slack.com/services/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",
     SLACK_SLASH_COMMAND_TOKEN: "kBWbldLF6g11eDX5rpyRQUY4",
     CRYPTOLENS_LICENSE_EXTENSION_KEY:
-      "WyIyODk0MTIiLCIwQUx0TG1LRWxUNXZRZXJLYWJMZzBUY3NLSGJ0akgvaCtkZEx4b3h6Il0=",
+      "WyI1NTkwNTYzIiwidE1WQ1NjaUlwR05adHhZK1BaaEZlamVpUEZ5RElJQ3ZBZGlPVzFkUCJd",
     CRYPTOLENS_RSA_PUB_KEY:
       "<RSAKeyValue><Modulus>5TFzvx1Ygenf7BJYxliBFkcKSDebrxVTUteai/xjHP/Tmrx2z5h5vJRkQlg6vxecbLDj7g+TAvZssEVj5D1VVtur2Od1Fdqs49m0dA+QdGBv5DXt9YeqJLW/JpciMom79HcOeIvJDTHJcQssCXKLxGnQkTpMIpB22hTOuJTcj1bmLManR6mQYX2k/BZ/XkC2l61TbKaOnKww3BrX8+b2ImT89VeN0znxIEwBUla78C6pDJTkKDPZPeHItHk9gTBx9CkCCfMdzidVxwiMFvXM7PSBWSFKn2JPO5+gawJbV+0nH95890EL80dl/OH/K5O+CYTaHrKJ+zUcY7MxLqsmCw==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>",
     ALLOWED_PARTY_SECRET: "ALL",
@@ -70,7 +70,7 @@ const configs = {
       "https://railflow.io",
     ],
     CRYPTOLENS_BASE_URL: "https://app.cryptolens.io",
-    CRYPTOLENS_API_KEY: "WyI1NTc3MzY4IiwiZnphbENoMGJnWDAvN1FYeHl6MUI0b3Zac3RTUFUwY1RsTG50TUNhSCJd",
+    CRYPTOLENS_API_KEY: "WyI1NTkwNTYzIiwidE1WQ1NjaUlwR05adHhZK1BaaEZlamVpUEZ5RElJQ3ZBZGlPVzFkUCJd",
     MAILGUN_KEY: "key-4c45b28d4cab5d63a74df82c99aae76c",
     HIVEAGE_DOMAIN: "railflow",
     HIVEAGE_BASE_URL: "https://railflow.hiveage.com/",
@@ -79,7 +79,7 @@ const configs = {
       "https://hooks.slack.com/services/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",
     SLACK_SLASH_COMMAND_TOKEN: "kBWbldLF6g11eDX5rpyRQUY4",
     CRYPTOLENS_LICENSE_EXTENSION_KEY:
-      "WyIyODk0MTIiLCIwQUx0TG1LRWxUNXZRZXJLYWJMZzBUY3NLSGJ0akgvaCtkZEx4b3h6Il0=",
+      "WyI1NTkwNTYzIiwidE1WQ1NjaUlwR05adHhZK1BaaEZlamVpUEZ5RElJQ3ZBZGlPVzFkUCJd",
     CRYPTOLENS_RSA_PUB_KEY:
       "<RSAKeyValue><Modulus>5TFzvx1Ygenf7BJYxliBFkcKSDebrxVTUteai/xjHP/Tmrx2z5h5vJRkQlg6vxecbLDj7g+TAvZssEVj5D1VVtur2Od1Fdqs49m0dA+QdGBv5DXt9YeqJLW/JpciMom79HcOeIvJDTHJcQssCXKLxGnQkTpMIpB22hTOuJTcj1bmLManR6mQYX2k/BZ/XkC2l61TbKaOnKww3BrX8+b2ImT89VeN0znxIEwBUla78C6pDJTkKDPZPeHItHk9gTBx9CkCCfMdzidVxwiMFvXM7PSBWSFKn2JPO5+gawJbV+0nH95890EL80dl/OH/K5O+CYTaHrKJ+zUcY7MxLqsmCw==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>",
     ALLOWED_PARTY_SECRET: "ALL",

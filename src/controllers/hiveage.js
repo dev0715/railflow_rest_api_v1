@@ -152,7 +152,7 @@ async function createHiveage(req, res, next) {
         network = await accountService.createHiveageNetwork(networkData);
         const updatedAccount = await accountService.updateHiveageHash(account.id, network.hash_key);
       } catch (error) {
-        console.log("error when create hiveage network");
+        logger.error("error when create hiveage network", error);
         return res.status(500).send({
           status: 500,
           data: {

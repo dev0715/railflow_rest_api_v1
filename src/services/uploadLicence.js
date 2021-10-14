@@ -18,12 +18,7 @@ const s3 = new AWS.S3({
   secretAccessKey: configs.SPACES_SECRET,
 });
 
-// /**
-//  * Service: use Google Cloud to upload images
-//  * @param {*} data
-//  * @returns
-//  */
-async function uploadToDigitalOcean(data) {
+async function uploadLicence(data) {
   try {
     const TOKEN = configs.CRYPTOLENS_LICENSE_EXTENSION_KEY;
     const RSA_PUB_KEY = configs.CRYPTOLENS_RSA_PUB_KEY;
@@ -53,4 +48,4 @@ async function uploadToDigitalOcean(data) {
   }
 }
 
-module.exports = { uploadToDigitalOcean };
+module.exports = { uploadLicence };

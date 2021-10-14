@@ -26,7 +26,7 @@ async function uploadLicence(data) {
     const PRODUCT_ID = 8245;
     const code = await machineId();
     const licenseKey = await key.Activate(TOKEN, RSA_PUB_KEY, PRODUCT_ID, data.key, code);
-    const filename = `${uuidv4()}/licences/railflow_license.skm`;
+    const filename = `licences/${uuidv4()}/railflow_license.skm`;
 
     const fileFullPath = `${configs.SPACE_NAME}.${configs.SPACE_ENDPOINT}/${filename}`;
 

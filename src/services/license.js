@@ -1,7 +1,7 @@
 "use strict";
 
 const appConfigs = require("../../configs/app");
-const configs = appConfigs.getConfigs(process.env.APP_ENV || "development");
+const configs = appConfigs.getConfigs();
 const ApiError = require("../errors/api");
 
 const { getApiClient } = require("../services/request");

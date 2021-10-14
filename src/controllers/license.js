@@ -13,7 +13,7 @@ const emailService = require("../services/email");
 const noteService = require("../services/note");
 const licenseService = require("../services/license");
 const contactService = require("../services/contact");
-const uploadService = require("../services/upload-digitalOcean");
+const uploadService = require("../services/uploadLicence");
 const { checkToken, checkTokenSlash } = require("../services/token");
 const logger = require("../config/logger");
 
@@ -109,7 +109,7 @@ async function extendLicenseSlack(req, res, next) {
         req.body,
         licensePeriods
       );
-      const uploadRes = await uploadService.uploadToDigitalOcean(cryptolensTokenObject);
+      const uploadRes = await uploadService.uploadLicence(cryptolensTokenObject);
       const extendedLicense = await licenseService.extend(req.body);
       if (extendedLicense.result == 0) {
         const description = `License has been extended by ${req.body.contact_cf_extension_period} days`;

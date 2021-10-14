@@ -66,7 +66,6 @@ async function create(data) {
     });
     logger.info(`Account created with name: ${data.name}`);
 
-    console.log(`Account created with name: ${data.name}`);
     return response.data.sales_account;
   } catch (error) {
     if (error.response.data.errors.code === 400) {

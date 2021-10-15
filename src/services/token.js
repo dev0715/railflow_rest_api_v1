@@ -5,7 +5,7 @@
 
 "use strict";
 const appConfig = require("../../configs/app");
-const configs = appConfig.getConfigs(process.env.APP_ENV);
+const configs = appConfig.getConfigs();
 
 /**
  * Service: Check token

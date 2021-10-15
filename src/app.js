@@ -6,7 +6,7 @@ const Server = require("./server");
 const logger = require("./config/logger");
 
 const appConfig = require("../configs/app");
-const config = appConfig.getConfigs(process.env.APP_ENV || "development");
+const config = appConfig.getConfigs();
 const APP_PORT = config.APP_PORT;
 
 const server = http.createServer(Server);

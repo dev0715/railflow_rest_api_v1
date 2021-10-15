@@ -1,7 +1,7 @@
 "use strict";
 
 const appConfig = require("../../configs/app");
-const configs = appConfig.getConfigs(process.env.APP_ENV);
+const configs = appConfig.getConfigs();
 
 const ApiError = require("../errors/api");
 const { getApiClient } = require("../services/request");
@@ -126,7 +126,6 @@ async function createInvoice(data) {
         summary: `Railflow ${capitalize(data.license_type)} Invoice: ${license_term} License: ${
           20 * price_option
         }-${20 * (price_option + 1)} Users`,
-        note: `Custom item note`,
         send_reminders: false,
 
         items_attributes: items_attributes,

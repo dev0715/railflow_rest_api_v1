@@ -1,10 +1,5 @@
 const winston = require("winston");
 
-// Imports the Google Cloud client library for Winston
-const { LoggingWinston } = require("@google-cloud/logging-winston");
-
-const loggingWinston = new LoggingWinston({ keyFilename: "railflow-gcp-prod.json" });
-
 const logger = winston.createLogger({
   //   level: "info",
   colorize: true,
@@ -20,7 +15,5 @@ const logger = winston.createLogger({
     }),
   ],
 });
-
-if (process.env.APP_ENV == "production") winston.configure({ transports: [loggingWinston] });
 
 module.exports = logger;

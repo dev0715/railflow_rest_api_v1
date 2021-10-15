@@ -6,7 +6,7 @@
 
 "use strict";
 const appConfig = require("../../configs/app");
-const configs = appConfig.getConfigs(process.env.APP_ENV);
+const configs = appConfig.getConfigs();
 const { getApiClient } = require("./request");
 
 const ApiError = require("../errors/api");
@@ -66,7 +66,6 @@ async function create(data) {
     });
     logger.info(`Account created with name: ${data.name}`);
 
-    console.log(`Account created with name: ${data.name}`);
     return response.data.sales_account;
   } catch (error) {
     if (error.response.data.errors.code === 400) {

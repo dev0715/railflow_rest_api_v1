@@ -19,8 +19,9 @@ const emailService = require("../services/email");
 const noteService = require("../services/note");
 const taskService = require("../services/task");
 const licenseService = require("../services/license");
-const uploadService = require("../services/upload-digitalOcean");
+const uploadService = require("../services/uploadLicence");
 const { checkToken } = require("../services/token");
+const logger = require("../config/logger");
 
 async function createLead(req, res, next) {
   // Middleware: Check token beforehand
@@ -85,7 +86,7 @@ function getCryptolensTokenEmailContent(cryptolensTokenObject) {
 
 async function getCryptolensFileUrl(cryptolensTokenObject) {
   try {
-    const uploadRes = await uploadService.uploadToDigitalOcean(cryptolensTokenObject);
+    const uploadRes = await uploadService.uploadLicence(cryptolensTokenObject);
     let text = ` You can also check out your license here: ${uploadRes.url}`;
     // text = uploadRes.Location;
     return {
@@ -110,7 +111,7 @@ async function sendOnboardingEmail(body, cryptolensTokenObject) {
     cryptolensTokenObject.url = licenseUrl;
     text += cryptolensLicenseFileTextContent;
 
-    console.log(`> onboarding email text: ${text}`);
+    logger.info(`Onboarding email text: ${text}`);
 
     const template = fs.readFileSync(
       path.join(__dirname, "../../email-templates/signup.hbs"),

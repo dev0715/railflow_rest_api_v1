@@ -1,7 +1,7 @@
 "use strict";
 
 const appConfigs = require("../../configs/app");
-const configs = appConfigs.getConfigs(process.env.APP_ENV || "development");
+const configs = appConfigs.getConfigs();
 const ApiError = require("../errors/api");
 
 const { getApiClient } = require("../services/request");
@@ -16,7 +16,7 @@ const logger = require("../config/logger");
  * @param {*} body Input data
  * @returns Promise
  */
-async function getCryptolensToken(body, periods = 14) {
+async function getCryptolensToken(body, periods = configs.EXTENSION_PERIOD) {
   try {
     const apiClient = await getApiClient(configs.CRYPTOLENS_BASE_URL);
     const response = await apiClient.request({
@@ -28,7 +28,7 @@ async function getCryptolensToken(body, periods = 14) {
       },
       data: qs.stringify({
         token: configs.CRYPTOLENS_API_KEY,
-        ProductId: 8245,
+        ProductId: configs.PRODUCT_ID,
         Period: periods,
         F1: true,
         F2: true,
@@ -71,8 +71,8 @@ async function extend(data) {
       },
       data: qs.stringify({
         token: configs.CRYPTOLENS_LICENSE_EXTENSION_KEY,
-        ProductId: 8245,
-        NoOfDays: data.contact_cf_extension_period || 14,
+        ProductId: configs.PRODUCT_ID,
+        NoOfDays: data.contact_cf_extension_period || configs.EXTENSION_PERIOD,
         Key: data.contact_cf_license_key,
       }),
     });

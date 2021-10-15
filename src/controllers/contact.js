@@ -18,7 +18,7 @@ const accountService = require("../services/account");
 const slackService = require("../services/slack");
 const licenseService = require("../services/license");
 const emailService = require("../services/email");
-const uploadService = require("../services/upload-digitalOcean");
+const uploadService = require("../services/uploadLicence");
 const noteService = require("../services/note");
 const taskService = require("../services/task");
 const { checkToken } = require("../services/token");
@@ -267,7 +267,7 @@ function getCryptolensTokenEmailContent(cryptolensTokenObject) {
 }
 async function getCryptolensFileUrl(cryptolensTokenObject) {
   try {
-    const uploadRes = await uploadService.uploadToDigitalOcean(cryptolensTokenObject);
+    const uploadRes = await uploadService.uploadLicence(cryptolensTokenObject);
     let text = ` You can also check out your license here: ${uploadRes.url}`;
     return {
       url: uploadRes.url,

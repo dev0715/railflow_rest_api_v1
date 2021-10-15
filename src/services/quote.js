@@ -83,7 +83,6 @@ async function create(data) {
         summary: `Railflow ${capitalize(data.license_type)} Quote: ${license_term} License: ${
           20 * price_option
         }-${20 * (price_option + 1)} Users`,
-        note: `Custom item note`,
         send_reminders: false,
 
         items_attributes: items_attributes,

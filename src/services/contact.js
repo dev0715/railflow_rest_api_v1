@@ -40,7 +40,7 @@ async function create(data) {
         custom_field: {
           cf_company: data.company,
           cf_account_id: data.account_id,
-          cf_extension_period: 14, // setting this 14 as default. sales agent can change this number before firing license extension webhook.
+          cf_extension_period: configs.EXTENSION_PERIOD, // setting this 14 as default. sales agent can change this number before firing license extension webhook.
           cf_license_status: "not_sent", // default is not sent -> after patch -> update to sent
           cf_test_data: data.cf_test_data ? data.cf_test_data : undefined,
         },
@@ -80,7 +80,7 @@ async function update(data) {
       data: {
         contact: {
           id: data.contact_id,
-          contact_status_id: 16000052147,
+          contact_status_id: configs.CONTACT_STATUS_ID,
           custom_field: {
             cf_license_key: data.cf_license_key,
             cf_license_key_url: data.cf_license_key_url,

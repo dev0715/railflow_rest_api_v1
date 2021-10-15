@@ -32,7 +32,10 @@ const configs = {
   SPACES_SECRET: "UZv5uxItW7OZquGBlGWGEsGUdS7H1GUz/OucXWDOFiw",
   SPACE_NAME: "railflow",
   SPACE_ENDPOINT: "sfo3.digitaloceanspaces.com",
-  PRODUCT_ID: "8245",
+  PRODUCT_ID: 8245,
+  CONTACT_STATUS_ID: 16000052147,
+  EXTENSION_PERIOD: 14,
+  DOMAIN: "mail@railflow.io",
 };
 
 const getConfigs = () => {

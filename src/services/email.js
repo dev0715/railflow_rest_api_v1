@@ -15,7 +15,7 @@ const logger = require("../config/logger");
  * @returns Promise
  */
 async function sendEmail(to, text, extraInfo = {}) {
-  const DOMAIN = "mail.railflow.io";
+  const DOMAIN = configs.DOMAIN;
   const mg = mailgun({ apiKey: configs.MAILGUN_KEY, domain: DOMAIN });
   const data = {
     from: "Railflow Support <mail@railflow.io>",

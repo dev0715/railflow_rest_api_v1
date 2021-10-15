@@ -198,9 +198,6 @@ async function createHiveage(req, res, next) {
       account.id,
       `Invoice: https://railflow.hiveage.com/invs/${invoice.invoice.hash_key}`
     );
-    await slackService.sendSlackMessage(
-      `Railflow Invoice: <https://railflow.myfreshworks.com/crm/sales/accounts/${account.id}|${account.name}> <https://railflow.hiveage.com/invs/${invoice.invoice.hash_key}|invoice> :slightly_smiling_face:`
-    );
 
     const quote = await quoteService.create(data);
     if (quote.error != null) {
@@ -223,7 +220,7 @@ async function createHiveage(req, res, next) {
       `Quote: https://railflow.hiveage.com/estm/${quote.estimate.hash_key}`
     );
     await slackService.sendSlackMessage(
-      `Railflow Quote: <https://railflow.myfreshworks.com/crm/sales/accounts/${account.id}|${account.name}> <https://railflow.hiveage.com/estm/${quote.estimate.hash_key}|Quote> :slightly_smiling_face:`
+      `Railflow Price Inquiry: <https://railflow.myfreshworks.com/crm/sales/accounts/${account.id}|${account.name}>: <https://railflow.hiveage.com/estm/${quote.estimate.hash_key}|Quote>,  <https://railflow.hiveage.com/invs/${invoice.invoice.hash_key}|Invoice>`
     );
 
     const taskData1 = {

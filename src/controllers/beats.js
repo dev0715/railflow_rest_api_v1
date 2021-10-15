@@ -39,7 +39,7 @@ exports.registerBeats = async (req, res) => {
       throw new Error("Value field is required.");
     }
 
-    await registerBeatsToCryptolens({ metadata, feature, event, key, value });
+    registerBeatsToCryptolens({ metadata, feature, event, key, value });
     return res.status(200).send({
       status: 200,
       data: {

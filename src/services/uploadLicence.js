@@ -1,7 +1,7 @@
 "use strict";
 
 const appConfig = require("../../configs/app");
-const configs = appConfig.getConfigs(process.env.APP_ENV);
+const configs = appConfig.getConfigs();
 const ApiError = require("../errors/api");
 const { machineId } = require("node-machine-id");
 const key = require("cryptolens").Key;
@@ -18,12 +18,7 @@ const s3 = new AWS.S3({
   secretAccessKey: configs.SPACES_SECRET,
 });
 
-// /**
-//  * Service: use Google Cloud to upload images
-//  * @param {*} data
-//  * @returns
-//  */
-async function uploadToDigitalOcean(data) {
+async function uploadLicence(data) {
   try {
     const TOKEN = configs.CRYPTOLENS_LICENSE_EXTENSION_KEY;
     const RSA_PUB_KEY = configs.CRYPTOLENS_RSA_PUB_KEY;
@@ -31,7 +26,7 @@ async function uploadToDigitalOcean(data) {
     const PRODUCT_ID = 8245;
     const code = await machineId();
     const licenseKey = await key.Activate(TOKEN, RSA_PUB_KEY, PRODUCT_ID, data.key, code);
-    const filename = `${uuidv4()}/licences/railflow_license.skm`;
+    const filename = `licences/${uuidv4()}/railflow_license.skm`;
 
     const fileFullPath = `${configs.SPACE_NAME}.${configs.SPACE_ENDPOINT}/${filename}`;
 
@@ -53,4 +48,4 @@ async function uploadToDigitalOcean(data) {
   }
 }
 
-module.exports = { uploadToDigitalOcean };
+module.exports = { uploadLicence };

@@ -1,10 +1,11 @@
 const { getApiClient } = require("./request");
 const appConfig = require("../../configs/app");
 const logger = require("../config/logger");
-const configs = appConfig.getConfigs(process.env.APP_ENV);
+const configs = appConfig.getConfigs();
 
 exports.registerBeatsToCryptolens = async (args) => {
   try {
+    const { metadata, feature, event, key, value } = args;
     const apiClient = await getApiClient(configs.CRYPTOLENS_BASE_URL);
     const response = await apiClient.request({
       method: "POST",
@@ -13,8 +14,12 @@ exports.registerBeatsToCryptolens = async (args) => {
         "Content-Type": "application/json",
       },
       data: {
-        ...args,
         ProductId: configs.PRODUCT_ID,
+        Key: key,
+        FeatureName: feature,
+        EventName: event,
+        Value: value,
+        Metadata: metadata,
       },
     });
 

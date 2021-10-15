@@ -152,7 +152,7 @@ async function createHiveage(req, res, next) {
         network = await accountService.createHiveageNetwork(networkData);
         const updatedAccount = await accountService.updateHiveageHash(account.id, network.hash_key);
       } catch (error) {
-        console.log("error when create hiveage network");
+        logger.error("error when create hiveage network", error);
         return res.status(500).send({
           status: 500,
           data: {
@@ -198,9 +198,6 @@ async function createHiveage(req, res, next) {
       account.id,
       `Invoice: https://railflow.hiveage.com/invs/${invoice.invoice.hash_key}`
     );
-    await slackService.sendSlackMessage(
-      `Railflow Invoice: <https://railflow.myfreshworks.com/crm/sales/accounts/${account.id}|${account.name}> <https://railflow.hiveage.com/invs/${invoice.invoice.hash_key}|invoice> :slightly_smiling_face:`
-    );
 
     const quote = await quoteService.create(data);
     if (quote.error != null) {
@@ -223,7 +220,7 @@ async function createHiveage(req, res, next) {
       `Quote: https://railflow.hiveage.com/estm/${quote.estimate.hash_key}`
     );
     await slackService.sendSlackMessage(
-      `Railflow Quote: <https://railflow.myfreshworks.com/crm/sales/accounts/${account.id}|${account.name}> <https://railflow.hiveage.com/estm/${quote.estimate.hash_key}|Quote> :slightly_smiling_face:`
+      `Railflow Price Inquiry: <https://railflow.myfreshworks.com/crm/sales/accounts/${account.id}|${account.name}>: <https://railflow.hiveage.com/estm/${quote.estimate.hash_key}|Quote>,  <https://railflow.hiveage.com/invs/${invoice.invoice.hash_key}|Invoice>`
     );
 
     const taskData1 = {

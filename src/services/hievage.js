@@ -1,14 +1,12 @@
-'use strict';
+"use strict";
 
-const appConfig = require('../../configs/app');
-const configs = appConfig.getConfigs(process.env.APP_ENV);
-const { getApiClient } = require('../services/request');
+const appConfig = require("../../configs/app");
+const configs = appConfig.getConfigs();
+const { getApiClient } = require("../services/request");
 const ApiError = require("../errors/api");
 const accountService = require("./account");
-const opportunityService = require('./opportunity');
+const opportunityService = require("./opportunity");
 const pricing = require("../config/pricing.json");
-
-
 
 /**
  * Service: Create new Hiveage
@@ -16,11 +14,8 @@ const pricing = require("../config/pricing.json");
  * @returns Promise
  */
 
- async function create(data) {
-
- }
-
+async function create(data) {}
 
 module.exports = {
-    create
+  create,
 };

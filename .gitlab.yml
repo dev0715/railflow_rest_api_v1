@@ -1,0 +1,31 @@
+image: docker:19.03.13
+
+services:
+  - docker:19.03.13-dind
+
+stages:
+  - publish-docker
+
+variables:
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_TLS_CERTDIR: ""
+  DOCKER_IMAGE_TAG: railflow/api
+  DH_REG: docker.io
+
+cache:
+  paths:
+    - node_modules/
+    - .cache/
+    - public/
+
+publish-docker:
+  stage: publish-docker
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+  script:
+    - docker build -t $DOCKER_IMAGE_TAG:$CI_COMMIT_BRANCH .
+    - docker tag $DOCKER_IMAGE_TAG:$CI_COMMIT_BRANCH $DH_REG/$DOCKER_IMAGE_TAG:$CI_COMMIT_BRANCH
+    - docker tag $DOCKER_IMAGE_TAG:$CI_COMMIT_BRANCH $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH
+    - docker push $DH_REG/$DOCKER_IMAGE_TAG:$CI_COMMIT_BRANCH

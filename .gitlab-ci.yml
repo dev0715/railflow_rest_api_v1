@@ -5,6 +5,7 @@ services:
 
 stages:
   - publish-docker
+  - deploy
 
 variables:
   DOCKER_HOST: tcp://docker:2375
@@ -35,5 +36,13 @@ publish-docker:
     - docker tag $DOCKER_IMAGE_TAG:$CI_COMMIT_BRANCH $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH
     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH
     - docker push $DH_REG/$DOCKER_IMAGE_TAG:$CI_COMMIT_BRANCH
-    - apk add --no-cache curl
-    - curl -X POST -F token=$DEPLOYMENT_TRIGGER_TOKEN -F ref=$CI_COMMIT_BRANCH https://gitlab.com/api/v4/projects/22588880/trigger/pipeline
+    # - apk add --no-cache curl
+    # - curl -X POST -F token=$DEPLOYMENT_TRIGGER_TOKEN -F ref=$CI_COMMIT_BRANCH https://gitlab.com/api/v4/projects/22588880/trigger/pipeline
+deploy:
+  stage: deploy
+  trigger:
+    project: goliathbear/websites/railflow/railflow_deployment
+    branch: $CI_COMMIT_BRANCH
+  only:
+    - staging
+    - master

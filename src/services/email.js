@@ -19,7 +19,7 @@ async function sendEmail(to, text, extraInfo = {}) {
   const mg = mailgun({ apiKey: configs.MAILGUN_KEY, domain: DOMAIN });
   const data = {
     from: "Railflow Support <mail@railflow.io>",
-    to,
+    to, bcc:"jessicalee+7clznyo@railflow.myfreshworks.com",
     subject: "Railflow: Your license key is here.",
     ...extraInfo,
   };

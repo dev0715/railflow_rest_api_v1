@@ -16,7 +16,7 @@ const configs = {
   ],
   CRYPTOLENS_BASE_URL: "https://app.cryptolens.io",
   CRYPTOLENS_API_KEY: "WyI1NTkwNTYzIiwidE1WQ1NjaUlwR05adHhZK1BaaEZlamVpUEZ5RElJQ3ZBZGlPVzFkUCJd",
-  MAILGUN_KEY: "key-4c45b28d4cab5d63a74df82c99aae76c",
+  MAILGUN_KEY: "d90b998fbe1f8454ae7196ade6216a21-20ebde82-093b4516",
   HIVEAGE_DOMAIN: "railflow",
   HIVEAGE_BASE_URL: "https://railflow.hiveage.com/",
   HIVEAGE_API_KEY: "TQcCm6QAzYgCcgzrNqs7",
@@ -35,7 +35,7 @@ const configs = {
   PRODUCT_ID: 8245,
   CONTACT_STATUS_ID: 16000052147,
   EXTENSION_PERIOD: 14,
-  DOMAIN: "mail@railflow.io",
+  DOMAIN: "mail.railflow.io",
 };
 
 const getConfigs = () => {

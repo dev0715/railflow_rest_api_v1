@@ -55,6 +55,9 @@ async function create(data) {
     if (error.response?.data?.errors?.message[0] === "The mobile number already exists.") {
       throw new ApiError("BAD_REQUEST_MOBILE_NUMBER_EXISTS");
     }
+    if (error.response?.data?.errors?.message[0] === "Invalid value for mobile_number.") {
+      throw new ApiError("Invalid value for mobile_number.");
+    }
     throw new ApiError(
       `Error while creating contact: email: ${data.email} and phone: ${data.phone}`
     );

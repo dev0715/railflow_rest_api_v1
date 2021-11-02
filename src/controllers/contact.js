@@ -131,6 +131,16 @@ async function createContact(request, res, next) {
         },
       });
     }
+
+    if (error.message == "Invalid value for mobile_number.") {
+      return res.status(400).send({
+        status: 403,
+        data: {
+          message: "Invalid value for mobile_number.",
+          phone: request.body.phone,
+        },
+      });
+    }
     return res.status(500).send({
       status: 500,
       message: "something went wrong",

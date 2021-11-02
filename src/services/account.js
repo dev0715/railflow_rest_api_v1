@@ -146,7 +146,7 @@ async function getAccountIfAlreadyPresent(name) {
   const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL);
   const response = await apiClient.request({
     method: "GET",
-    url: "/crm/sales/api/lookup?q=" + name + "&entities=sales_account&f=company_name",
+    url: "/crm/sales/api/lookup?q=" + name + "&entities=sales_account&f=name",
     headers: {
       // TODO: use environment variable
       // Authorization: `Token token=${process.env.FRESHSALES_API_KEY}`,

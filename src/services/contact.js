@@ -56,7 +56,7 @@ async function create(data) {
       throw new ApiError("BAD_REQUEST_MOBILE_NUMBER_EXISTS");
     }
     throw new ApiError(
-      `Error while creating contact: email: ${data.email} and phone: ${data.work_number}`
+      `Error while creating contact: email: ${data.email} and phone: ${data.phone}`
     );
   }
 }

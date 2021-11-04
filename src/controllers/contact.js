@@ -225,6 +225,33 @@ async function updateContact(request, res, next) {
       }
     }
 
+    // contact already has the cf_license_key exists
+    if (
+      contact &&
+      contact.custom_field &&
+      contact.custom_field.cf_license_key &&
+      contact.recent_note
+    ) {
+      return res.status(200).send({
+        status: 200,
+        data: {
+          message: `contact verified`,
+          contact_id: contact.id,
+          account_id: contact.custom_field.cf_account_id,
+          first_name: contact.first_name,
+          last_name: contact.last_name,
+          address: contact.address,
+          city: contact.city,
+          state: contact.state,
+          zipcode: contact.zipcode,
+          country: contact.country,
+          license_key: contact.custom_field.cf_license_key,
+          account_id: contact.id,
+          company_name: contact.custom_field.cf_company,
+        },
+      });
+    }
+
     if (!!account) {
       const cryptolensTokenObject = await licenseService.getCryptolensToken(reqData);
       const mailgunResponse = await sendOnboardingEmail(reqData, cryptolensTokenObject);

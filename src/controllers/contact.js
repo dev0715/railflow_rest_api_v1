@@ -57,8 +57,8 @@ async function createContact(request, res, next) {
     if (alreadyPresent !== null) {
       if (alreadyPresent.custom_field.cf_license_status == "not_sent") {
         logger.info(`contact with ${data.email} email already present but status is not_sent`);
-        return res.status(201).send({
-          status: 201,
+        return res.status(200).send({
+          status: 200,
           data: {
             message: `Found a contact created with email: ${request.body.email}`,
             contact_id: alreadyPresent.id,

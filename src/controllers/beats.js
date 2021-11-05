@@ -7,7 +7,8 @@
 "use strict";
 
 const logger = require("../config/logger");
-const { registerBeatsToCryptolens } = require("../services/beats");
+const { registerBeatsToCryptolens, registerBeatsToSalesPanel } = require("../services/beats");
+const { searchByKey } = require("../services/contact");
 /**
  * Function: Register new Beats
  * @param {*} req Request body
@@ -40,6 +41,15 @@ exports.registerBeats = async (req, res) => {
     }
 
     registerBeatsToCryptolens({ metadata, feature, event, key, value });
+
+    const contact = await searchByKey(key);
+
+    registerBeatsToSalesPanel({
+      email: contact.email,
+      category: feature,
+      label: event,
+      metadata,
+    });
     return res.status(200).send({
       status: 200,
       data: {

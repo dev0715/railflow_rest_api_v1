@@ -245,6 +245,35 @@ async function searchByPhone(phone) {
   }
 }
 
+async function searchByKey(key) {
+  try {
+    const apiClient = await getApiClient(configs.FRESHSALES_BASE_URL);
+    const response = await apiClient.request({
+      method: "GET",
+      url: `crm/sales/api/lookup?q=${key}&entities=contact&f=cf_license_key`,
+      headers: {
+        Authorization: `Token token=${configs.FRESHSALES_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (
+      response.data &&
+      response.data.contacts &&
+      response.data.contacts.contacts &&
+      response.data.contacts.contacts[0]
+    ) {
+      return response.data.contacts.contacts[0];
+    } else {
+      throw new ApiError(
+        `> Error while searching the contact: ${error}, please make sure you provide correct key`
+      );
+    }
+  } catch (error) {
+    throw new ApiError(`> Error while searching the contact: ${error}`);
+  }
+}
+
 module.exports = {
   create,
   update,
@@ -253,4 +282,5 @@ module.exports = {
   getContactById,
   bulkDelete,
   searchByPhone,
+  searchByKey,
 };

@@ -36,6 +36,8 @@ const configs = {
   CONTACT_STATUS_ID: 16000052147,
   EXTENSION_PERIOD: 14,
   DOMAIN: "mail.railflow.io",
+  SALESPANEL_API_KEY: "4cab75dab8852f0fe87cbc4e6821fe352e660650",
+  SALESPANEL_BASE_URL: "https://salespanel.io",
 };
 
 const getConfigs = () => {

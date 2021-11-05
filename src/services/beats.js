@@ -23,7 +23,35 @@ exports.registerBeatsToCryptolens = async (args) => {
       },
     });
 
-    logger.info("response", response.data);
+    logger.info("cryptolens response ", response.data);
+    return response;
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+exports.registerBeatsToSalesPanel = async (args) => {
+  try {
+    const { email, category, label, metadata } = args;
+    const apiClient = await getApiClient(configs.SALESPANEL_BASE_URL);
+    const response = await apiClient.request({
+      method: "POST",
+      url: `/api/v1/custom-activity/create/`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${configs.SALESPANEL_API_KEY}`,
+      },
+      data: {
+        visitor_identifier: email,
+        category,
+        label,
+        metadata,
+        create_new: true,
+      },
+    });
+
+    logger.info("salespanel response", response.data);
     return response;
   } catch (error) {
     logger.error(error);

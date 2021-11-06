@@ -43,7 +43,12 @@ exports.registerBeats = async (req, res) => {
     registerBeatsToCryptolens({ metadata, feature, event, key, value });
 
     const contact = await searchByKey(key);
-
+    if (!contact) {
+      return res.status(404).send({
+        status: 404,
+        message: `${key} is not found`,
+      });
+    }
     registerBeatsToSalesPanel({
       email: contact.email,
       category: feature,
@@ -57,7 +62,7 @@ exports.registerBeats = async (req, res) => {
       },
     });
   } catch (error) {
-    logger.error("Error When Register Beat", error);
+    logger.error(`Error When Register Beat for key ${key}`, error);
     const code = error.code ? error.code : 400;
     const message = error.message ? error.message : "server either does not recognize the request.";
 

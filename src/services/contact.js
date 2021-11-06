@@ -265,9 +265,7 @@ async function searchByKey(key) {
     ) {
       return response.data.contacts.contacts[0];
     } else {
-      throw new ApiError(
-        `> Error while searching the contact: ${error}, please make sure you provide correct key`
-      );
+      return false;
     }
   } catch (error) {
     throw new ApiError(`> Error while searching the contact: ${error}`);

@@ -19,14 +19,14 @@ exports.registerBeatsToCryptolens = async (args) => {
         FeatureName: feature,
         EventName: event,
         Value: value,
-        Metadata: metadata,
+        Metadata: typeof metadata == "object" ? JSON.stringify(metadata) : metadata,
       },
     });
 
-    logger.info("cryptolens response ", response.data);
+    logger.info(`cryptolens response with Key ${key} , response ===>`, response.data);
     return response;
   } catch (error) {
-    logger.error(error);
+    logger.error(`Error when Register event with cryptolens with key ${key}, ====>`, error);
     throw error;
   }
 };
@@ -51,7 +51,7 @@ exports.registerBeatsToSalesPanel = async (args) => {
       },
     });
 
-    logger.info("salespanel response", response.data);
+    logger.info(`salespanel response for email ${email} , =====>`, response.data);
     return response;
   } catch (error) {
     logger.error(error);

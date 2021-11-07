@@ -29,6 +29,7 @@ publish-docker:
     - docker build
       --tag $DOCKER_IMAGE_TAG:$CI_COMMIT_BRANCH
       --cache-from $DH_REG/$DOCKER_IMAGE_TAG:$CI_COMMIT_BRANCH
+      --build-arg branch="$CI_COMMIT_BRANCH"
       --file ./Dockerfile
       --build-arg BUILDKIT_INLINE_CACHE=1
       "."

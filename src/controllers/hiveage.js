@@ -178,26 +178,26 @@ async function createHiveage(req, res, next) {
         });
       });
     }
-    // const invoice = await invoiceService.createInvoice(data);
-    // if (invoice.error != null) {
-    //   return res.status(400).send({
-    //     status: 400,
-    //     data: {
-    //       message: invoice.error.message,
-    //       account_id: req.body.account_id,
-    //       contact_id: req.body.contact_id,
-    //     },
-    //   });
-    // }
+    const invoice = await invoiceService.createInvoice(data);
+    if (invoice.error != null) {
+      return res.status(400).send({
+        status: 400,
+        data: {
+          message: invoice.error.message,
+          account_id: req.body.account_id,
+          contact_id: req.body.contact_id,
+        },
+      });
+    }
 
-    // await noteService.create(
-    //   contact.id,
-    //   `Invoice: https://railflow.hiveage.com/invs/${invoice.invoice.hash_key}`
-    // );
-    // await noteService.accountNote(
-    //   account.id,
-    //   `Invoice: https://railflow.hiveage.com/invs/${invoice.invoice.hash_key}`
-    // );
+    await noteService.create(
+      contact.id,
+      `Invoice: https://railflow.hiveage.com/invs/${invoice.invoice.hash_key}`
+    );
+    await noteService.accountNote(
+      account.id,
+      `Invoice: https://railflow.hiveage.com/invs/${invoice.invoice.hash_key}`
+    );
 
     const quote = await quoteService.create(data);
     if (quote.error != null) {
@@ -248,7 +248,7 @@ async function createHiveage(req, res, next) {
     return res.status(201).send({
       status: 201,
       message: " quote created",
-      // invoiceLink: `https://railflow.hiveage.com/invs/${invoice.invoice.hash_key}`,
+      invoiceLink: `https://railflow.hiveage.com/invs/${invoice.invoice.hash_key}`,
       quoteLink: `https://railflow.hiveage.com/estm/${quote.estimate.hash_key}`,
       // opportunityInvoiceLink: `https://railflow.myfreshworks.com/crm/sales/deals/${invoice.fsOpportunity.id}`,
       opportunityQuoteLink: `https://railflow.myfreshworks.com/crm/sales/deals/${quote.fsOpportunity.id}`,

@@ -190,14 +190,14 @@ async function createHiveage(req, res, next) {
       });
     }
 
-    await noteService.create(
-      contact.id,
-      `Invoice: https://railflow.hiveage.com/invs/${invoice.invoice.hash_key}`
-    );
-    await noteService.accountNote(
-      account.id,
-      `Invoice: https://railflow.hiveage.com/invs/${invoice.invoice.hash_key}`
-    );
+    // await noteService.create(
+    //   contact.id,
+    //   `Invoice: https://railflow.hiveage.com/invs/${invoice.invoice.hash_key}`
+    // );
+    // await noteService.accountNote(
+    //   account.id,
+    //   `Invoice: https://railflow.hiveage.com/invs/${invoice.invoice.hash_key}`
+    // );
 
     const quote = await quoteService.create(data);
     if (quote.error != null) {

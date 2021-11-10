@@ -55,8 +55,7 @@ async function createContact(request, res, next) {
     // check if the contact is already there.
     const alreadyPresent = await contactService.getContactIfAlreadyPresent(request.body.email);
     if (alreadyPresent !== null) {
-      if (alreadyPresent.custom_field.cf_license_status == "not_sent") {
-        logger.info(`contact with ${data.email} email already present but status is not_sent`);
+      logger.info(`contact with ${data.email} email already present`);
         return res.status(200).send({
           status: 200,
           data: {
@@ -66,16 +65,6 @@ async function createContact(request, res, next) {
             company_name: alreadyPresent.custom_field.cf_company,
           },
         });
-      }
-      logger.info(`contact with ${data.email} email already present`);
-      return res.status(400).send({
-        status: 400,
-        data: {
-          message: `Duplicate Registration`,
-          contact_id: alreadyPresent.id,
-          account_id: alreadyPresent.custom_field.cf_account_id,
-        },
-      });
     }
     // Retrieve account/company
     let account = await accountService.getAccountIfAlreadyPresent(request.body.company);

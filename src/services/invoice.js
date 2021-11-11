@@ -207,55 +207,56 @@ async function createInvoice(data) {
       logger.info("invoice sent - custom format");
     }
 
-    const fsOpportunityData = {
-      deal: {
-        name: `${data.account.name}: ${capitalize(data.license_type)}: ${license_term} License: ${
-          20 * price_option
-        }-${20 * (price_option + 1)} Users`,
-        amount: invs_response.data.invoice.billed_total, // created quote amount
-        sales_account_id: data.account.id,
-        expected_close: addDays(new Date(), 30),
-        deal_stage_id: 16000263411,
-        custom_field: {
-          cf_contact_email: data.user.email,
-          cf_number_of_agents: `${20 * price_option}-${20 * (price_option + 1)}`,
-        },
-      },
-    };
+    // invoice opportunity section
+    // const fsOpportunityData = {
+    //   deal: {
+    //     name: `${data.account.name}: ${capitalize(data.license_type)}: ${license_term} License: ${
+    //       20 * price_option
+    //     }-${20 * (price_option + 1)} Users`,
+    //     amount: invs_response.data.invoice.billed_total, // created quote amount
+    //     sales_account_id: data.account.id,
+    //     expected_close: addDays(new Date(), 30),
+    //     deal_stage_id: 16000263411,
+    //     custom_field: {
+    //       cf_contact_email: data.user.email,
+    //       cf_number_of_agents: `${20 * price_option}-${20 * (price_option + 1)}`,
+    //     },
+    //   },
+    // };
 
-    let fsOpportunity = null;
-    if (data.account.custom_field.cf_opportunity_id != null) {
-      fsOpportunity = await opportunityService.getFsOpportunity(
-        data.account.custom_field.cf_opportunity_id
-      );
-      if (!fsOpportunity || fsOpportunity.amount != fsOpportunityData.deal.amount) {
-        fsOpportunity = await opportunityService.createFsOpportunity(fsOpportunityData);
-        const updatedAccount = await accountService.update(data.account.id, {
-          sales_account: {
-            custom_field: {
-              cf_opportunity_id: `${fsOpportunity.id}`,
-            },
-          },
-        });
-      }
-      if (!fsOpportunity || fsOpportunity.amount == fsOpportunityData.deal.amount) {
-        fsOpportunity = await opportunityService.updateFsOpportunity(fsOpportunity.id, {
-          deal: {
-            deal_stage_id: 16000263411,
-          },
-        });
-      }
-    } else {
-      fsOpportunity = await opportunityService.createFsOpportunity(fsOpportunityData);
-      const updatedAccount = await accountService.update(data.account.id, {
-        sales_account: {
-          custom_field: {
-            cf_opportunity_id: `${fsOpportunity.id}`,
-          },
-        },
-      });
-    }
-    invs_response.data.fsOpportunity = fsOpportunity;
+    // let fsOpportunity = null;
+    // if (data.account.custom_field.cf_opportunity_id != null) {
+    //   fsOpportunity = await opportunityService.getFsOpportunity(
+    //     data.account.custom_field.cf_opportunity_id
+    //   );
+    //   if (!fsOpportunity || fsOpportunity.amount != fsOpportunityData.deal.amount) {
+    //     fsOpportunity = await opportunityService.createFsOpportunity(fsOpportunityData);
+    //     const updatedAccount = await accountService.update(data.account.id, {
+    //       sales_account: {
+    //         custom_field: {
+    //           cf_opportunity_id: `${fsOpportunity.id}`,
+    //         },
+    //       },
+    //     });
+    //   }
+    //   if (!fsOpportunity || fsOpportunity.amount == fsOpportunityData.deal.amount) {
+    //     fsOpportunity = await opportunityService.updateFsOpportunity(fsOpportunity.id, {
+    //       deal: {
+    //         deal_stage_id: 16000263411,
+    //       },
+    //     });
+    //   }
+    // } else {
+    //   fsOpportunity = await opportunityService.createFsOpportunity(fsOpportunityData);
+    //   const updatedAccount = await accountService.update(data.account.id, {
+    //     sales_account: {
+    //       custom_field: {
+    //         cf_opportunity_id: `${fsOpportunity.id}`,
+    //       },
+    //     },
+    //   });
+    // }
+    // invs_response.data.fsOpportunity = fsOpportunity;
     return invs_response.data;
   } catch (error) {
     logger.error(error);

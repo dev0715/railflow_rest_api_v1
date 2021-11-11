@@ -1,4 +1,14 @@
 const winston = require("winston");
+const { Logtail } = require("@logtail/node");
+const { LogtailTransport } = require("@logtail/winston");
+
+// Create a Logtail client
+const logtail = new Logtail("xTkwgvG9woJf1ciDrYup27FR");
+
+// Create a Winston logger - passing in the Logtail transport
+const logger_live = winston.createLogger({
+  transports: [new LogtailTransport(logtail)],
+});
 
 const logger = winston.createLogger({
   //   level: "info",
@@ -17,3 +27,5 @@ const logger = winston.createLogger({
 });
 
 module.exports = logger;
+
+

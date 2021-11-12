@@ -200,6 +200,7 @@ async function create(data) {
           cf_contact_email: data.user.email,
           cf_number_of_agents: `${20 * price_option}-${20 * (price_option + 1)}`,
         },
+        contacts_added_list: [data.contact_id],
       },
     };
     let fsOpportunity = null;

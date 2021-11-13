@@ -14,7 +14,9 @@ const configs = {
     "http://localhost:9000",
     "https://railflow.io",
     "https://www.railflow.io",
-    "https://railflow-website.onrender.com",
+    "https://railflow.myfreshworks.com",
+    "https://api.mailgun.net/",
+
   ],
   CRYPTOLENS_BASE_URL: "https://app.cryptolens.io",
   CRYPTOLENS_API_KEY: "WyI1NTkwNTYzIiwidE1WQ1NjaUlwR05adHhZK1BaaEZlamVpUEZ5RElJQ3ZBZGlPVzFkUCJd",

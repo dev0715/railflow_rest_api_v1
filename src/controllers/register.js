@@ -15,7 +15,7 @@ const noteService = require('../services/note')
 const taskService = require('../services/task')
 const { checkToken } = require('../services/token')
 const { hanldeCreateError } = require('../services/register')
-const { sendOnboardingEmail, createContact } = require('./contact')
+const { sendOnboardingEmail } = require('./contact')
 
 async function create(request, res, next) {
   // Middleware: Check token beforehand
@@ -28,7 +28,7 @@ async function create(request, res, next) {
   }
 
   try {
-    const account = await createAccountIfNotExist(req.body.company)
+    const account = await createAccountIfNotExist(request.body.company)
 
     const data = {
       firstName: request.body.firstName,
@@ -143,6 +143,8 @@ async function createAccountIfNotExist(company) {
   if (!account) {
     account = await accountService.create({ name: company })
   }
+
+  return account
 }
 
 module.exports = {

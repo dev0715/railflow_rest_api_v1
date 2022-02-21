@@ -371,7 +371,7 @@ async function searchContact(request, res) {
       const response = await contactService.search(email)
       contacts = response.contacts.contacts
 
-      if (contacts.length) {
+      if (contacts.length && contacts[0].custom_field.cf_license_key) {
         statusCode = 200
       }
 

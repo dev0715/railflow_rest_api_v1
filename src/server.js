@@ -24,6 +24,8 @@ const swaggerFile = require('../swagger.json')
 
 // config
 const appConfig = require('../configs/app')
+const { requestLoggerMiddleware } = require('./middlewares/requestLogger.middleware')
+const logger = require('./config/logger')
 
 const config = appConfig.getConfigs()
 
@@ -33,12 +35,18 @@ class Server {
     this.config()
     this.routes()
     this.app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerFile))
-    this.app.use(morgan('dev'))
+    // this.app.use(morgan('dev'))
+
+    // this.app.use((req, res, next) => {
+    //   console.log(req)
+    // })
   }
 
   config() {
     this.app.use(bodyParser.urlencoded({ extended: true }))
     this.app.use(bodyParser.json())
+    this.app.use(morgan('dev', { stream: logger.stream }))
+    this.app.use(requestLoggerMiddleware({ logger: logger.info }))
 
     const corsOptions = {
       origin: config.ALLOWED_DOMAINS,

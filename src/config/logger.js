@@ -13,17 +13,7 @@ const winston = require('winston')
 // const logger = winston.createLogger({
 //   //   level: "info",
 //   colorize: true,
-//   transports: [
-//     new winston.transports.Console({
-//       level: 'verbose',
-//       format: winston.format.combine(
-//         // winston.format.timestamp(),
-//         winston.format.prettyPrint(),
-//         winston.format.colorize(),
-//         winston.format.simple()
-//       ),
-//     }),
-//   ],
+//   transports: [],
 // })
 
 const LogzioWinstonTransport = require('winston-logzio')
@@ -39,7 +29,24 @@ const logzioWinstonTransport = new LogzioWinstonTransport({
 
 const logger = winston.createLogger({
   format: winston.format.simple(),
-  transports: [logzioWinstonTransport],
+  transports: [
+    logzioWinstonTransport,
+    new winston.transports.Console({
+      level: 'verbose',
+      format: winston.format.combine(
+        // winston.format.timestamp(),
+        winston.format.prettyPrint(),
+        winston.format.colorize(),
+        winston.format.simple()
+      ),
+    }),
+  ],
 })
+
+logger.stream = {
+  write: function (message) {
+    logger.info(message)
+  },
+}
 
 module.exports = logger

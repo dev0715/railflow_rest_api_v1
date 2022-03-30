@@ -31,19 +31,26 @@ const resDotSendInterceptor = (res, send) => (content) => {
 const requestLoggerMiddleware =
   ({ logger }) =>
   (req, res, next) => {
+    req._startTime = new Date()
+
     let uuid = UUID.v4()
     if (req.method == 'POST' || req.method == 'PATCH' || req.method == 'PUT') {
-      logger(`body data: `, { requestId: uuid, ...req.body })
+      logger(`${req.method}  ${req.baseUrl}    ${uuid}    Body:`, { requestId: uuid, ...req.body })
     }
     res.send = resDotSendInterceptor(res, res.send)
     res.on('finish', () => {
-      //   logger(
-      //     `${req.method}  ${req.baseUrl}  ${res.statusCode || res.status}  ${
-      //       new Date(res._startTime) - new Date(req._startTime)
-      //     } ms`
-      //   )
+      res._startTime = new Date()
+
+      logger(
+        `${req.method}  ${req.baseUrl}  ${uuid}  ${
+          new Date(res._startTime) - new Date(req._startTime)
+        } ms - ${res.statusCode || res.status}`
+      )
       if (config.LOG_RESPONSE) {
-        logger('Response: ', { requestId: uuid, ...res.contentBody })
+        logger(`${req.method}  ${req.baseUrl}    ${uuid}     Response: `, {
+          requestId: uuid,
+          ...res.contentBody,
+        })
       }
     })
     next()

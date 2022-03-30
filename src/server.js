@@ -45,7 +45,7 @@ class Server {
   config() {
     this.app.use(bodyParser.urlencoded({ extended: true }))
     this.app.use(bodyParser.json())
-    this.app.use(morgan('dev', { stream: logger.stream }))
+    // this.app.use(morgan('dev'))
     this.app.use(requestLoggerMiddleware({ logger: logger.info }))
 
     const corsOptions = {

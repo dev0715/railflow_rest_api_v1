@@ -1,30 +1,31 @@
-"use strict";
+'use strict'
+require('newrelic')
 
-const http = require("http");
-const Server = require("./server");
+const http = require('http')
+const Server = require('./server')
 
-const logger = require("./config/logger");
+const logger = require('./config/logger')
 
-const appConfig = require("../configs/app");
-const config = appConfig.getConfigs();
-const APP_PORT = config.APP_PORT;
+const appConfig = require('../configs/app')
+const config = appConfig.getConfigs()
+const APP_PORT = config.APP_PORT
 
-const server = http.createServer(Server);
+const server = http.createServer(Server)
 
-server.listen(APP_PORT);
+server.listen(APP_PORT)
 
-server.on("listening", onListening);
-server.on("error", onError);
+server.on('listening', onListening)
+server.on('error', onError)
 
 function onListening() {
-  const addr = server.address();
-  const bind = typeof addr === "string" ? `pipe ${addr}` : `port ${addr.port}`;
-  logger.info(`Listening on ${bind}`);
+  const addr = server.address()
+  const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`
+  logger.info(`Listening on ${bind}`)
 }
 
 function onError(err) {
-  logger.error(`Error: ${err}`);
-  process.exit(1);
+  logger.error(`Error: ${err}`)
+  process.exit(1)
 }
 
-module.exports = server;
+module.exports = server

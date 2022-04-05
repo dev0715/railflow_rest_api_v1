@@ -111,8 +111,8 @@ async function create(request, res, next) {
       reqData.cf_license_key = cryptolensTokenObject.key
       const patchedContact = await contactService.update(reqData)
 
-      return res.status(200).send({
-        status: 200,
+      return res.status(201).send({
+        status: 201,
         data: {
           message: `contact verified`,
           contact_id: patchedContact.id,

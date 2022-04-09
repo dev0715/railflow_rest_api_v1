@@ -28,6 +28,8 @@ async function create(request, res, next) {
   }
 
   try {
+    const licence = req.body.licence
+
     const account = await createAccountIfNotExist(request.body.company)
 
     const data = {
@@ -49,7 +51,6 @@ async function create(request, res, next) {
 
     // check if the contact is already there.
     let contact = await contactService.getContactIfAlreadyPresent(request.body.email)
-
     if (!contact) {
       const response = await contactService.create(data)
       if (response && response.data && response.data.contact) {
@@ -71,8 +72,8 @@ async function create(request, res, next) {
       contact.custom_field.cf_license_key &&
       contact.recent_note
     ) {
-      return res.status(200).send({
-        status: 200,
+      return res.status(409).send({
+        status: 409,
         data: {
           message: `contact verified`,
           contact_id: contact.id,
@@ -96,6 +97,27 @@ async function create(request, res, next) {
         contact_last_name: contact.last_name,
         contact_cf_company: contact.custom_field.cf_company,
         contact_email: contact.email,
+      }
+
+      if (licence == 'disable') {
+        return res.status(201).send({
+          status: 201,
+          data: {
+            message: `contact verified`,
+            contact_id: contact.id,
+            account_id: contact.custom_field.cf_account_id,
+            first_name: contact.first_name,
+            last_name: contact.last_name,
+            address: contact.address,
+            city: contact.city,
+            state: contact.state,
+            zipcode: contact.zipcode,
+            country: contact.country,
+            license_key: contact.custom_field.cf_license_key,
+            account_id: contact.id,
+            company_name: contact.custom_field.cf_company,
+          },
+        })
       }
 
       const cryptolensTokenObject = await licenseService.getCryptolensToken(reqData)

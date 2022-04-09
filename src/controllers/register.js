@@ -131,6 +131,7 @@ async function create(request, res, next) {
       await noteService.create(reqData.contact_id, description)
       await taskService.create({ contact_id: reqData.contact_id })
       reqData.cf_license_key = cryptolensTokenObject.key
+      reqData.cf_license_key_url = mailgunResponse.licenseUrl
       const patchedContact = await contactService.update(reqData)
 
       return res.status(201).send({
@@ -148,6 +149,7 @@ async function create(request, res, next) {
           country: patchedContact.country,
           license_key: patchedContact.custom_field.cf_license_key,
           license_link: mailgunResponse.licenseUrl,
+
           account_id: account.id,
           company_name: patchedContact.custom_field.cf_company,
           mailgun_url: `${mailgunEmailUrl}${mailgunResponse.emailData.id}/history`,

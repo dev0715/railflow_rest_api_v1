@@ -28,7 +28,7 @@ async function create(request, res, next) {
   }
 
   try {
-    const licence = req.body.licence
+    const license = request.body.license
 
     const account = await createAccountIfNotExist(request.body.company)
 
@@ -64,8 +64,8 @@ async function create(request, res, next) {
         })
       }
     }
-
-    // contact exists but licence status is sent and key url exists
+    console.log('contact.custom_field.cf_license_key', contact.custom_field.cf_license_key)
+    // contact exists but license status is sent and key url exists
     if (
       contact &&
       contact.custom_field &&
@@ -99,7 +99,7 @@ async function create(request, res, next) {
         contact_email: contact.email,
       }
 
-      if (licence == 'disable') {
+      if (license == 'disable') {
         return res.status(201).send({
           status: 201,
           data: {

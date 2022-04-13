@@ -62,7 +62,6 @@ async function create(request, res, next) {
             contactId: response.data.contact.id,
             company: request.body.company,
           }
-          logger.info(`sending slack notification: ${response.data.contact.id}`)
           await slackService.sendMessage(notificationData)
         }
       } else {

@@ -1,8 +1,9 @@
-"use strict";
+'use strict'
 
-const appConfig = require("../../configs/app");
-const configs = appConfig.getConfigs();
-const { getApiClient } = require("../services/request");
+const appConfig = require('../../configs/app')
+const logger = require('../config/logger')
+const configs = appConfig.getConfigs()
+const { getApiClient } = require('../services/request')
 
 /**
  * Send a slack message used in the new signup
@@ -11,17 +12,19 @@ const { getApiClient } = require("../services/request");
  */
 async function sendMessage(data) {
   try {
-    const apiClient = await getApiClient(configs.SLACK_API_BASE_URL);
+    const apiClient = await getApiClient(configs.SLACK_API_BASE_URL)
+    logger.info(`sending slack notification: ${data.contactId}`)
+
     await apiClient.request({
-      method: "POST",
+      method: 'POST',
       data: {
         text: `Railflow Signup: <https://railflow.myfreshworks.com/crm/sales/contacts/${data.contactId}|${data.company}> :partying_face:`,
       },
-    });
+    })
 
-    return Promise.resolve();
+    return Promise.resolve()
   } catch (error) {
-    throw new ApiError(`> Error while sending slack message`);
+    throw new ApiError(`> Error while sending slack message`)
   }
 }
 
@@ -32,21 +35,21 @@ async function sendMessage(data) {
  */
 async function sendSlackMessage(message) {
   try {
-    const apiClient = await getApiClient(configs.SLACK_API_BASE_URL);
+    const apiClient = await getApiClient(configs.SLACK_API_BASE_URL)
     await apiClient.request({
-      method: "POST",
+      method: 'POST',
       data: {
         text: message,
       },
-    });
+    })
 
-    return Promise.resolve();
+    return Promise.resolve()
   } catch (error) {
-    throw new ApiError(`> Error while sending slack message`);
+    throw new ApiError(`> Error while sending slack message`)
   }
 }
 
 module.exports = {
   sendMessage,
   sendSlackMessage,
-};
+}

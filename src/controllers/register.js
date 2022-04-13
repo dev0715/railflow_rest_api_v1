@@ -13,9 +13,11 @@ const accountService = require('../services/account')
 const licenseService = require('../services/license')
 const noteService = require('../services/note')
 const taskService = require('../services/task')
+const slackService = require('../services/slack')
 const { checkToken } = require('../services/token')
 const { hanldeCreateError } = require('../services/register')
 const { sendOnboardingEmail } = require('./contact')
+const logger = require('../config/logger')
 
 async function create(request, res, next) {
   // Middleware: Check token beforehand
@@ -55,6 +57,13 @@ async function create(request, res, next) {
       const response = await contactService.create(data)
       if (response && response.data && response.data.contact) {
         contact = response.data.contact
+        if (typeof request.body.notify == 'undefined' || request.body.notify) {
+          const notificationData = {
+            contactId: response.data.contact.id,
+            company: request.body.company,
+          }
+          await slackService.sendMessage(notificationData)
+        }
       } else {
         return res.status(500).send({
           status: 500,
@@ -64,7 +73,6 @@ async function create(request, res, next) {
         })
       }
     }
-    console.log('contact.custom_field.cf_license_key', contact.custom_field.cf_license_key)
     // contact exists but license status is sent and key url exists
     if (
       contact &&

@@ -1,21 +1,11 @@
-const winston = require("winston");
-const { Logtail } = require("@logtail/node");
-const { LogtailTransport } = require("@logtail/winston");
-
-// Create a Logtail client
-const logtail = new Logtail("xTkwgvG9woJf1ciDrYup27FR");
-
-// Create a Winston logger - passing in the Logtail transport
-const logger_live = winston.createLogger({
-  transports: [new LogtailTransport(logtail)],
-});
+const winston = require('winston')
+const newrelicFormatter = require('@newrelic/winston-enricher')
 
 const logger = winston.createLogger({
-  //   level: "info",
-  colorize: true,
+  format: winston.format.combine(winston.format.label({ label: 'test' }), newrelicFormatter()),
   transports: [
     new winston.transports.Console({
-      level: "verbose",
+      level: 'verbose',
       format: winston.format.combine(
         // winston.format.timestamp(),
         winston.format.prettyPrint(),
@@ -24,8 +14,12 @@ const logger = winston.createLogger({
       ),
     }),
   ],
-});
+})
 
-module.exports = logger;
+logger.stream = {
+  write: function (message) {
+    logger.info(message)
+  },
+}
 
-
+module.exports = logger

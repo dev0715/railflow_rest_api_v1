@@ -94,7 +94,6 @@ async function create(request, res, next) {
           zipcode: contact.zipcode,
           country: contact.country,
           license_key: contact.custom_field.cf_license_key,
-          account_id: contact.id,
           company_name: contact.custom_field.cf_company,
         },
       })
@@ -122,7 +121,6 @@ async function create(request, res, next) {
             zipcode: contact.zipcode,
             country: contact.country,
             license_key: contact.custom_field.cf_license_key,
-            account_id: contact.id,
             company_name: contact.custom_field.cf_company,
           },
         })
